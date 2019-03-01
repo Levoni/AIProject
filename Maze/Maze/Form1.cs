@@ -29,7 +29,7 @@ namespace Maze
          Pen b = new Pen(Color.Black,1);
          SolidBrush sbStart = new SolidBrush(Color.Blue);
          SolidBrush sbEnd = new SolidBrush(Color.Red);
-         SolidBrush sbVisited = new SolidBrush(Color.Yellow);
+         SolidBrush sbVisited = new SolidBrush(Color.Cyan);
          //e.Graphics.DrawRectangle(b, 0, 0, panel1.Width - (panel1.Width % 10), panel1.Height - (panel1.Height % 10));
          foreach (Node n in m.map)
          {
@@ -60,7 +60,8 @@ namespace Maze
 
       private void button1_Click(object sender, EventArgs e)
       {
-         m.GenerateMap();
+         int percent = int.Parse(txtBoxPercent.Text);
+         m.GenerateMap(0,0,percent);
          panel1.Refresh();
       }
 

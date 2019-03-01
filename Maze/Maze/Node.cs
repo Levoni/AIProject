@@ -40,5 +40,18 @@ namespace Maze
          nodes[(int)d] = n;
       }
 
+      public bool IsDeadEnd()
+      {
+         int connection = 0;
+         foreach(Node n in nodes)
+         {
+            if (n != null)
+               connection++;
+         }
+         if (connection >= 1)
+            return true;
+         return false;
+      }
+
    }
 }

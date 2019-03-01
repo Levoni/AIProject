@@ -35,6 +35,8 @@
          this.pbStart = new System.Windows.Forms.PictureBox();
          this.pbEnd = new System.Windows.Forms.PictureBox();
          this.brnBruteForce = new System.Windows.Forms.Button();
+         this.txtBoxPercent = new System.Windows.Forms.TextBox();
+         this.lblCutPercent = new System.Windows.Forms.Label();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.SuspendLayout();
@@ -62,7 +64,7 @@
          // lblStart
          // 
          this.lblStart.AutoSize = true;
-         this.lblStart.Location = new System.Drawing.Point(599, 71);
+         this.lblStart.Location = new System.Drawing.Point(599, 351);
          this.lblStart.Name = "lblStart";
          this.lblStart.Size = new System.Drawing.Size(32, 13);
          this.lblStart.TabIndex = 2;
@@ -71,7 +73,7 @@
          // lblEnd
          // 
          this.lblEnd.AutoSize = true;
-         this.lblEnd.Location = new System.Drawing.Point(599, 115);
+         this.lblEnd.Location = new System.Drawing.Point(599, 395);
          this.lblEnd.Name = "lblEnd";
          this.lblEnd.Size = new System.Drawing.Size(29, 13);
          this.lblEnd.TabIndex = 3;
@@ -79,7 +81,7 @@
          // 
          // pbStart
          // 
-         this.pbStart.Location = new System.Drawing.Point(662, 62);
+         this.pbStart.Location = new System.Drawing.Point(662, 342);
          this.pbStart.Name = "pbStart";
          this.pbStart.Size = new System.Drawing.Size(23, 22);
          this.pbStart.TabIndex = 4;
@@ -87,7 +89,7 @@
          // 
          // pbEnd
          // 
-         this.pbEnd.Location = new System.Drawing.Point(662, 106);
+         this.pbEnd.Location = new System.Drawing.Point(662, 386);
          this.pbEnd.Name = "pbEnd";
          this.pbEnd.Size = new System.Drawing.Size(23, 22);
          this.pbEnd.TabIndex = 5;
@@ -103,11 +105,30 @@
          this.brnBruteForce.UseVisualStyleBackColor = true;
          this.brnBruteForce.Click += new System.EventHandler(this.brnBruteForce_Click);
          // 
+         // txtBoxPercent
+         // 
+         this.txtBoxPercent.Location = new System.Drawing.Point(599, 70);
+         this.txtBoxPercent.Name = "txtBoxPercent";
+         this.txtBoxPercent.Size = new System.Drawing.Size(100, 20);
+         this.txtBoxPercent.TabIndex = 7;
+         this.txtBoxPercent.Text = "0";
+         // 
+         // lblCutPercent
+         // 
+         this.lblCutPercent.AutoSize = true;
+         this.lblCutPercent.Location = new System.Drawing.Point(602, 51);
+         this.lblCutPercent.Name = "lblCutPercent";
+         this.lblCutPercent.Size = new System.Drawing.Size(130, 13);
+         this.lblCutPercent.TabIndex = 8;
+         this.lblCutPercent.Text = "Open Percentage (0-100):";
+         // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(800, 450);
+         this.Controls.Add(this.lblCutPercent);
+         this.Controls.Add(this.txtBoxPercent);
          this.Controls.Add(this.brnBruteForce);
          this.Controls.Add(this.pbEnd);
          this.Controls.Add(this.pbStart);
@@ -133,6 +154,8 @@
       private System.Windows.Forms.PictureBox pbStart;
       private System.Windows.Forms.PictureBox pbEnd;
       private System.Windows.Forms.Button brnBruteForce;
+      private System.Windows.Forms.TextBox txtBoxPercent;
+      private System.Windows.Forms.Label lblCutPercent;
    }
 }
 

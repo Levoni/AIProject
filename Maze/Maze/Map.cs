@@ -15,12 +15,19 @@ namespace Maze
       UNKNOWN = -1,
    }
 
+   public class Path
+   {
+      public Node parent;
+      public Node child;
+   }
+
    public class Map
    {
       public Node[,] map;
       private Random rand;
       private int width, height;
       public Node Start, End;
+      private const int cutChance = 10;
 
       public Map(int w, int h)
       {
@@ -33,33 +40,13 @@ namespace Maze
             {
                map[x, y] = new Node(x,y);
             }
-         /*
-         for (int x = 0; x < 10; x++)
-            for (int y = 0; y < 10; y++)
-            {
-               if (y != 0)
-               {
-                  map[x, y].AddNode(map[x, y - 1], dir.UP);
-               }
-               if (y != 9)
-               {
-                  map[x, y].AddNode(map[x, y + 1], dir.DOWN);
-               }
-               if (x != 0)
-               {
-                  map[x, y].AddNode(map[x - 1, y], dir.LEFT);
-               }
-               if (x != 9)
-               {
-                  map[x, y].AddNode(map[x + 1, y], dir.RIGHT);
-               }
-            }
-            */
-         GenerateMap(0, 0);
+         GenerateMap();
       }
 
-      public void GenerateMap(int xStart = 0, int yStart = 0)
+      public void GenerateMap(int xStart = 0, int yStart = 0, int cutPercent = 0)
       {
+         xStart = rand.Next() % width;
+         yStart = rand.Next() % height;
          map = new Node[width, height];
          for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
@@ -78,6 +65,8 @@ namespace Maze
             int xOriginal = nodeStack.Peek().xPos;
             int yOriginal = nodeStack.Peek().yPos;
             dir direction = DetermineDirection(closed, xOriginal, yOriginal);
+            if (direction == dir.UNKNOWN && nodeStack.Peek().IsDeadEnd() && cutPercent > rand.Next() % 100)
+               CutSection(nodeStack);
             closed.Remove(nodeStack.Peek());
             closed.Add(nodeStack.Peek());
             UpdateStack(nodeStack, xOriginal, yOriginal, direction);
@@ -133,15 +122,37 @@ namespace Maze
          oldNode.nodes[(int)moveDirection] = newNode;
          newNode.nodes[((int)moveDirection + 2) % 4] = oldNode;
          nodeStack.Push(newNode);
+      }      private void CutSection(Stack<Node> nodeStack)
+      {
+         Node n = nodeStack.Peek();
+
+
+         if (n.nodes[(int)dir.UP] != null && n.yPos != height - 1)
+         {
+            MoveToNextNode(nodeStack, n, map[n.xPos, n.yPos + 1], dir.DOWN);
+            nodeStack.Pop();
+         }
+         else if (n.nodes[(int)dir.DOWN] != null && n.yPos != 0)
+         {
+            MoveToNextNode(nodeStack, n, map[n.xPos, n.yPos - 1], dir.UP);
+            nodeStack.Pop();
+         }
+         else if (n.nodes[(int)dir.RIGHT] != null && n.xPos != 0)
+         {
+            MoveToNextNode(nodeStack, n, map[n.xPos - 1, n.yPos], dir.LEFT);
+            nodeStack.Pop();
+         }
+         else if (n.nodes[(int)dir.LEFT] != null && n.xPos != width - 1)
+         {
+            MoveToNextNode(nodeStack, n, map[n.xPos + 1, n.yPos], dir.RIGHT);
+            nodeStack.Pop();
+         }
       }
-
-
 
       public void BruteForceSearch(Node start, Node goal)
       {
          List<Node> closed = new List<Node>();
          List<Node> open = new List<Node>();
-
          open.Add(start);
          bool found = false;
          while(!found && open.Count != 0)
