@@ -10,12 +10,15 @@ namespace Maze
    {
       start,
       end,
+      path,
       none,
    }
 
    public class Node
    {
       public Node[] nodes;
+
+      public Node Parent;
 
       public bool visited;
 
@@ -38,6 +41,13 @@ namespace Maze
       public void AddNode(Node n, dir d)
       {
          nodes[(int)d] = n;
+      }
+
+      public void ResetInfo()
+      {
+         Parent = null;
+         visited = false;
+         pl = place.none;
       }
 
       public bool IsDeadEnd()

@@ -28,15 +28,16 @@
       /// </summary>
       private void InitializeComponent()
       {
-         this.panel1 = new System.Windows.Forms.Panel();
+         this.panel1 = new DBPanel();
          this.button1 = new System.Windows.Forms.Button();
          this.lblStart = new System.Windows.Forms.Label();
          this.lblEnd = new System.Windows.Forms.Label();
          this.pbStart = new System.Windows.Forms.PictureBox();
          this.pbEnd = new System.Windows.Forms.PictureBox();
-         this.brnBruteForce = new System.Windows.Forms.Button();
+         this.btnBreadthFirst = new System.Windows.Forms.Button();
          this.txtBoxPercent = new System.Windows.Forms.TextBox();
          this.lblCutPercent = new System.Windows.Forms.Label();
+         this.btnDepthFirst = new System.Windows.Forms.Button();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.SuspendLayout();
@@ -53,7 +54,7 @@
          // 
          // button1
          // 
-         this.button1.Location = new System.Drawing.Point(599, 14);
+         this.button1.Location = new System.Drawing.Point(602, 14);
          this.button1.Name = "button1";
          this.button1.Size = new System.Drawing.Size(75, 23);
          this.button1.TabIndex = 1;
@@ -95,19 +96,19 @@
          this.pbEnd.TabIndex = 5;
          this.pbEnd.TabStop = false;
          // 
-         // brnBruteForce
+         // btnBreadthFirst
          // 
-         this.brnBruteForce.Location = new System.Drawing.Point(602, 219);
-         this.brnBruteForce.Name = "brnBruteForce";
-         this.brnBruteForce.Size = new System.Drawing.Size(75, 23);
-         this.brnBruteForce.TabIndex = 6;
-         this.brnBruteForce.Text = "Brute Force";
-         this.brnBruteForce.UseVisualStyleBackColor = true;
-         this.brnBruteForce.Click += new System.EventHandler(this.brnBruteForce_Click);
+         this.btnBreadthFirst.Location = new System.Drawing.Point(602, 219);
+         this.btnBreadthFirst.Name = "btnBreadthFirst";
+         this.btnBreadthFirst.Size = new System.Drawing.Size(75, 23);
+         this.btnBreadthFirst.TabIndex = 6;
+         this.btnBreadthFirst.Text = "Breadth First";
+         this.btnBreadthFirst.UseVisualStyleBackColor = true;
+         this.btnBreadthFirst.Click += new System.EventHandler(this.brnBruteForce_Click);
          // 
          // txtBoxPercent
          // 
-         this.txtBoxPercent.Location = new System.Drawing.Point(599, 70);
+         this.txtBoxPercent.Location = new System.Drawing.Point(602, 67);
          this.txtBoxPercent.Name = "txtBoxPercent";
          this.txtBoxPercent.Size = new System.Drawing.Size(100, 20);
          this.txtBoxPercent.TabIndex = 7;
@@ -116,26 +117,38 @@
          // lblCutPercent
          // 
          this.lblCutPercent.AutoSize = true;
-         this.lblCutPercent.Location = new System.Drawing.Point(602, 51);
+         this.lblCutPercent.Location = new System.Drawing.Point(599, 51);
          this.lblCutPercent.Name = "lblCutPercent";
          this.lblCutPercent.Size = new System.Drawing.Size(130, 13);
          this.lblCutPercent.TabIndex = 8;
          this.lblCutPercent.Text = "Open Percentage (0-100):";
+         // 
+         // btnDepthFirst
+         // 
+         this.btnDepthFirst.Location = new System.Drawing.Point(602, 248);
+         this.btnDepthFirst.Name = "btnDepthFirst";
+         this.btnDepthFirst.Size = new System.Drawing.Size(75, 23);
+         this.btnDepthFirst.TabIndex = 9;
+         this.btnDepthFirst.Text = "Depth First";
+         this.btnDepthFirst.UseVisualStyleBackColor = true;
+         this.btnDepthFirst.Click += new System.EventHandler(this.btnDepthFirst_Click);
          // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(800, 450);
+         this.Controls.Add(this.btnDepthFirst);
          this.Controls.Add(this.lblCutPercent);
          this.Controls.Add(this.txtBoxPercent);
-         this.Controls.Add(this.brnBruteForce);
+         this.Controls.Add(this.btnBreadthFirst);
          this.Controls.Add(this.pbEnd);
          this.Controls.Add(this.pbStart);
          this.Controls.Add(this.lblEnd);
          this.Controls.Add(this.lblStart);
          this.Controls.Add(this.button1);
          this.Controls.Add(this.panel1);
+         this.DoubleBuffered = true;
          this.Name = "Form1";
          this.Text = "Form1";
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).EndInit();
@@ -147,15 +160,16 @@
 
       #endregion
 
-      private System.Windows.Forms.Panel panel1;
+      private DBPanel panel1;
       private System.Windows.Forms.Button button1;
       private System.Windows.Forms.Label lblStart;
       private System.Windows.Forms.Label lblEnd;
       private System.Windows.Forms.PictureBox pbStart;
       private System.Windows.Forms.PictureBox pbEnd;
-      private System.Windows.Forms.Button brnBruteForce;
+      private System.Windows.Forms.Button btnBreadthFirst;
       private System.Windows.Forms.TextBox txtBoxPercent;
       private System.Windows.Forms.Label lblCutPercent;
+      private System.Windows.Forms.Button btnDepthFirst;
    }
 }
 

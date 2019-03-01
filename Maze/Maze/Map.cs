@@ -43,6 +43,17 @@ namespace Maze
          GenerateMap();
       }
 
+      public void ResetNodeInfo()
+      {
+         for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+            {
+               map[x, y].ResetInfo();
+            }
+         Start.pl = place.start;
+         End.pl = place.end;
+      }
+
       public void GenerateMap(int xStart = 0, int yStart = 0, int cutPercent = 0)
       {
          xStart = rand.Next() % width;
@@ -122,7 +133,9 @@ namespace Maze
          oldNode.nodes[(int)moveDirection] = newNode;
          newNode.nodes[((int)moveDirection + 2) % 4] = oldNode;
          nodeStack.Push(newNode);
-      }      private void CutSection(Stack<Node> nodeStack)
+      }
+
+      private void CutSection(Stack<Node> nodeStack)
       {
          Node n = nodeStack.Peek();
 
@@ -149,7 +162,18 @@ namespace Maze
          }
       }
 
-      public void BruteForceSearch(Node start, Node goal)
+      public void BackTrack(Node Start, Node End)
+      {
+         //End.pl = place.start;
+         while (End.Parent != null)
+         {
+            End = End.Parent;
+            End.pl = place.path;
+         }
+         End.pl = place.start;
+      }
+
+      public void BreathFirstSearch(Node start, Node goal)
       {
          List<Node> closed = new List<Node>();
          List<Node> open = new List<Node>();
@@ -158,22 +182,64 @@ namespace Maze
          while(!found && open.Count != 0)
          {
             closed.Add(open[0]);
-            open[0].visited = true;
             foreach(Node n in open[0].nodes)
             {
+               int t = closed.IndexOf(n);
                if(n != null && closed.IndexOf(n) == -1)
                {
                   if (n == goal)
+                  {
+                     n.visited = true;
+                     n.Parent = open[0];
+                     BackTrack(start, goal);
                      return;
+                  }
                   else
                   {
-                     open.Add(n);
+                     n.visited = true;
+                     n.Parent = open[0];
+                     if (open.IndexOf(n) == -1)
+                        open.Add(n);
                   }
                }
             }
             open.RemoveAt(0);
          }
-         
+      }
+
+      public void DepthFIrstSearch(Node start, Node goal)
+      {
+         List<Node> closed = new List<Node>();
+         List<Node> open = new List<Node>();
+         open.Add(start);
+         bool found = false;
+         while (!found && open.Count != 0)
+         {
+            closed.Add(open[0]);
+            open[0].visited = true;
+            Node n = open[0];
+            open.RemoveAt(0);
+            foreach (Node node in n.nodes)
+            {
+               if (node != null && closed.IndexOf(node) == -1)
+               {
+                  if (node == goal)
+                  {
+                     node.visited = true;
+                     node.Parent = n;
+                     BackTrack(start, goal);
+                     return;
+                  }
+                  else
+                  {
+                     node.visited = true;
+                     node.Parent = n;
+                     if(open.IndexOf(node) == -1)
+                        open.Insert(0,node);
+                  }
+               }
+            }
+         }
       }
    }
 }

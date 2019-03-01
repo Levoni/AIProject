@@ -13,8 +13,8 @@ namespace Maze
    public partial class Form1 : Form
    {
       Map m;
-      const int MAP_WIDTH = 10;
-      const int MAP_HEIGHT = 10;
+      const int MAP_WIDTH = 100;
+      const int MAP_HEIGHT = 100;
 
       public Form1()
       {
@@ -30,6 +30,8 @@ namespace Maze
          SolidBrush sbStart = new SolidBrush(Color.Blue);
          SolidBrush sbEnd = new SolidBrush(Color.Red);
          SolidBrush sbVisited = new SolidBrush(Color.Cyan);
+         SolidBrush sbPath = new SolidBrush(Color.Purple);
+         
          //e.Graphics.DrawRectangle(b, 0, 0, panel1.Width - (panel1.Width % 10), panel1.Height - (panel1.Height % 10));
          foreach (Node n in m.map)
          {
@@ -43,6 +45,8 @@ namespace Maze
                e.Graphics.FillRectangle(sbStart, xPixel, yPixel, tilewidth, tileHeight);
             if(n.pl == place.end)
                e.Graphics.FillRectangle(sbEnd, xPixel, yPixel, tilewidth, tileHeight);
+            if (n.pl == place.path)
+               e.Graphics.FillRectangle(sbPath, xPixel, yPixel, tilewidth, tileHeight);
             if (n.nodes[(int)dir.UP] == null)
                e.Graphics.DrawLine(b,
                   xPixel, yPixel, xPixel + tilewidth, yPixel);
@@ -62,13 +66,22 @@ namespace Maze
       {
          int percent = int.Parse(txtBoxPercent.Text);
          m.GenerateMap(0,0,percent);
-         panel1.Refresh();
+         panel1.Invalidate();
       }
 
       private void brnBruteForce_Click(object sender, EventArgs e)
       {
-         m.BruteForceSearch(m.Start,m.End);
-         panel1.Refresh();
+         
+         m.ResetNodeInfo();
+         m.BreathFirstSearch(m.Start,m.End);
+         panel1.Invalidate();
+      }
+
+      private void btnDepthFirst_Click(object sender, EventArgs e)
+      {
+         m.ResetNodeInfo();
+         m.DepthFIrstSearch(m.Start, m.End);
+         panel1.Invalidate();
       }
    }
 }
