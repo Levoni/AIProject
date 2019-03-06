@@ -28,6 +28,7 @@ namespace Maze
       private int width, height;
       public Node Start, End;
       private const int cutChance = 10;
+      System.Diagnostics.Stopwatch st;
 
       public Map(int w, int h)
       {
@@ -35,12 +36,12 @@ namespace Maze
          width = w;
          height = h;
          map = new Node[width, height];
-         for (int x = 0; x <width; x++)
+         st = new System.Diagnostics.Stopwatch();
+         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
             {
-               map[x, y] = new Node(x,y);
+               map[x, y] = new Node(x, y);
             }
-         GenerateMap();
       }
 
       public void ResetNodeInfo()
@@ -54,8 +55,14 @@ namespace Maze
          End.pl = place.end;
       }
 
-      public void GenerateMap(int xStart = 0, int yStart = 0, int cutPercent = 0)
+      private string MakeKey(int x, int y)
       {
+         return x.ToString() + "," + y.ToString();
+      }
+
+      public float GenerateMap(int xStart = 0, int yStart = 0, int cutPercent = 0)
+      {
+         st.Start();
          xStart = rand.Next() % width;
          yStart = rand.Next() % height;
          map = new Node[width, height];
@@ -68,44 +75,48 @@ namespace Maze
          Start.pl = place.start;
 
          Stack<Node> nodeStack = new Stack<Node>();
-         List<Node> closed = new List<Node>();
+         Dictionary<string,Node> closed = new Dictionary<string, Node>();
+         int xOriginal;
+         int yOriginal;
 
          nodeStack.Push(map[xStart, yStart]);
          while(nodeStack.Count != 0)
          {
-            int xOriginal = nodeStack.Peek().xPos;
-            int yOriginal = nodeStack.Peek().yPos;
+            xOriginal = nodeStack.Peek().xPos;
+            yOriginal = nodeStack.Peek().yPos;
             dir direction = DetermineDirection(closed, xOriginal, yOriginal);
             if (direction == dir.UNKNOWN && nodeStack.Peek().IsDeadEnd() && cutPercent > rand.Next() % 100)
                CutSection(nodeStack);
-            closed.Remove(nodeStack.Peek());
-            closed.Add(nodeStack.Peek());
+            closed[MakeKey(xOriginal,yOriginal)] = nodeStack.Peek();
             UpdateStack(nodeStack, xOriginal, yOriginal, direction);
          }
 
          End = map[rand.Next() % width, rand.Next() % height];
             End.pl = place.end;
+         st.Stop();
+         float test = st.ElapsedMilliseconds;
+         return (float) st.ElapsedMilliseconds;
       }
 
-      private dir DetermineDirection(List<Node> closedList,int x, int y)
+      private dir DetermineDirection(Dictionary<string,Node> closedList,int x, int y)
       {
          List<dir> possibleIndex = new List<dir>();
          possibleIndex.Add(dir.UP);
          possibleIndex.Add(dir.DOWN);
          possibleIndex.Add(dir.RIGHT);
          possibleIndex.Add(dir.LEFT);
-
+         object o = closedList.ContainsKey(MakeKey(x, y - 1));
          int next;
          while(possibleIndex.Count != 0)
          {
             next = rand.Next() % possibleIndex.Count;
-            if (possibleIndex[next] == dir.UP && y != 0 && closedList.IndexOf(map[x, y - 1]) == -1)
+            if (possibleIndex[next] == dir.UP && y != 0 && !closedList.ContainsKey(MakeKey(x, y - 1)))
                return dir.UP;
-            if (possibleIndex[next] == dir.RIGHT && x != width - 1 && closedList.IndexOf(map[x + 1, y]) == -1)
+            if (possibleIndex[next] == dir.RIGHT && x != width - 1 && !closedList.ContainsKey(MakeKey(x + 1, y)))
                return dir.RIGHT;
-            if (possibleIndex[next] == dir.DOWN && y != height - 1 && closedList.IndexOf(map[x, y + 1]) == -1)
+            if (possibleIndex[next] == dir.DOWN && y != height - 1 && !closedList.ContainsKey(MakeKey(x, y + 1)))
                return dir.DOWN;
-            if (possibleIndex[next] == dir.LEFT && x != 0 && closedList.IndexOf(map[x - 1, y]) == -1)
+            if (possibleIndex[next] == dir.LEFT && x != 0 && !closedList.ContainsKey(MakeKey(x - 1, y)))
                return dir.LEFT;
             possibleIndex.RemoveAt(next);
          }
@@ -173,42 +184,127 @@ namespace Maze
          End.pl = place.start;
       }
 
-      public void BreathFirstSearch(Node start, Node goal)
+      public float BreathFirstSearch(Node start, Node goal)
       {
-         List<Node> closed = new List<Node>();
-         List<Node> open = new List<Node>();
-         open.Add(start);
+         st.Reset();
+         st.Start();
+         Dictionary<string,Node> closed = new Dictionary<string, Node>();
+         Queue<Node> open = new Queue<Node>();
+         open.Enqueue(start);
          bool found = false;
          while(!found && open.Count != 0)
          {
-            closed.Add(open[0]);
-            foreach(Node n in open[0].nodes)
+            closed[MakeKey(open.Peek().xPos,open.Peek().yPos)] = open.Peek();
+            foreach(Node n in open.Peek().nodes)
             {
-               int t = closed.IndexOf(n);
-               if(n != null && closed.IndexOf(n) == -1)
+               if(n != null && !closed.ContainsKey(MakeKey(n.xPos,n.yPos)))
                {
                   if (n == goal)
                   {
                      n.visited = true;
-                     n.Parent = open[0];
+                     n.Parent = open.Peek();
                      BackTrack(start, goal);
-                     return;
+                     st.Stop();
+                     return (float) st.ElapsedMilliseconds;
                   }
                   else
                   {
+                     n.Parent = open.Peek();
+                     if (!n.visited)
+                        open.Enqueue(n);
                      n.visited = true;
-                     n.Parent = open[0];
-                     if (open.IndexOf(n) == -1)
-                        open.Add(n);
                   }
                }
             }
-            open.RemoveAt(0);
+            open.Dequeue();
          }
+         st.Stop();
+         return st.ElapsedMilliseconds;
       }
 
-      public void DepthFIrstSearch(Node start, Node goal)
+      public float DepthFIrstSearch(Node start, Node goal)
       {
+         st.Reset();
+         st.Start();
+         Dictionary<string,Node> closed = new Dictionary<string, Node>();
+         Stack<Node> open = new Stack<Node>();
+         open.Push(start);
+         bool found = false;
+         while (!found && open.Count != 0)
+         {
+            closed[MakeKey(open.Peek().xPos,open.Peek().yPos)] = open.Peek();
+            open.Peek().visited = true;
+            Node n = open.Pop();
+            foreach (Node node in n.nodes)
+            {
+               if (node != null && !closed.ContainsKey(MakeKey(node.xPos,node.yPos)))
+               {
+                  if (node == goal)
+                  {
+                     node.visited = true;
+                     node.Parent = n;
+                     BackTrack(start, goal);
+                     st.Stop();
+                     return st.ElapsedMilliseconds;
+                  }
+                  else
+                  {
+                     if (!node.visited)
+                        open.Push(node);
+                     node.visited = true;
+                     node.Parent = n;
+                  }
+               }
+            }
+         }
+         st.Stop();
+         return st.ElapsedMilliseconds;
+      }
+
+      public float DepthFIrstSearchOld2(Node start, Node goal)
+      {
+         st.Reset();
+         st.Start();
+         Dictionary<string, Node> closed = new Dictionary<string, Node>();
+         List<Node> open = new List<Node>();
+         open.Add(start);
+         bool found = false;
+         while (!found && open.Count != 0)
+         {
+            closed[MakeKey(open[0].xPos, open[0].yPos)] = open[0];
+            open[0].visited = true;
+            Node n = open[0];
+            open.RemoveAt(0);
+            foreach (Node node in n.nodes)
+            {
+               if (node != null && !closed.ContainsKey(MakeKey(node.xPos, node.yPos)))
+               {
+                  if (node == goal)
+                  {
+                     node.visited = true;
+                     node.Parent = n;
+                     BackTrack(start, goal);
+                     st.Stop();
+                     return st.ElapsedMilliseconds;
+                  }
+                  else
+                  {
+                     if (!node.visited)
+                        open.Insert(0, node);
+                     node.visited = true;
+                     node.Parent = n;
+                  }
+               }
+            }
+         }
+         st.Stop();
+         return st.ElapsedMilliseconds;
+      }
+
+      public float DepthFIrstSearchOld(Node start, Node goal)
+      {
+         st.Reset();
+         st.Start();
          List<Node> closed = new List<Node>();
          List<Node> open = new List<Node>();
          open.Add(start);
@@ -228,18 +324,60 @@ namespace Maze
                      node.visited = true;
                      node.Parent = n;
                      BackTrack(start, goal);
-                     return;
+                     st.Stop();
+                     return st.ElapsedMilliseconds;
                   }
                   else
                   {
                      node.visited = true;
                      node.Parent = n;
-                     if(open.IndexOf(node) == -1)
-                        open.Insert(0,node);
+                     if (open.IndexOf(node) == -1)
+                        open.Insert(0, node);
                   }
                }
             }
          }
+         st.Stop();
+         return st.ElapsedMilliseconds;
+      }
+
+      public float BreathFirstSearchOld(Node start, Node goal)
+      {
+         st.Reset();
+         st.Start();
+         List<Node> closed = new List<Node>();
+         List<Node> open = new List<Node>();
+         open.Add(start);
+         bool found = false;
+         while (!found && open.Count != 0)
+         {
+            closed.Add(open[0]);
+            foreach (Node n in open[0].nodes)
+            {
+               int t = closed.IndexOf(n);
+               if (n != null && closed.IndexOf(n) == -1)
+               {
+                  if (n == goal)
+                  {
+                     n.visited = true;
+                     n.Parent = open[0];
+                     BackTrack(start, goal);
+                     st.Stop();
+                     return (float)st.ElapsedMilliseconds;
+                  }
+                  else
+                  {
+                     n.visited = true;
+                     n.Parent = open[0];
+                     if (open.IndexOf(n) == -1)
+                        open.Add(n);
+                  }
+               }
+            }
+            open.RemoveAt(0);
+         }
+         st.Stop();
+         return st.ElapsedMilliseconds;
       }
    }
 }

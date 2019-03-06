@@ -13,13 +13,16 @@ namespace Maze
    public partial class Form1 : Form
    {
       Map m;
-      const int MAP_WIDTH = 100;
-      const int MAP_HEIGHT = 100;
+      int mapWidth = 10;
+      int mapHeight = 10;
 
       public Form1()
       {
          InitializeComponent();
-         m = new Map(MAP_WIDTH,MAP_HEIGHT);
+         mapWidth = int.Parse(txtBoxX.Text);
+         mapHeight = int.Parse(txtBoxY.Text);
+         m = new Map(mapWidth,mapHeight);
+         m.GenerateMap(int.Parse(txtBoxX.Text), int.Parse(txtBoxY.Text), int.Parse(txtBoxPercent.Text));
          pbStart.BackColor = Color.Blue;
          pbEnd.BackColor = Color.Red;
       }
@@ -35,8 +38,8 @@ namespace Maze
          //e.Graphics.DrawRectangle(b, 0, 0, panel1.Width - (panel1.Width % 10), panel1.Height - (panel1.Height % 10));
          foreach (Node n in m.map)
          {
-            int tileHeight = (panel1.Height / MAP_HEIGHT);
-            int tilewidth = (panel1.Width / MAP_WIDTH);
+            int tileHeight = (panel1.Height / mapHeight);
+            int tilewidth = (panel1.Width / mapWidth);
             int xPixel = n.xPos * tilewidth;
             int yPixel = n.yPos * tileHeight;
             if (n.visited)
@@ -64,8 +67,11 @@ namespace Maze
 
       private void button1_Click(object sender, EventArgs e)
       {
+         mapWidth = int.Parse(txtBoxX.Text);
+         mapHeight = int.Parse(txtBoxY.Text);
+         m = new Map(mapWidth, mapHeight);
          int percent = int.Parse(txtBoxPercent.Text);
-         m.GenerateMap(0,0,percent);
+         lblElapsed.Text = "Elpsed TIme: " + m.GenerateMap(0,0,percent) + " ms";
          panel1.Invalidate();
       }
 
@@ -73,14 +79,14 @@ namespace Maze
       {
          
          m.ResetNodeInfo();
-         m.BreathFirstSearch(m.Start,m.End);
+         lblElapsed.Text = "Elpsed TIme: " + m.BreathFirstSearch(m.Start,m.End) + " ms";
          panel1.Invalidate();
       }
 
       private void btnDepthFirst_Click(object sender, EventArgs e)
       {
          m.ResetNodeInfo();
-         m.DepthFIrstSearch(m.Start, m.End);
+         lblElapsed.Text = "Elpsed TIme: " + m.DepthFIrstSearch(m.Start, m.End) + " ms";
          panel1.Invalidate();
       }
    }
