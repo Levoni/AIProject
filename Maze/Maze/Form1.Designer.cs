@@ -28,7 +28,7 @@
       /// </summary>
       private void InitializeComponent()
       {
-         this.panel1 = new Maze.DBPanel();
+         this.Canvas = new Maze.DBPanel();
          this.button1 = new System.Windows.Forms.Button();
          this.lblStart = new System.Windows.Forms.Label();
          this.lblEnd = new System.Windows.Forms.Label();
@@ -46,15 +46,15 @@
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.SuspendLayout();
          // 
-         // panel1
+         // Canvas
          // 
-         this.panel1.AutoSize = true;
-         this.panel1.Location = new System.Drawing.Point(14, 14);
-         this.panel1.Margin = new System.Windows.Forms.Padding(5, 5, 200, 5);
-         this.panel1.Name = "panel1";
-         this.panel1.Size = new System.Drawing.Size(700, 700);
-         this.panel1.TabIndex = 0;
-         this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+         this.Canvas.AutoSize = true;
+         this.Canvas.Location = new System.Drawing.Point(14, 14);
+         this.Canvas.Margin = new System.Windows.Forms.Padding(5, 5, 200, 5);
+         this.Canvas.Name = "Canvas";
+         this.Canvas.Size = new System.Drawing.Size(700, 700);
+         this.Canvas.TabIndex = 0;
+         this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
          // 
          // button1
          // 
@@ -189,7 +189,7 @@
          this.Controls.Add(this.lblEnd);
          this.Controls.Add(this.lblStart);
          this.Controls.Add(this.button1);
-         this.Controls.Add(this.panel1);
+         this.Controls.Add(this.Canvas);
          this.DoubleBuffered = true;
          this.Name = "Form1";
          this.Text = "Form1";
@@ -202,7 +202,7 @@
 
       #endregion
 
-      private DBPanel panel1;
+      private DBPanel Canvas;
       private System.Windows.Forms.Button button1;
       private System.Windows.Forms.Label lblStart;
       private System.Windows.Forms.Label lblEnd;

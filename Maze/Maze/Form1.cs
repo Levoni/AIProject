@@ -13,35 +13,42 @@ namespace Maze
    public partial class Form1 : Form
    {
       Map m;
-      int mapWidth = 10;
-      int mapHeight = 10;
+      int mapWidth;
+      int mapHeight;
 
       public Form1()
       {
          InitializeComponent();
+
+         //Generates the first map
          mapWidth = int.Parse(txtBoxX.Text);
          mapHeight = int.Parse(txtBoxY.Text);
-         m = new Map(mapWidth,mapHeight);
+         m = new Map(mapWidth, mapHeight);
          m.GenerateMap(int.Parse(txtBoxX.Text), int.Parse(txtBoxY.Text), int.Parse(txtBoxPercent.Text));
+
+         //sets coor of picture boxes in the legend
          pbStart.BackColor = Color.Blue;
          pbEnd.BackColor = Color.Red;
       }
 
-      private void panel1_Paint(object sender, PaintEventArgs e)
+      private void Canvas_Paint(object sender, PaintEventArgs e)
       {
+         // Creating the differnt pens/brushes used to draw in diffent colors
          Pen b = new Pen(Color.Black,1);
          SolidBrush sbStart = new SolidBrush(Color.Blue);
          SolidBrush sbEnd = new SolidBrush(Color.Red);
          SolidBrush sbVisited = new SolidBrush(Color.Cyan);
          SolidBrush sbPath = new SolidBrush(Color.Purple);
          
-         //e.Graphics.DrawRectangle(b, 0, 0, panel1.Width - (panel1.Width % 10), panel1.Height - (panel1.Height % 10));
          foreach (Node n in m.map)
          {
-            int tileHeight = (panel1.Height / mapHeight);
-            int tilewidth = (panel1.Width / mapWidth);
+            //creating local variables used in drawing calculations for current node
+            int tileHeight = (Canvas.Height / mapHeight);
+            int tilewidth = (Canvas.Width / mapWidth);
             int xPixel = n.xPos * tilewidth;
             int yPixel = n.yPos * tileHeight;
+
+            // Drawing the results of x search algorithm after it runs
             if (n.visited)
                e.Graphics.FillRectangle(sbVisited, xPixel, yPixel, tilewidth, tileHeight);
             if (n.pl == place.start)
@@ -50,6 +57,8 @@ namespace Maze
                e.Graphics.FillRectangle(sbEnd, xPixel, yPixel, tilewidth, tileHeight);
             if (n.pl == place.path)
                e.Graphics.FillRectangle(sbPath, xPixel, yPixel, tilewidth, tileHeight);
+
+            // Drawing the walls of each node
             if (n.nodes[(int)dir.UP] == null)
                e.Graphics.DrawLine(b,
                   xPixel, yPixel, xPixel + tilewidth, yPixel);
@@ -65,29 +74,50 @@ namespace Maze
          }
       }
 
+      /// <summary>
+      /// Used to Generate a new map based on information in the
+      /// size and open percentage text boxes
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
       private void button1_Click(object sender, EventArgs e)
       {
+         // Reseting Map
          mapWidth = int.Parse(txtBoxX.Text);
          mapHeight = int.Parse(txtBoxY.Text);
          m = new Map(mapWidth, mapHeight);
          int percent = int.Parse(txtBoxPercent.Text);
+
+         // Generate Map and set time elapsed statistic label
          lblElapsed.Text = "Elpsed TIme: " + m.GenerateMap(0,0,percent) + " ms";
-         panel1.Invalidate();
+
+         Canvas.Invalidate(); // forces Canvas to redraw
       }
 
+      /// <summary>
+      /// Used to run the Breadth first search It first resets the previous
+      /// searches info and then runs the new search
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
       private void brnBruteForce_Click(object sender, EventArgs e)
       {
-         
          m.ResetNodeInfo();
          lblElapsed.Text = "Elpsed TIme: " + m.BreathFirstSearch(m.Start,m.End) + " ms";
-         panel1.Invalidate();
+         Canvas.Invalidate(); // forces Canvas to redraw
       }
 
+      /// <summary>
+      /// Used to run the Depth first search It first resets the previous
+      /// searches info and then runs the new search
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
       private void btnDepthFirst_Click(object sender, EventArgs e)
       {
          m.ResetNodeInfo();
          lblElapsed.Text = "Elpsed TIme: " + m.DepthFIrstSearch(m.Start, m.End) + " ms";
-         panel1.Invalidate();
+         Canvas.Invalidate(); // forces Canvas to redraw
       }
    }
 }

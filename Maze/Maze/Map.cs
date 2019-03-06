@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Maze
 {
+   // Enum for direction. It is also used as the index for the 
+   // children nodes in the nodes array for each node
    public enum dir
    {
       UP = 0,
@@ -15,12 +17,9 @@ namespace Maze
       UNKNOWN = -1,
    }
 
-   public class Path
-   {
-      public Node parent;
-      public Node child;
-   }
-
+   /// <summary>
+   /// Class responsible for creating and managing the nodes in the maze
+   /// </summary>
    public class Map
    {
       public Node[,] map;
@@ -30,6 +29,11 @@ namespace Maze
       private const int cutChance = 10;
       System.Diagnostics.Stopwatch st;
 
+      /// <summary>
+      /// Creates a non-generated map of specified size
+      /// </summary>
+      /// <param name="w">Amount of nodes wide the maze is</param>
+      /// <param name="h">Amount of nodes high the maze is</param>
       public Map(int w, int h)
       {
          rand = new Random();
@@ -44,6 +48,9 @@ namespace Maze
             }
       }
 
+      /// <summary>
+      /// Resets the search information for each node in the maze
+      /// </summary>
       public void ResetNodeInfo()
       {
          for (int x = 0; x < width; x++)
@@ -55,11 +62,25 @@ namespace Maze
          End.pl = place.end;
       }
 
+      /// <summary>
+      /// Used to create a unique key (string) for a single node in the maze.
+      /// The key is used for dictionaries in the differnt search functions.
+      /// </summary>
+      /// <param name="x">X location of the node</param>
+      /// <param name="y">Y location of the node</param>
+      /// <returns>A unique string for a single node in the maze</returns>
       private string MakeKey(int x, int y)
       {
          return x.ToString() + "," + y.ToString();
       }
 
+      /// <summary>
+      /// Generates a solvable maze with a start and end point.
+      /// </summary>
+      /// <param name="xStart">Start X location for the maze</param>
+      /// <param name="yStart">Start Y location for the maze</param>
+      /// <param name="cutPercent">The chance that dead are opened up</param>
+      /// <returns>Time needed to generate maze in miliseconds</returns>
       public float GenerateMap(int xStart = 0, int yStart = 0, int cutPercent = 0)
       {
          st.Start();
@@ -98,14 +119,24 @@ namespace Maze
          return (float) st.ElapsedMilliseconds;
       }
 
+      /// <summary>
+      /// Picks a random direction from a specified location. Returns unknown
+      /// direction if there are no directions with a node not in the dictionary.
+      /// </summary>
+      /// <param name="closedList">Dictionary of nodes already generated in the maze.</param>
+      /// <param name="x">X position to start at</param>
+      /// <param name="y">Y position to start at</param>
+      /// <returns>Direction that open, unknown direction otherwise</returns>
       private dir DetermineDirection(Dictionary<string,Node> closedList,int x, int y)
       {
+         // Creates list of directions to randomly pick from
          List<dir> possibleIndex = new List<dir>();
          possibleIndex.Add(dir.UP);
          possibleIndex.Add(dir.DOWN);
          possibleIndex.Add(dir.RIGHT);
          possibleIndex.Add(dir.LEFT);
-         object o = closedList.ContainsKey(MakeKey(x, y - 1));
+
+
          int next;
          while(possibleIndex.Count != 0)
          {
@@ -120,9 +151,19 @@ namespace Maze
                return dir.LEFT;
             possibleIndex.RemoveAt(next);
          }
+
+         // Return unknown direction if no non-closed nodes are available
          return dir.UNKNOWN;
       }
 
+      /// <summary>
+      /// This function updates the stack by putting the node in the 
+      /// moveDirection on top of the stack. 
+      /// </summary>
+      /// <param name="nodeStack">Current stack of nodes</param>
+      /// <param name="xOriginal">X direction of current node</param>
+      /// <param name="yOriginal">Y direction of current node</param>
+      /// <param name="moveDirection">Direction of the node to add</param>
       private void UpdateStack(Stack<Node> nodeStack ,int xOriginal, int yOriginal,dir moveDirection)
       {
          if (moveDirection == dir.UP)
@@ -137,6 +178,14 @@ namespace Maze
             nodeStack.Pop();
       }
 
+      /// <summary>
+      /// Connects two adjacent nodes in the maze together. Then moves top of the
+      /// nodestack to the newNode.
+      /// </summary>
+      /// <param name="nodeStack">The stack of nodes</param>
+      /// <param name="oldNode">The node to connect from</param>
+      /// <param name="newNode">The node to connect to</param>
+      /// <param name="moveDirection">The direction from oldNode to NewNode</param>
       private void MoveToNextNode(Stack<Node> nodeStack, Node oldNode, Node newNode, dir moveDirection)
       {
          int test1 = (int)moveDirection;
@@ -146,11 +195,16 @@ namespace Maze
          nodeStack.Push(newNode);
       }
 
+      /// <summary>
+      /// Opens up a dead end by cutting out a wall 
+      /// </summary>
+      /// <param name="nodeStack">The current stack of nodes</param>
       private void CutSection(Stack<Node> nodeStack)
       {
          Node n = nodeStack.Peek();
 
-
+         // This needs to be fixed so it cuts out the wall directly 
+         // opposite of the previous node
          if (n.nodes[(int)dir.UP] != null && n.yPos != height - 1)
          {
             MoveToNextNode(nodeStack, n, map[n.xPos, n.yPos + 1], dir.DOWN);
@@ -173,9 +227,14 @@ namespace Maze
          }
       }
 
+      /// <summary>
+      /// Creates the path from the end to start.
+      /// </summary>
+      /// <param name="Start">The start node of the maze</param>
+      /// <param name="End">The end node of the maze</param>
       public void BackTrack(Node Start, Node End)
       {
-         //End.pl = place.start;
+         // Sets the current node place to path and continus to parent node. 
          while (End.Parent != null)
          {
             End = End.Parent;
@@ -184,6 +243,14 @@ namespace Maze
          End.pl = place.start;
       }
 
+      /// <summary>
+      /// Searches for the goal node starting at the start node. It 
+      /// searches the children of the parent node then those childrens
+      /// children and so on till the goal is found or maze is completaly searched.
+      /// </summary>
+      /// <param name="start">The node to start the search from</param>
+      /// <param name="goal">The node that needs to be found</param>
+      /// <returns></returns>
       public float BreathFirstSearch(Node start, Node goal)
       {
          st.Reset();
@@ -191,28 +258,27 @@ namespace Maze
          Dictionary<string,Node> closed = new Dictionary<string, Node>();
          Queue<Node> open = new Queue<Node>();
          open.Enqueue(start);
-         bool found = false;
-         while(!found && open.Count != 0)
+         while(open.Count != 0)
          {
             closed[MakeKey(open.Peek().xPos,open.Peek().yPos)] = open.Peek();
-            foreach(Node n in open.Peek().nodes)
+            foreach(Node node in open.Peek().nodes)
             {
-               if(n != null && !closed.ContainsKey(MakeKey(n.xPos,n.yPos)))
+               if(node != null && !closed.ContainsKey(MakeKey(node.xPos, node.yPos)))
                {
-                  if (n == goal)
+                  if (node == goal)
                   {
-                     n.visited = true;
-                     n.Parent = open.Peek();
+                     node.visited = true;
+                     node.Parent = open.Peek();
                      BackTrack(start, goal);
                      st.Stop();
                      return (float) st.ElapsedMilliseconds;
                   }
                   else
                   {
-                     n.Parent = open.Peek();
-                     if (!n.visited)
-                        open.Enqueue(n);
-                     n.visited = true;
+                     node.Parent = open.Peek();
+                     if (!node.visited)
+                        open.Enqueue(node);
+                     node.visited = true;
                   }
                }
             }
@@ -222,6 +288,14 @@ namespace Maze
          return st.ElapsedMilliseconds;
       }
 
+      /// <summary>
+      /// Searches for the goal node starting at the start node. It 
+      /// searches by giving certain directions a higher priority
+      /// the priority is left down right up.
+      /// </summary>
+      /// <param name="start">The node to start the search from</param>
+      /// <param name="goal">The node that needs to be found</param>
+      /// <returns></returns>
       public float DepthFIrstSearch(Node start, Node goal)
       {
          st.Reset();
@@ -229,8 +303,7 @@ namespace Maze
          Dictionary<string,Node> closed = new Dictionary<string, Node>();
          Stack<Node> open = new Stack<Node>();
          open.Push(start);
-         bool found = false;
-         while (!found && open.Count != 0)
+         while (open.Count != 0)
          {
             closed[MakeKey(open.Peek().xPos,open.Peek().yPos)] = open.Peek();
             open.Peek().visited = true;
@@ -261,6 +334,9 @@ namespace Maze
          return st.ElapsedMilliseconds;
       }
 
+
+      // Code Below is old attempts at searches. They are
+      // quite a bit slower then the current versions.
       public float DepthFIrstSearchOld2(Node start, Node goal)
       {
          st.Reset();
