@@ -13,18 +13,24 @@ namespace Maze
    public partial class Form1 : Form
    {
       Map m;
+      AI pathfinding;
       int mapWidth;
       int mapHeight;
 
       public Form1()
       {
          InitializeComponent();
+         pathfinding = new AI();
 
          //Generates the first map
          mapWidth = int.Parse(txtBoxX.Text);
          mapHeight = int.Parse(txtBoxY.Text);
          m = new Map(mapWidth, mapHeight);
          m.GenerateMap(int.Parse(txtBoxX.Text), int.Parse(txtBoxY.Text), int.Parse(txtBoxPercent.Text));
+
+         //Set up AI info for the generated map
+         pathfinding = new AI();
+         pathfinding.CreateNodeMap(m.map, int.Parse(txtBoxX.Text), int.Parse(txtBoxX.Text));
 
          //sets coor of picture boxes in the legend
          pbStart.BackColor = Color.Blue;
@@ -39,24 +45,39 @@ namespace Maze
          SolidBrush sbEnd = new SolidBrush(Color.Red);
          SolidBrush sbVisited = new SolidBrush(Color.Cyan);
          SolidBrush sbPath = new SolidBrush(Color.Purple);
-         
-         foreach (Node n in m.map)
+
+         //TODO: the right and bottom side walls on the edge isn't drawn
+         // when the tile amount is a divisor of pixel amount of the panel.
+         if (pathfinding.nodeMap != null)
+         {
+            foreach (AI.AINode n in pathfinding.nodeMap)
+            {
+               //creating local variables used in drawing calculations for current node
+               int tileHeight = (Canvas.Height / mapHeight);
+               int tilewidth = (Canvas.Width / mapWidth);
+               int xPixel = n.x * tilewidth;
+               int yPixel = n.y * tileHeight;
+
+               // Drawing the results of x search algorithm after it runs
+
+               if (n.pl == place.start)
+                  e.Graphics.FillRectangle(sbStart, xPixel, yPixel, tilewidth, tileHeight);
+               else if (n.pl == place.end)
+                  e.Graphics.FillRectangle(sbEnd, xPixel, yPixel, tilewidth, tileHeight);
+               else if (n.pl == place.path)
+                  e.Graphics.FillRectangle(sbPath, xPixel, yPixel, tilewidth, tileHeight);
+               else if (n.visited)
+                  e.Graphics.FillRectangle(sbVisited, xPixel, yPixel, tilewidth, tileHeight);
+            }
+         }
+
+         foreach (Tile n in m.map)
          {
             //creating local variables used in drawing calculations for current node
             int tileHeight = (Canvas.Height / mapHeight);
             int tilewidth = (Canvas.Width / mapWidth);
             int xPixel = n.xPos * tilewidth;
             int yPixel = n.yPos * tileHeight;
-
-            // Drawing the results of x search algorithm after it runs
-            if (n.visited)
-               e.Graphics.FillRectangle(sbVisited, xPixel, yPixel, tilewidth, tileHeight);
-            if (n.pl == place.start)
-               e.Graphics.FillRectangle(sbStart, xPixel, yPixel, tilewidth, tileHeight);
-            if(n.pl == place.end)
-               e.Graphics.FillRectangle(sbEnd, xPixel, yPixel, tilewidth, tileHeight);
-            if (n.pl == place.path)
-               e.Graphics.FillRectangle(sbPath, xPixel, yPixel, tilewidth, tileHeight);
 
             // Drawing the walls of each node
             if (n.nodes[(int)dir.UP] == null)
@@ -72,6 +93,8 @@ namespace Maze
                e.Graphics.DrawLine(b,
                   xPixel, yPixel, xPixel, yPixel + tileHeight);
          }
+
+
       }
 
       /// <summary>
@@ -91,6 +114,9 @@ namespace Maze
          // Generate Map and set time elapsed statistic label
          lblElapsed.Text = "Elpsed TIme: " + m.GenerateMap(0,0,percent) + " ms";
 
+         // Generate the coorisponding node map for tile map
+         pathfinding.CreateNodeMap(m.map, int.Parse(txtBoxX.Text), int.Parse(txtBoxY.Text));
+
          Canvas.Invalidate(); // forces Canvas to redraw
       }
 
@@ -102,8 +128,8 @@ namespace Maze
       /// <param name="e"></param>
       private void brnBruteForce_Click(object sender, EventArgs e)
       {
-         m.ResetNodeInfo();
-         lblElapsed.Text = "Elpsed TIme: " + m.BreathFirstSearch(m.Start,m.End) + " ms";
+         pathfinding.ResetNodeSearchInfo();
+         lblElapsed.Text = "Elpsed TIme: " + pathfinding.BreathFirstSearch(m.Start.xPos, m.End.xPos,m.Start.yPos,m.End.yPos) + " ms";
          Canvas.Invalidate(); // forces Canvas to redraw
       }
 
@@ -115,8 +141,8 @@ namespace Maze
       /// <param name="e"></param>
       private void btnDepthFirst_Click(object sender, EventArgs e)
       {
-         m.ResetNodeInfo();
-         lblElapsed.Text = "Elpsed TIme: " + m.DepthFIrstSearch(m.Start, m.End) + " ms";
+         pathfinding.ResetNodeSearchInfo();
+         lblElapsed.Text = "Elpsed TIme: " + pathfinding.DepthFIrstSearch(m.Start.xPos, m.End.xPos, m.Start.yPos, m.End.yPos) + " ms";
          Canvas.Invalidate(); // forces Canvas to redraw
       }
    }
