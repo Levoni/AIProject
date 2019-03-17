@@ -28,10 +28,10 @@
       /// </summary>
       private void InitializeComponent()
       {
-         this.Canvas = new Maze.DBPanel();
-         this.button1 = new System.Windows.Forms.Button();
-         this.lblStart = new System.Windows.Forms.Label();
-         this.lblEnd = new System.Windows.Forms.Label();
+         this.components = new System.ComponentModel.Container();
+         this.btnRegen = new System.Windows.Forms.Button();
+         this.lblStartKey = new System.Windows.Forms.Label();
+         this.lblEndKey = new System.Windows.Forms.Label();
          this.pbStart = new System.Windows.Forms.PictureBox();
          this.pbEnd = new System.Windows.Forms.PictureBox();
          this.btnBreadthFirst = new System.Windows.Forms.Button();
@@ -42,51 +42,64 @@
          this.txtBoxY = new System.Windows.Forms.TextBox();
          this.lblXY = new System.Windows.Forms.Label();
          this.lblElapsed = new System.Windows.Forms.Label();
+         this.lblDrawTime = new System.Windows.Forms.Label();
+         this.pnlMetrics = new System.Windows.Forms.Panel();
+         this.btnMetrics = new System.Windows.Forms.Button();
+         this.btnRemove = new System.Windows.Forms.Button();
+         this.btnAdd = new System.Windows.Forms.Button();
+         this.lstBoxSelected = new System.Windows.Forms.ListBox();
+         this.lstBoxOptions = new System.Windows.Forms.ListBox();
+         this.lblPathLength = new System.Windows.Forms.Label();
+         this.lblVisited = new System.Windows.Forms.Label();
+         this.lblElapsedAvg = new System.Windows.Forms.Label();
+         this.lblKey = new System.Windows.Forms.Label();
+         this.timerTick = new System.Windows.Forms.Timer(this.components);
+         this.pbPath = new System.Windows.Forms.PictureBox();
+         this.pbVisited = new System.Windows.Forms.PictureBox();
+         this.lblPathKey = new System.Windows.Forms.Label();
+         this.lblVisitedKey = new System.Windows.Forms.Label();
+         this.pnlKey = new System.Windows.Forms.Panel();
+         this.cbRealtime = new System.Windows.Forms.CheckBox();
+         this.Canvas = new Maze.DBPanel();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
+         this.pnlMetrics.SuspendLayout();
+         ((System.ComponentModel.ISupportInitialize)(this.pbPath)).BeginInit();
+         ((System.ComponentModel.ISupportInitialize)(this.pbVisited)).BeginInit();
+         this.pnlKey.SuspendLayout();
          this.SuspendLayout();
          // 
-         // Canvas
+         // btnRegen
          // 
-         this.Canvas.AutoSize = true;
-         this.Canvas.Location = new System.Drawing.Point(14, 14);
-         this.Canvas.Margin = new System.Windows.Forms.Padding(5, 5, 200, 5);
-         this.Canvas.Name = "Canvas";
-         this.Canvas.Size = new System.Drawing.Size(700, 700);
-         this.Canvas.TabIndex = 0;
-         this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
+         this.btnRegen.Location = new System.Drawing.Point(1171, 14);
+         this.btnRegen.Name = "btnRegen";
+         this.btnRegen.Size = new System.Drawing.Size(75, 23);
+         this.btnRegen.TabIndex = 1;
+         this.btnRegen.Text = "Regenerate";
+         this.btnRegen.UseVisualStyleBackColor = true;
+         this.btnRegen.Click += new System.EventHandler(this.btnRegen_Click);
          // 
-         // button1
+         // lblStartKey
          // 
-         this.button1.Location = new System.Drawing.Point(1171, 14);
-         this.button1.Name = "button1";
-         this.button1.Size = new System.Drawing.Size(75, 23);
-         this.button1.TabIndex = 1;
-         this.button1.Text = "Regenerate";
-         this.button1.UseVisualStyleBackColor = true;
-         this.button1.Click += new System.EventHandler(this.button1_Click);
+         this.lblStartKey.AutoSize = true;
+         this.lblStartKey.Location = new System.Drawing.Point(11, 47);
+         this.lblStartKey.Name = "lblStartKey";
+         this.lblStartKey.Size = new System.Drawing.Size(32, 13);
+         this.lblStartKey.TabIndex = 2;
+         this.lblStartKey.Text = "Start:";
          // 
-         // lblStart
+         // lblEndKey
          // 
-         this.lblStart.AutoSize = true;
-         this.lblStart.Location = new System.Drawing.Point(1168, 351);
-         this.lblStart.Name = "lblStart";
-         this.lblStart.Size = new System.Drawing.Size(32, 13);
-         this.lblStart.TabIndex = 2;
-         this.lblStart.Text = "Start:";
-         // 
-         // lblEnd
-         // 
-         this.lblEnd.AutoSize = true;
-         this.lblEnd.Location = new System.Drawing.Point(1168, 395);
-         this.lblEnd.Name = "lblEnd";
-         this.lblEnd.Size = new System.Drawing.Size(29, 13);
-         this.lblEnd.TabIndex = 3;
-         this.lblEnd.Text = "End:";
+         this.lblEndKey.AutoSize = true;
+         this.lblEndKey.Location = new System.Drawing.Point(12, 91);
+         this.lblEndKey.Name = "lblEndKey";
+         this.lblEndKey.Size = new System.Drawing.Size(29, 13);
+         this.lblEndKey.TabIndex = 3;
+         this.lblEndKey.Text = "End:";
          // 
          // pbStart
          // 
-         this.pbStart.Location = new System.Drawing.Point(1231, 342);
+         this.pbStart.Location = new System.Drawing.Point(43, 38);
          this.pbStart.Name = "pbStart";
          this.pbStart.Size = new System.Drawing.Size(23, 22);
          this.pbStart.TabIndex = 4;
@@ -94,7 +107,7 @@
          // 
          // pbEnd
          // 
-         this.pbEnd.Location = new System.Drawing.Point(1231, 386);
+         this.pbEnd.Location = new System.Drawing.Point(43, 82);
          this.pbEnd.Name = "pbEnd";
          this.pbEnd.Size = new System.Drawing.Size(23, 22);
          this.pbEnd.TabIndex = 5;
@@ -108,7 +121,7 @@
          this.btnBreadthFirst.TabIndex = 6;
          this.btnBreadthFirst.Text = "Breadth First";
          this.btnBreadthFirst.UseVisualStyleBackColor = true;
-         this.btnBreadthFirst.Click += new System.EventHandler(this.brnBruteForce_Click);
+         this.btnBreadthFirst.Click += new System.EventHandler(this.btnBreadthFirst_Click);
          // 
          // txtBoxPercent
          // 
@@ -171,30 +184,221 @@
          this.lblElapsed.TabIndex = 13;
          this.lblElapsed.Text = "Elapsed Time:";
          // 
+         // lblDrawTime
+         // 
+         this.lblDrawTime.AutoSize = true;
+         this.lblDrawTime.Location = new System.Drawing.Point(1171, 278);
+         this.lblDrawTime.Name = "lblDrawTime";
+         this.lblDrawTime.Size = new System.Drawing.Size(55, 13);
+         this.lblDrawTime.TabIndex = 14;
+         this.lblDrawTime.Text = "DrawTime";
+         // 
+         // pnlMetrics
+         // 
+         this.pnlMetrics.Controls.Add(this.btnMetrics);
+         this.pnlMetrics.Controls.Add(this.btnRemove);
+         this.pnlMetrics.Controls.Add(this.btnAdd);
+         this.pnlMetrics.Controls.Add(this.lstBoxSelected);
+         this.pnlMetrics.Controls.Add(this.lstBoxOptions);
+         this.pnlMetrics.Location = new System.Drawing.Point(715, 14);
+         this.pnlMetrics.Name = "pnlMetrics";
+         this.pnlMetrics.Size = new System.Drawing.Size(200, 700);
+         this.pnlMetrics.TabIndex = 15;
+         // 
+         // btnMetrics
+         // 
+         this.btnMetrics.Location = new System.Drawing.Point(38, 645);
+         this.btnMetrics.Name = "btnMetrics";
+         this.btnMetrics.Size = new System.Drawing.Size(120, 23);
+         this.btnMetrics.TabIndex = 7;
+         this.btnMetrics.Text = "Run Metrics";
+         this.btnMetrics.UseVisualStyleBackColor = true;
+         this.btnMetrics.Click += new System.EventHandler(this.btnMetrics_Click);
+         // 
+         // btnRemove
+         // 
+         this.btnRemove.Location = new System.Drawing.Point(95, 498);
+         this.btnRemove.Name = "btnRemove";
+         this.btnRemove.Size = new System.Drawing.Size(63, 23);
+         this.btnRemove.TabIndex = 6;
+         this.btnRemove.Text = "Remove";
+         this.btnRemove.UseVisualStyleBackColor = true;
+         this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+         // 
+         // btnAdd
+         // 
+         this.btnAdd.Location = new System.Drawing.Point(38, 498);
+         this.btnAdd.Name = "btnAdd";
+         this.btnAdd.Size = new System.Drawing.Size(63, 23);
+         this.btnAdd.TabIndex = 5;
+         this.btnAdd.Text = "Add";
+         this.btnAdd.UseVisualStyleBackColor = true;
+         this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+         // 
+         // lstBoxSelected
+         // 
+         this.lstBoxSelected.FormattingEnabled = true;
+         this.lstBoxSelected.Location = new System.Drawing.Point(38, 544);
+         this.lstBoxSelected.Name = "lstBoxSelected";
+         this.lstBoxSelected.Size = new System.Drawing.Size(120, 95);
+         this.lstBoxSelected.TabIndex = 4;
+         // 
+         // lstBoxOptions
+         // 
+         this.lstBoxOptions.FormattingEnabled = true;
+         this.lstBoxOptions.Items.AddRange(new object[] {
+            "Breadth First (Levon)",
+            "Depth FIrst (Levon)"});
+         this.lstBoxOptions.Location = new System.Drawing.Point(38, 385);
+         this.lstBoxOptions.Name = "lstBoxOptions";
+         this.lstBoxOptions.Size = new System.Drawing.Size(120, 95);
+         this.lstBoxOptions.TabIndex = 3;
+         // 
+         // lblPathLength
+         // 
+         this.lblPathLength.AutoSize = true;
+         this.lblPathLength.Location = new System.Drawing.Point(1171, 399);
+         this.lblPathLength.Name = "lblPathLength";
+         this.lblPathLength.Size = new System.Drawing.Size(68, 13);
+         this.lblPathLength.TabIndex = 2;
+         this.lblPathLength.Text = "Path Length:";
+         // 
+         // lblVisited
+         // 
+         this.lblVisited.AutoSize = true;
+         this.lblVisited.Location = new System.Drawing.Point(1171, 358);
+         this.lblVisited.Name = "lblVisited";
+         this.lblVisited.Size = new System.Drawing.Size(66, 13);
+         this.lblVisited.TabIndex = 1;
+         this.lblVisited.Text = "Tiles Visited:";
+         // 
+         // lblElapsedAvg
+         // 
+         this.lblElapsedAvg.AutoSize = true;
+         this.lblElapsedAvg.Location = new System.Drawing.Point(1171, 324);
+         this.lblElapsedAvg.Name = "lblElapsedAvg";
+         this.lblElapsedAvg.Size = new System.Drawing.Size(55, 13);
+         this.lblElapsedAvg.TabIndex = 0;
+         this.lblElapsedAvg.Text = "Time (ms):";
+         // 
+         // lblKey
+         // 
+         this.lblKey.AutoSize = true;
+         this.lblKey.Location = new System.Drawing.Point(88, 9);
+         this.lblKey.Name = "lblKey";
+         this.lblKey.Size = new System.Drawing.Size(25, 13);
+         this.lblKey.TabIndex = 16;
+         this.lblKey.Text = "Key";
+         // 
+         // timerTick
+         // 
+         this.timerTick.Interval = 20;
+         this.timerTick.Tick += new System.EventHandler(this.timerTick_Tick);
+         // 
+         // pbPath
+         // 
+         this.pbPath.Location = new System.Drawing.Point(160, 82);
+         this.pbPath.Name = "pbPath";
+         this.pbPath.Size = new System.Drawing.Size(23, 22);
+         this.pbPath.TabIndex = 20;
+         this.pbPath.TabStop = false;
+         // 
+         // pbVisited
+         // 
+         this.pbVisited.Location = new System.Drawing.Point(160, 38);
+         this.pbVisited.Name = "pbVisited";
+         this.pbVisited.Size = new System.Drawing.Size(23, 22);
+         this.pbVisited.TabIndex = 19;
+         this.pbVisited.TabStop = false;
+         // 
+         // lblPathKey
+         // 
+         this.lblPathKey.AutoSize = true;
+         this.lblPathKey.Location = new System.Drawing.Point(122, 91);
+         this.lblPathKey.Name = "lblPathKey";
+         this.lblPathKey.Size = new System.Drawing.Size(32, 13);
+         this.lblPathKey.TabIndex = 18;
+         this.lblPathKey.Text = "Path:";
+         // 
+         // lblVisitedKey
+         // 
+         this.lblVisitedKey.AutoSize = true;
+         this.lblVisitedKey.Location = new System.Drawing.Point(113, 47);
+         this.lblVisitedKey.Name = "lblVisitedKey";
+         this.lblVisitedKey.Size = new System.Drawing.Size(41, 13);
+         this.lblVisitedKey.TabIndex = 17;
+         this.lblVisitedKey.Text = "Visited:";
+         // 
+         // pnlKey
+         // 
+         this.pnlKey.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+         this.pnlKey.Controls.Add(this.lblKey);
+         this.pnlKey.Controls.Add(this.pbPath);
+         this.pnlKey.Controls.Add(this.lblStartKey);
+         this.pnlKey.Controls.Add(this.pbVisited);
+         this.pnlKey.Controls.Add(this.lblEndKey);
+         this.pnlKey.Controls.Add(this.lblPathKey);
+         this.pnlKey.Controls.Add(this.pbStart);
+         this.pnlKey.Controls.Add(this.lblVisitedKey);
+         this.pnlKey.Controls.Add(this.pbEnd);
+         this.pnlKey.Location = new System.Drawing.Point(1158, 593);
+         this.pnlKey.Name = "pnlKey";
+         this.pnlKey.Size = new System.Drawing.Size(200, 121);
+         this.pnlKey.TabIndex = 21;
+         // 
+         // cbRealtime
+         // 
+         this.cbRealtime.AutoSize = true;
+         this.cbRealtime.Location = new System.Drawing.Point(1262, 252);
+         this.cbRealtime.Name = "cbRealtime";
+         this.cbRealtime.Size = new System.Drawing.Size(67, 17);
+         this.cbRealtime.TabIndex = 22;
+         this.cbRealtime.Text = "Realtime";
+         this.cbRealtime.UseVisualStyleBackColor = true;
+         // 
+         // Canvas
+         // 
+         this.Canvas.AutoSize = true;
+         this.Canvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+         this.Canvas.Location = new System.Drawing.Point(14, 14);
+         this.Canvas.Margin = new System.Windows.Forms.Padding(5, 5, 200, 5);
+         this.Canvas.Name = "Canvas";
+         this.Canvas.Size = new System.Drawing.Size(700, 700);
+         this.Canvas.TabIndex = 0;
+         this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
+         // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(1370, 749);
+         this.Controls.Add(this.cbRealtime);
+         this.Controls.Add(this.pnlKey);
+         this.Controls.Add(this.pnlMetrics);
+         this.Controls.Add(this.lblDrawTime);
          this.Controls.Add(this.lblElapsed);
          this.Controls.Add(this.lblXY);
          this.Controls.Add(this.txtBoxY);
+         this.Controls.Add(this.lblPathLength);
          this.Controls.Add(this.txtBoxX);
+         this.Controls.Add(this.lblVisited);
          this.Controls.Add(this.btnDepthFirst);
+         this.Controls.Add(this.lblElapsedAvg);
          this.Controls.Add(this.lblCutPercent);
          this.Controls.Add(this.txtBoxPercent);
          this.Controls.Add(this.btnBreadthFirst);
-         this.Controls.Add(this.pbEnd);
-         this.Controls.Add(this.pbStart);
-         this.Controls.Add(this.lblEnd);
-         this.Controls.Add(this.lblStart);
-         this.Controls.Add(this.button1);
+         this.Controls.Add(this.btnRegen);
          this.Controls.Add(this.Canvas);
          this.DoubleBuffered = true;
          this.Name = "Form1";
          this.Text = "Form1";
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).EndInit();
+         this.pnlMetrics.ResumeLayout(false);
+         ((System.ComponentModel.ISupportInitialize)(this.pbPath)).EndInit();
+         ((System.ComponentModel.ISupportInitialize)(this.pbVisited)).EndInit();
+         this.pnlKey.ResumeLayout(false);
+         this.pnlKey.PerformLayout();
          this.ResumeLayout(false);
          this.PerformLayout();
 
@@ -203,9 +407,9 @@
       #endregion
 
       private DBPanel Canvas;
-      private System.Windows.Forms.Button button1;
-      private System.Windows.Forms.Label lblStart;
-      private System.Windows.Forms.Label lblEnd;
+      private System.Windows.Forms.Button btnRegen;
+      private System.Windows.Forms.Label lblStartKey;
+      private System.Windows.Forms.Label lblEndKey;
       private System.Windows.Forms.PictureBox pbStart;
       private System.Windows.Forms.PictureBox pbEnd;
       private System.Windows.Forms.Button btnBreadthFirst;
@@ -216,6 +420,24 @@
       private System.Windows.Forms.TextBox txtBoxY;
       private System.Windows.Forms.Label lblXY;
       private System.Windows.Forms.Label lblElapsed;
+      private System.Windows.Forms.Label lblDrawTime;
+      private System.Windows.Forms.Panel pnlMetrics;
+      private System.Windows.Forms.Label lblPathLength;
+      private System.Windows.Forms.Label lblVisited;
+      private System.Windows.Forms.Label lblElapsedAvg;
+      private System.Windows.Forms.Button btnRemove;
+      private System.Windows.Forms.Button btnAdd;
+      private System.Windows.Forms.ListBox lstBoxSelected;
+      private System.Windows.Forms.ListBox lstBoxOptions;
+      private System.Windows.Forms.Button btnMetrics;
+      private System.Windows.Forms.Label lblKey;
+      private System.Windows.Forms.Timer timerTick;
+      private System.Windows.Forms.PictureBox pbPath;
+      private System.Windows.Forms.PictureBox pbVisited;
+      private System.Windows.Forms.Label lblPathKey;
+      private System.Windows.Forms.Label lblVisitedKey;
+      private System.Windows.Forms.Panel pnlKey;
+      private System.Windows.Forms.CheckBox cbRealtime;
    }
 }
 
