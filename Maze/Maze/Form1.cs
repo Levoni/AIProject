@@ -27,7 +27,7 @@ namespace Maze
       Bitmap MainBitmap = new Bitmap(700, 700);
       List<Panel> MetricPanels = new List<Panel>();
 
-      //TODO: change selection method to remove this variable
+      //TODO: change selection method on form to remove this variable
       string searchName;
 
 

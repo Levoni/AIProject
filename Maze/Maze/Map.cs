@@ -30,6 +30,7 @@ namespace Maze
          height = h;
          map = new Tile[width, height];
          st = new System.Diagnostics.Stopwatch();
+         // Allocates memory for every tile in array
          for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
             {
@@ -58,7 +59,9 @@ namespace Maze
       /// <returns>Time needed to generate maze in miliseconds</returns>
       public float GenerateMap(int xStart = 0, int yStart = 0, int cutPercent = 0)
       {
-         st.Start();
+         st.Start(); // starts timmer for time generation
+         
+         // Resets map information
          xStart = rand.Next() % width;
          yStart = rand.Next() % height;
          map = new Tile[width, height];
@@ -68,29 +71,30 @@ namespace Maze
                map[x, y] = new Tile(x, y);
             }
          Start = map[xStart, yStart];
-         //Start.pl = place.start;
-
+         
+         // Set up local variables for generating the map
          Stack<Tile> nodeStack = new Stack<Tile>();
          Dictionary<string,Tile> closed = new Dictionary<string, Tile>();
          int xOriginal;
          int yOriginal;
-
          nodeStack.Push(map[xStart, yStart]);
+
+         // Generates the map 
          while(nodeStack.Count != 0)
          {
             xOriginal = nodeStack.Peek().xPos;
             yOriginal = nodeStack.Peek().yPos;
-            dir direction = DetermineDirection(closed, xOriginal, yOriginal);
+            dir direction = DetermineDirection(closed, xOriginal, yOriginal); //Get direction to move next tile to
             if (direction == dir.UNKNOWN && nodeStack.Peek().IsDeadEnd() && cutPercent > rand.Next() % 100)
-               CutSection(nodeStack);
-            closed[MakeKey(xOriginal,yOriginal)] = nodeStack.Peek();
-            UpdateStack(nodeStack, xOriginal, yOriginal, direction);
+               CutSection(nodeStack); // removes wall so tile is not a dead end
+            closed[MakeKey(xOriginal,yOriginal)] = nodeStack.Peek(); 
+            UpdateStack(nodeStack, xOriginal, yOriginal, direction); // moves to next tile 
          }
 
          End = map[rand.Next() % width, rand.Next() % height];
          //End.pl = place.end;
          st.Stop();
-         float test = st.ElapsedMilliseconds;
+
          return (float) st.ElapsedMilliseconds;
       }
 
@@ -113,6 +117,7 @@ namespace Maze
 
 
          int next;
+         // randomlly picks a direction until viable direction is found
          while(possibleIndex.Count != 0)
          {
             next = rand.Next() % possibleIndex.Count;
@@ -133,7 +138,8 @@ namespace Maze
 
       /// <summary>
       /// This function updates the stack by putting the node in the 
-      /// moveDirection on top of the stack. 
+      /// moveDirection on top of the stack while removing wall between.
+      /// Pops the top tile off stack if direction is unknown.
       /// </summary>
       /// <param name="nodeStack">Current stack of nodes</param>
       /// <param name="xOriginal">X direction of current node</param>
@@ -163,10 +169,15 @@ namespace Maze
       /// <param name="moveDirection">The direction from oldNode to NewNode</param>
       private void MoveToNextNode(Stack<Tile> nodeStack, Tile oldNode, Tile newNode, dir moveDirection)
       {
+         // Create indexes based on directions
          int test1 = (int)moveDirection;
-         int test2 = ((int)moveDirection + 2) % 4;
+         int test2 = ((int)moveDirection + 2) % 4; //direction opposite of first direction
+
+         // connects the nodes
          oldNode.nodes[(int)moveDirection] = newNode;
          newNode.nodes[((int)moveDirection + 2) % 4] = oldNode;
+
+         // pushes new tile onto the stack
          nodeStack.Push(newNode);
       }
 
@@ -178,8 +189,11 @@ namespace Maze
       {
          Tile n = nodeStack.Peek();
 
-         // This needs to be fixed so it cuts out the wall directly 
+         // TODO: This needs to be fixed so it cuts out the wall directly 
          // opposite of the previous node
+
+         // Removes wall by moving to the next node then poping that node
+         // off the stack.
          if (n.nodes[(int)dir.UP] != null && n.yPos != height - 1)
          {
             MoveToNextNode(nodeStack, n, map[n.xPos, n.yPos + 1], dir.DOWN);
