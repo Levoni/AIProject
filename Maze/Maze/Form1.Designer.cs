@@ -60,13 +60,20 @@
          this.lblVisitedKey = new System.Windows.Forms.Label();
          this.pnlKey = new System.Windows.Forms.Panel();
          this.cbRealtime = new System.Windows.Forms.CheckBox();
+         this.progressBar1 = new System.Windows.Forms.ProgressBar();
+         this.NUDLoopsPerTick = new System.Windows.Forms.NumericUpDown();
+         this.NUDInterval = new System.Windows.Forms.NumericUpDown();
          this.Canvas = new Maze.DBPanel();
+         this.lblToickLoop = new System.Windows.Forms.Label();
+         this.lblInterval = new System.Windows.Forms.Label();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.pbPath)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbVisited)).BeginInit();
          this.pnlKey.SuspendLayout();
+         ((System.ComponentModel.ISupportInitialize)(this.NUDLoopsPerTick)).BeginInit();
+         ((System.ComponentModel.ISupportInitialize)(this.NUDInterval)).BeginInit();
          this.SuspendLayout();
          // 
          // btnRegen
@@ -292,7 +299,7 @@
          // 
          // timerTick
          // 
-         this.timerTick.Interval = 20;
+         this.timerTick.Interval = 1;
          this.timerTick.Tick += new System.EventHandler(this.timerTick_Tick);
          // 
          // pbPath
@@ -356,6 +363,54 @@
          this.cbRealtime.Text = "Realtime";
          this.cbRealtime.UseVisualStyleBackColor = true;
          // 
+         // progressBar1
+         // 
+         this.progressBar1.Location = new System.Drawing.Point(715, 714);
+         this.progressBar1.Name = "progressBar1";
+         this.progressBar1.Size = new System.Drawing.Size(200, 23);
+         this.progressBar1.TabIndex = 23;
+         // 
+         // NUDLoopsPerTick
+         // 
+         this.NUDLoopsPerTick.Location = new System.Drawing.Point(1171, 493);
+         this.NUDLoopsPerTick.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+         this.NUDLoopsPerTick.Name = "NUDLoopsPerTick";
+         this.NUDLoopsPerTick.Size = new System.Drawing.Size(120, 20);
+         this.NUDLoopsPerTick.TabIndex = 24;
+         this.NUDLoopsPerTick.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+         this.NUDLoopsPerTick.ValueChanged += new System.EventHandler(this.NUDLoopsPerTick_ValueChanged);
+         // 
+         // NUDInterval
+         // 
+         this.NUDInterval.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+         this.NUDInterval.Location = new System.Drawing.Point(1173, 544);
+         this.NUDInterval.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+         this.NUDInterval.Name = "NUDInterval";
+         this.NUDInterval.Size = new System.Drawing.Size(120, 20);
+         this.NUDInterval.TabIndex = 25;
+         this.NUDInterval.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+         this.NUDInterval.ValueChanged += new System.EventHandler(this.NUDInterval_ValueChanged);
+         // 
          // Canvas
          // 
          this.Canvas.AutoSize = true;
@@ -367,11 +422,34 @@
          this.Canvas.TabIndex = 0;
          this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
          // 
+         // lblToickLoop
+         // 
+         this.lblToickLoop.AutoSize = true;
+         this.lblToickLoop.Location = new System.Drawing.Point(1171, 474);
+         this.lblToickLoop.Name = "lblToickLoop";
+         this.lblToickLoop.Size = new System.Drawing.Size(67, 13);
+         this.lblToickLoop.TabIndex = 26;
+         this.lblToickLoop.Text = "TickAmount:";
+         // 
+         // lblInterval
+         // 
+         this.lblInterval.AutoSize = true;
+         this.lblInterval.Location = new System.Drawing.Point(1171, 522);
+         this.lblInterval.Name = "lblInterval";
+         this.lblInterval.Size = new System.Drawing.Size(93, 13);
+         this.lblInterval.TabIndex = 27;
+         this.lblInterval.Text = "Interval Time (ms):";
+         // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(1370, 749);
+         this.Controls.Add(this.lblInterval);
+         this.Controls.Add(this.lblToickLoop);
+         this.Controls.Add(this.NUDInterval);
+         this.Controls.Add(this.NUDLoopsPerTick);
+         this.Controls.Add(this.progressBar1);
          this.Controls.Add(this.cbRealtime);
          this.Controls.Add(this.pnlKey);
          this.Controls.Add(this.pnlMetrics);
@@ -399,6 +477,8 @@
          ((System.ComponentModel.ISupportInitialize)(this.pbVisited)).EndInit();
          this.pnlKey.ResumeLayout(false);
          this.pnlKey.PerformLayout();
+         ((System.ComponentModel.ISupportInitialize)(this.NUDLoopsPerTick)).EndInit();
+         ((System.ComponentModel.ISupportInitialize)(this.NUDInterval)).EndInit();
          this.ResumeLayout(false);
          this.PerformLayout();
 
@@ -438,6 +518,11 @@
       private System.Windows.Forms.Label lblVisitedKey;
       private System.Windows.Forms.Panel pnlKey;
       private System.Windows.Forms.CheckBox cbRealtime;
+      private System.Windows.Forms.ProgressBar progressBar1;
+      private System.Windows.Forms.NumericUpDown NUDLoopsPerTick;
+      private System.Windows.Forms.NumericUpDown NUDInterval;
+      private System.Windows.Forms.Label lblToickLoop;
+      private System.Windows.Forms.Label lblInterval;
    }
 }
 
