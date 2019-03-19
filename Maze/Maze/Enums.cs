@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Maze
 {
-   // The respetive place in the critical path
+   /// <summary>
+   /// The respetive place in the critical path
+   /// </summary>
    public enum place
    {
       start,
@@ -15,8 +17,10 @@ namespace Maze
       none,
    }
 
-   // Enum for direction. It is also used as the index for the 
-   // children nodes in the nodes array for each node
+   /// <summary>
+   /// Enum for direction.It is also used as the index for the
+   /// children nodes in the nodes array for each node
+   /// </summary>
    public enum dir
    {
       UP = 0,

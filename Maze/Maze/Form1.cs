@@ -22,6 +22,7 @@ namespace Maze
       AI pathfinding;
       int mapWidth;
       int mapHeight;
+      int ticksPerLoops;
       System.Diagnostics.Stopwatch st;
       Bitmap WallBitmap = new Bitmap(700, 700);
       Bitmap MainBitmap = new Bitmap(700, 700);
@@ -55,6 +56,9 @@ namespace Maze
          pbEnd.BackColor = Color.Red;
          pbVisited.BackColor = Color.Cyan;
          pbPath.BackColor = Color.Purple;
+
+         ticksPerLoops = (int) NUDLoopsPerTick.Value;
+         timerTick.Interval = (int) NUDInterval.Value;
 
       }
 
@@ -140,7 +144,7 @@ namespace Maze
          SolidBrush sbVisited = new SolidBrush(Color.Cyan);
          SolidBrush sbPath = new SolidBrush(Color.Purple);
 
-         foreach (AI.AINode n in pathfinding.nodeMap)
+         foreach (AINode n in pathfinding.nodeMap)
          {
             //creating local variables used in drawing calculations for current node
             int tileHeight = (Canvas.Height / mapHeight);
@@ -229,7 +233,7 @@ namespace Maze
          if (!cbRealtime.Checked)
          {
             pathfinding.ResetNodeSearchInfo();
-            lblElapsed.Text = "Elpsed TIme: " + pathfinding.BreathFirstSearch(m.Start.xPos, m.End.xPos, m.Start.yPos, m.End.yPos) + " ms";
+            lblElapsed.Text = "Elpsed TIme: " + pathfinding.RunSearch("Breadth First (Levon)",m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos) + " ms";
             pathfinding.GenerateMetrics();
             SetMetricLabelText(lblElapsedAvg, lblVisited, lblPathLength);
             MainBitmap = CreateSearchBitmap();
@@ -237,7 +241,7 @@ namespace Maze
          else
          {
             pathfinding.ResetNodeSearchInfo();
-            pathfinding.StartRealtimeSearch("Breadth First Realtime (Levon)", m.Start.xPos, m.Start.yPos);
+            pathfinding.StartRealtimeSearch("Breadth First Realtime (Levon)", m.Start.xPos, m.Start.yPos,m.End.xPos,m.End.yPos);
             timerTick.Enabled = true;
             searchName = "Breadth First Realtime (Levon)";
          }
@@ -255,7 +259,7 @@ namespace Maze
          if (!cbRealtime.Checked)
          {
             pathfinding.ResetNodeSearchInfo();
-            lblElapsed.Text = "Elpsed TIme: " + pathfinding.DepthFIrstSearch(m.Start.xPos, m.End.xPos, m.Start.yPos, m.End.yPos) + " ms";
+            lblElapsed.Text = "Elpsed TIme: " + pathfinding.RunSearch("Depth First (Levon)", m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos) + " ms";
             pathfinding.GenerateMetrics();
             SetMetricLabelText(lblElapsedAvg, lblVisited, lblPathLength);
             MainBitmap = CreateSearchBitmap();
@@ -263,7 +267,7 @@ namespace Maze
          else
          {
             pathfinding.ResetNodeSearchInfo();
-            pathfinding.StartRealtimeSearch("Depth First Realtime (Levon)", m.Start.xPos, m.Start.yPos);
+            pathfinding.StartRealtimeSearch("Depth First Realtime (Levon)", m.Start.xPos, m.Start.yPos,m.End.xPos,m.End.yPos);
             timerTick.Enabled = true;
             searchName = "Depth First Realtime (Levon)";
          }
@@ -301,7 +305,7 @@ namespace Maze
             for (int j = 0; j < 10; j++)
             {
                pathfinding.ResetNodeSearchInfo();
-               time += pathfinding.RunSearch(searches[i], m.Start.xPos, m.End.xPos, m.Start.yPos, m.End.yPos);
+               time += pathfinding.RunSearch(searches[i], m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
             }
             time = time / 10;
             pathfinding.GenerateMetrics();
@@ -416,11 +420,21 @@ namespace Maze
       /// <param name="e">Tick Event</param>
       private void timerTick_Tick(object sender, EventArgs e)
       {
-         if (pathfinding.RunRealtimeSearch(searchName, m.End.xPos, m.End.yPos))
+         if (pathfinding.RunRealtimeSearch(searchName, ticksPerLoops))
             timerTick.Enabled = false;
          MainBitmap = CreateSearchBitmap();
          Canvas.Invalidate();
          
+      }
+
+      private void NUDLoopsPerTick_ValueChanged(object sender, EventArgs e)
+      {
+         ticksPerLoops = (int) NUDLoopsPerTick.Value;
+      }
+
+      private void NUDInterval_ValueChanged(object sender, EventArgs e)
+      {
+         timerTick.Interval = (int) NUDInterval.Value;
       }
    }
 }
