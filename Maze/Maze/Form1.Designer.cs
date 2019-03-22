@@ -60,7 +60,7 @@
          this.lblVisitedKey = new System.Windows.Forms.Label();
          this.pnlKey = new System.Windows.Forms.Panel();
          this.cbRealtime = new System.Windows.Forms.CheckBox();
-         this.progressBar1 = new System.Windows.Forms.ProgressBar();
+         this.PBarMetrics = new System.Windows.Forms.ProgressBar();
          this.NUDLoopsPerTick = new System.Windows.Forms.NumericUpDown();
          this.NUDInterval = new System.Windows.Forms.NumericUpDown();
          this.Canvas = new Maze.DBPanel();
@@ -363,12 +363,12 @@
          this.cbRealtime.Text = "Realtime";
          this.cbRealtime.UseVisualStyleBackColor = true;
          // 
-         // progressBar1
+         // PBarMetrics
          // 
-         this.progressBar1.Location = new System.Drawing.Point(715, 714);
-         this.progressBar1.Name = "progressBar1";
-         this.progressBar1.Size = new System.Drawing.Size(200, 23);
-         this.progressBar1.TabIndex = 23;
+         this.PBarMetrics.Location = new System.Drawing.Point(715, 714);
+         this.PBarMetrics.Name = "PBarMetrics";
+         this.PBarMetrics.Size = new System.Drawing.Size(200, 23);
+         this.PBarMetrics.TabIndex = 23;
          // 
          // NUDLoopsPerTick
          // 
@@ -449,7 +449,7 @@
          this.Controls.Add(this.lblToickLoop);
          this.Controls.Add(this.NUDInterval);
          this.Controls.Add(this.NUDLoopsPerTick);
-         this.Controls.Add(this.progressBar1);
+         this.Controls.Add(this.PBarMetrics);
          this.Controls.Add(this.cbRealtime);
          this.Controls.Add(this.pnlKey);
          this.Controls.Add(this.pnlMetrics);
@@ -518,7 +518,7 @@
       private System.Windows.Forms.Label lblVisitedKey;
       private System.Windows.Forms.Panel pnlKey;
       private System.Windows.Forms.CheckBox cbRealtime;
-      private System.Windows.Forms.ProgressBar progressBar1;
+      private System.Windows.Forms.ProgressBar PBarMetrics;
       private System.Windows.Forms.NumericUpDown NUDLoopsPerTick;
       private System.Windows.Forms.NumericUpDown NUDInterval;
       private System.Windows.Forms.Label lblToickLoop;
