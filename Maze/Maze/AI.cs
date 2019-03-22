@@ -134,12 +134,13 @@ namespace Maze
       public void StartRealtimeSearch(string search, int xStart, int yStart, int xEnd, int yEnd)
       {
          nodeMap[xStart, yStart].pl = place.start;
-         if(search == "Breadth First Realtime (Levon)")
+         nodeMap[xEnd, yEnd].pl = place.end;
+         if(search == "Breadth First (Levon) Realtime")
          {
             currentSearch = new BreadthFirstLevon();
             currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
          }
-         else if(search == "Depth First Realtime (Levon)")
+         else if(search == "Depth First (Levon) Realtime")
          {
             currentSearch = new DepthFirstLevon();
             currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
@@ -153,7 +154,7 @@ namespace Maze
       /// <param name="xEnd">start x position</param>
       /// <param name="yEnd">start y position</param>
       /// <returns></returns>
-      public bool RunRealtimeSearch(string search, int ticks)
+      public bool RunRealtimeSearch(int ticks)
       {
          return currentSearch.RunRealTimeTick(ticks);
       }

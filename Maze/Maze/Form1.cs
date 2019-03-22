@@ -12,9 +12,8 @@ using System.Threading;
 namespace Maze
 {
    //TODO: rename form components to proper names
-   //TODO: Add options for running realtime functions
    //TODO: Unenable button and etc... when they should be and vise versa
-   //TODO: Create Drawing method for realtime Drawing
+   //TODO: Create Drawing method for a list of tiles to be drawn
    //TODO: confirm Draw time metric is correct and format it better on form
    public partial class Form1 : Form
    {
@@ -27,10 +26,7 @@ namespace Maze
       Bitmap WallBitmap = new Bitmap(700, 700);
       Bitmap MainBitmap = new Bitmap(700, 700);
       List<Panel> MetricPanels = new List<Panel>();
-
-      //TODO: change selection method on form to remove this variable
-      string searchName;
-
+      bool selectingStartEnd = false;
 
       public Form1()
       {
@@ -194,8 +190,8 @@ namespace Maze
          m = new Map(mapWidth, mapHeight);
          int percent = int.Parse(txtBoxPercent.Text);
 
-         // Generate Map and set time elapsed statistic label
-         lblElapsed.Text = "Elpsed TIme: " + m.GenerateMap(0, 0, percent) + " ms";
+         // Generate Map
+         m.GenerateMap(0, 0, percent);
          
          //Removes any Metric panels that are still being displayed
          foreach (Control c in MetricPanels)
@@ -222,53 +218,28 @@ namespace Maze
       }
 
       /// <summary>
-      /// Used to run the Breadth first search It first resets the previous
-      /// searches info and then runs the new search
-      /// </summary>
-      /// <param name="sender"></param>
-      /// <param name="e"></param>
-      private void btnBreadthFirst_Click(object sender, EventArgs e)
-      {
-         if (!cbRealtime.Checked)
-         {
-            pathfinding.ResetNodeSearchInfo();
-            lblElapsed.Text = "Elpsed TIme: " + pathfinding.RunSearch("Breadth First (Levon)",m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos) + " ms";
-            pathfinding.GenerateMetrics();
-            SetMetricLabelText(lblElapsedAvg, lblVisited, lblPathLength);
-            MainBitmap = CreateSearchBitmap();
-         }
-         else
-         {
-            pathfinding.ResetNodeSearchInfo();
-            pathfinding.StartRealtimeSearch("Breadth First Realtime (Levon)", m.Start.xPos, m.Start.yPos,m.End.xPos,m.End.yPos);
-            timerTick.Enabled = true;
-            searchName = "Breadth First Realtime (Levon)";
-         }
-         Canvas.Invalidate(); // forces Canvas to redraw
-      }
-
-      /// <summary>
       /// Used to run the Depth first search It first resets the previous
       /// searches info and then runs the new search
       /// </summary>
       /// <param name="sender"></param>
       /// <param name="e"></param>
-      private void btnDepthFirst_Click(object sender, EventArgs e)
+      private void btnRunSearch_Click(object sender, EventArgs e)
       {
-         if (!cbRealtime.Checked)
+         if (cBoxSelection.SelectedItem != null)
          {
             pathfinding.ResetNodeSearchInfo();
-            lblElapsed.Text = "Elpsed TIme: " + pathfinding.RunSearch("Depth First (Levon)", m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos) + " ms";
-            pathfinding.GenerateMetrics();
-            SetMetricLabelText(lblElapsedAvg, lblVisited, lblPathLength);
-            MainBitmap = CreateSearchBitmap();
-         }
-         else
-         {
-            pathfinding.ResetNodeSearchInfo();
-            pathfinding.StartRealtimeSearch("Depth First Realtime (Levon)", m.Start.xPos, m.Start.yPos,m.End.xPos,m.End.yPos);
-            timerTick.Enabled = true;
-            searchName = "Depth First Realtime (Levon)";
+            if (!cbRealtime.Checked)
+            {
+               pathfinding.RunSearch(cBoxSelection.SelectedItem.ToString(), m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
+               pathfinding.GenerateMetrics();
+               SetMetricLabelText(lblElapsedAvg, lblVisited, lblPathLength);
+               MainBitmap = CreateSearchBitmap();
+            }
+            else
+            {
+               pathfinding.StartRealtimeSearch(cBoxSelection.SelectedItem.ToString() + " Realtime", m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
+               timerTick.Enabled = true;
+            }
          }
          Canvas.Invalidate(); // forces Canvas to redraw
       }
@@ -426,7 +397,7 @@ namespace Maze
       /// <param name="e">Tick Event</param>
       private void timerTick_Tick(object sender, EventArgs e)
       {
-         if (pathfinding.RunRealtimeSearch(searchName, ticksPerLoops))
+         if (pathfinding.RunRealtimeSearch(ticksPerLoops))
             timerTick.Enabled = false;
          MainBitmap = CreateSearchBitmap();
          Canvas.Invalidate();
@@ -441,6 +412,36 @@ namespace Maze
       private void NUDInterval_ValueChanged(object sender, EventArgs e)
       {
          timerTick.Interval = (int) NUDInterval.Value;
+      }
+
+      private void BtnSetStartEnd_Click(object sender, EventArgs e)
+      {
+         selectingStartEnd = true;
+         BtnSetStartEnd.Enabled = false;
+      }
+
+      private void Canvas_Click(object sender, EventArgs e)
+      {
+         if(selectingStartEnd)
+         {
+            int x = MousePosition.X - Canvas.PointToScreen(new Point(0, 0)).X;// Canvas.Bounds.X;
+            int y = MousePosition.Y - Canvas.PointToScreen(new Point(0, 0)).Y;
+
+            int xTile = x / (Canvas.Width / mapWidth);
+            int yTile = y / (Canvas.Height / mapHeight);
+
+            if (RBStart.Checked)
+               m.Start = m.map[xTile, yTile];
+            else
+               m.End = m.map[xTile, yTile];
+
+            pathfinding.ResetNodeSearchInfo();
+            pathfinding.CreateNodeMap(m.map, mapWidth, mapHeight, m.Start, m.End);
+            MainBitmap = CreateSearchBitmap();
+            selectingStartEnd = false;
+            BtnSetStartEnd.Enabled = true;
+            Canvas.Invalidate();
+         }
       }
    }
 }
