@@ -59,7 +59,6 @@ namespace Maze
 
          ticksPerLoops = (int) NUDLoopsPerTick.Value;
          timerTick.Interval = (int) NUDInterval.Value;
-
       }
 
       /// <summary>
@@ -281,6 +280,7 @@ namespace Maze
       /// <param name="searches">Search names to run</param>
       public void CreateMetricComponents(int numOfCompnents, List<string> searches)
       {
+         PBarMetrics.Value = 0;
          // Removes any Metric Panels currently being displayed
          foreach (Control c in MetricPanels)
          {
@@ -295,6 +295,12 @@ namespace Maze
          int xLoc = pnlMetrics.Bounds.X;
          int yLoc = pnlMetrics.Bounds.Y;
 
+         float totalRuns = numOfCompnents * 10;
+         float curRun = 0;
+
+         if (totalRuns == 0)
+            PBarMetrics.Value = 100;
+
          //Loop for creating the Metric panels
          for (int i = 0; i < numOfCompnents; i++)
          {
@@ -306,10 +312,10 @@ namespace Maze
             {
                pathfinding.ResetNodeSearchInfo();
                time += pathfinding.RunSearch(searches[i], m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
+               PBarMetrics.Value = (int) (100 * (++curRun / totalRuns));
             }
             time = time / 10;
             pathfinding.GenerateMetrics();
-
 
             // Creates and sets up the differnet controls for the metric panel
             Panel tempPanel = new Panel();
