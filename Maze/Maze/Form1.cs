@@ -241,23 +241,6 @@ namespace Maze
                timerTick.Enabled = true;
             }
          }
-         /*
-         if (!cbRealtime.Checked)
-         {
-            pathfinding.ResetNodeSearchInfo();
-            lblElapsed.Text = "Elpsed TIme: " + pathfinding.RunSearch("Depth First (Levon)", m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos) + " ms";
-            pathfinding.GenerateMetrics();
-            SetMetricLabelText(lblElapsedAvg, lblVisited, lblPathLength);
-            MainBitmap = CreateSearchBitmap();
-         }
-         else
-         {
-            pathfinding.ResetNodeSearchInfo();
-            pathfinding.StartRealtimeSearch("Depth First Realtime (Levon)", m.Start.xPos, m.Start.yPos,m.End.xPos,m.End.yPos);
-            timerTick.Enabled = true;
-            searchName = "Depth First Realtime (Levon)";
-         }
-         */
          Canvas.Invalidate(); // forces Canvas to redraw
       }
 
@@ -441,8 +424,6 @@ namespace Maze
       {
          if(selectingStartEnd)
          {
-            int testx = Canvas.PointToScreen(new Point(0, 0)).X;
-            int testy = Canvas.PointToScreen(new Point(0, 0)).Y;
             int x = MousePosition.X - Canvas.PointToScreen(new Point(0, 0)).X;// Canvas.Bounds.X;
             int y = MousePosition.Y - Canvas.PointToScreen(new Point(0, 0)).Y;
 
@@ -453,6 +434,7 @@ namespace Maze
                m.Start = m.map[xTile, yTile];
             else
                m.End = m.map[xTile, yTile];
+
             pathfinding.ResetNodeSearchInfo();
             pathfinding.CreateNodeMap(m.map, mapWidth, mapHeight, m.Start, m.End);
             MainBitmap = CreateSearchBitmap();
