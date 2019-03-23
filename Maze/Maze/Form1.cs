@@ -11,16 +11,14 @@ using System.Threading;
 
 namespace Maze
 {
-   //TODO: Comment
+   //TODO: Add ability to stop the realtime search
    //TODO: Disable button and etc... when they should be and vise versa
-   //TODO: confirm Draw time metric is correct
    public partial class Form1 : Form
    {
       Map m;
       AI pathfinding;
       int mapWidth;
       int mapHeight;
-      int ticksPerLoops;
       System.Diagnostics.Stopwatch st;
       Bitmap WallBitmap = new Bitmap(700, 700);
       Bitmap MainBitmap = new Bitmap(700, 700);
@@ -52,7 +50,6 @@ namespace Maze
          pbPath.BackColor = Color.Purple;
 
          // Sets Realtime variables
-         ticksPerLoops = (int) NUDLoopsPerTick.Value;
          timerTick.Interval = (int) NUDInterval.Value;
 
          // Draws map
@@ -450,7 +447,7 @@ namespace Maze
       /// <param name="e">Tick Event</param>
       private void timerTick_Tick(object sender, EventArgs e)
       {
-         if (pathfinding.RunRealtimeSearch(ticksPerLoops, out List<AINode> tempNodes))
+         if (pathfinding.RunRealtimeSearch((int)NUDLoopsPerTick.Value, out List<AINode> tempNodes))
          {
             timerTick.Enabled = false;
             MainBitmap = CreateSearchBitmap();
@@ -465,29 +462,42 @@ namespace Maze
          
       }
 
-      private void NUDLoopsPerTick_ValueChanged(object sender, EventArgs e)
-      {
-         ticksPerLoops = (int) NUDLoopsPerTick.Value;
-      }
-
+      /// <summary>
+      /// Sets the timer interval to the NUDInterval value when it changes
+      /// </summary>
+      /// <param name="sender">NumericUpDown component</param>
+      /// <param name="e">valueChanged</param>
       private void NUDInterval_ValueChanged(object sender, EventArgs e)
       {
          timerTick.Interval = (int) NUDInterval.Value;
       }
 
+      /// <summary>
+      /// Sets the selecingStartEnd bool to true
+      /// </summary>
+      /// <param name="sender">Button</param>
+      /// <param name="e">click</param>
       private void BtnSetStartEnd_Click(object sender, EventArgs e)
       {
          selectingStartEnd = true;
          BtnSetStartEnd.Enabled = false;
       }
 
+      /// <summary>
+      /// Sets the start or end (based on radio buttons) of the maze
+      /// to location clicked on canvas panel if selectingStartEnd is true.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
       private void Canvas_Click(object sender, EventArgs e)
       {
          if(selectingStartEnd)
          {
-            int x = MousePosition.X - Canvas.PointToScreen(new Point(0, 0)).X;// Canvas.Bounds.X;
+            // Gets the mouse position relative to the canvas's top left pixel position
+            int x = MousePosition.X - Canvas.PointToScreen(new Point(0, 0)).X;
             int y = MousePosition.Y - Canvas.PointToScreen(new Point(0, 0)).Y;
 
+            // Determines which tile the click occured at
             int xTile = x / (Canvas.Width / mapWidth);
             int yTile = y / (Canvas.Height / mapHeight);
 
@@ -496,15 +506,23 @@ namespace Maze
             else
                m.End = m.map[xTile, yTile];
 
+            // Reset map to correctly display the new start and end
             pathfinding.ResetNodeSearchInfo();
             pathfinding.CreateNodeMap(m.map, mapWidth, mapHeight, m.Start, m.End);
             MainBitmap = CreateSearchBitmap();
+
+            // Resets bool and components
             selectingStartEnd = false;
             BtnSetStartEnd.Enabled = true;
             Canvas.Invalidate();
          }
       }
 
+      /// <summary>
+      /// Clears the metric panels
+      /// </summary>
+      /// <param name="sender">button</param>
+      /// <param name="e">click</param>
       private void btnClearMetrics_Click(object sender, EventArgs e)
       {
 

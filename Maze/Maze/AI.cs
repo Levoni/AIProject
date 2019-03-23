@@ -17,6 +17,7 @@ namespace Maze
       public AINode[,] nodeMap;
       private Search currentSearch;
 
+      // Search metrics
       public int time, visitedTiles, pathLength;
 
 
@@ -148,12 +149,13 @@ namespace Maze
       }
 
       /// <summary>
-      /// runs the realtime search one time through
+      /// runs the realtime search once for x amount of ticks. returns a bool
+      /// for if the search is done. outputs the nodes that were searched to
+      /// an output variable.
       /// </summary>
-      /// <param name="search">search name that will be run</param>
-      /// <param name="xEnd">start x position</param>
-      /// <param name="yEnd">start y position</param>
-      /// <returns></returns>
+      /// <param name="ticks">amount of ticks to run through the realtime function for</param>
+      /// <param name="nodesSearched">output variable that stores which nodes were searched</param>
+      /// <returns>True if search is done, false otherwise</returns>
       public bool RunRealtimeSearch(int ticks, out List<AINode> nodesSearched)
       {
          nodesSearched = new List<AINode>();

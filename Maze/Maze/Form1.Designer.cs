@@ -412,7 +412,6 @@
             0,
             0,
             0});
-         this.NUDLoopsPerTick.ValueChanged += new System.EventHandler(this.NUDLoopsPerTick_ValueChanged);
          // 
          // NUDInterval
          // 
