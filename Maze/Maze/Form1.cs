@@ -40,7 +40,7 @@ namespace Maze
          mapWidth = int.Parse(txtBoxX.Text);
          mapHeight = int.Parse(txtBoxY.Text);
          m = new Map(mapWidth, mapHeight);
-         m.GenerateMap(int.Parse(txtBoxX.Text), int.Parse(txtBoxY.Text), int.Parse(txtBoxPercent.Text));
+         lblMapGenerationTime.Text = "Generation Time: " + m.GenerateMap(int.Parse(txtBoxX.Text), int.Parse(txtBoxY.Text), int.Parse(txtBoxPercent.Text)).ToString();
          MainBitmap = WallBitmap = CreateWallBitmap();
 
          //Set up AI info for the generated map
@@ -191,7 +191,7 @@ namespace Maze
          int percent = int.Parse(txtBoxPercent.Text);
 
          // Generate Map
-         m.GenerateMap(0, 0, percent);
+         lblMapGenerationTime.Text = "Generation Time: " + m.GenerateMap(0, 0, percent).ToString();
          
          //Removes any Metric panels that are still being displayed
          foreach (Control c in MetricPanels)
@@ -258,6 +258,7 @@ namespace Maze
             c.Dispose();
             Controls.Remove(c);
          }
+         MetricPanels = new List<Panel>(); // GC doesn't collect bitmaps otherwise
 
          // Sets local variables for size and location of panel
          // containing all the metric panlels
@@ -266,7 +267,7 @@ namespace Maze
          int xLoc = pnlMetrics.Bounds.X;
          int yLoc = pnlMetrics.Bounds.Y;
 
-         float totalRuns = numOfCompnents * 10;
+         float totalRuns = numOfCompnents * (float)NUDRuns.Value;
          float curRun = 0;
 
          if (totalRuns == 0)
@@ -279,13 +280,13 @@ namespace Maze
             // Runs through the current search x times to create reliable metrics
             //TODO: allow for passing in a variable number for amount of runs of each search
             float time = 0;
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < NUDRuns.Value; j++)
             {
                pathfinding.ResetNodeSearchInfo();
                time += pathfinding.RunSearch(searches[i], m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
                PBarMetrics.Value = (int) (100 * (++curRun / totalRuns));
             }
-            time = time / 10;
+            time = time / (float)NUDRuns.Value;
             pathfinding.GenerateMetrics();
 
             // Creates and sets up the differnet controls for the metric panel
@@ -320,6 +321,7 @@ namespace Maze
             tempB.Click += new EventHandler((sender, e) => btnShow_Click(sender, e, tempBitmap));
 
             SetMetricLabelText(tempElapsed, tempVisited, tempPathLength);
+            tempElapsed.Text = time.ToString();
 
             // Adds bitmap for search into the global bitmap list
             //SearchBitmaps.Add(CreateSearchBitmap());
@@ -442,6 +444,23 @@ namespace Maze
             BtnSetStartEnd.Enabled = true;
             Canvas.Invalidate();
          }
+      }
+
+      private void btnClearMetrics_Click(object sender, EventArgs e)
+      {
+
+         // Removes any Metric Panels currently being displayed
+         foreach (Control c in MetricPanels)
+         {
+            c.Dispose();
+            Controls.Remove(c);
+         }
+         MetricPanels = new List<Panel>(); // GC doesn't collect bitmaps otherwise
+
+         // Collect remaining garbage
+         GC.Collect();
+         GC.WaitForPendingFinalizers();
+         GC.Collect();
       }
    }
 }

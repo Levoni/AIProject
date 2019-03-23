@@ -69,11 +69,18 @@
          this.pnlSingleSearch = new System.Windows.Forms.Panel();
          this.lblSingleSearch = new System.Windows.Forms.Label();
          this.pnlMapGeneration = new System.Windows.Forms.Panel();
+         this.RBEnd = new System.Windows.Forms.RadioButton();
+         this.RBStart = new System.Windows.Forms.RadioButton();
+         this.BtnSetStartEnd = new System.Windows.Forms.Button();
          this.lblMapGeneration = new System.Windows.Forms.Label();
          this.Canvas = new Maze.DBPanel();
-         this.BtnSetStartEnd = new System.Windows.Forms.Button();
-         this.RBStart = new System.Windows.Forms.RadioButton();
-         this.RBEnd = new System.Windows.Forms.RadioButton();
+         this.lblSearches = new System.Windows.Forms.Label();
+         this.lblSelectedSearches = new System.Windows.Forms.Label();
+         this.pnlMetricOptions = new System.Windows.Forms.Panel();
+         this.NUDRuns = new System.Windows.Forms.NumericUpDown();
+         this.label1 = new System.Windows.Forms.Label();
+         this.btnClearMetrics = new System.Windows.Forms.Button();
+         this.lblMapGenerationTime = new System.Windows.Forms.Label();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
@@ -85,6 +92,8 @@
          this.pnlRealtimeSettings.SuspendLayout();
          this.pnlSingleSearch.SuspendLayout();
          this.pnlMapGeneration.SuspendLayout();
+         this.pnlMetricOptions.SuspendLayout();
+         ((System.ComponentModel.ISupportInitialize)(this.NUDRuns)).BeginInit();
          this.SuspendLayout();
          // 
          // btnRegen
@@ -194,21 +203,22 @@
          // 
          // pnlMetrics
          // 
-         this.pnlMetrics.Controls.Add(this.btnMetrics);
+         this.pnlMetrics.Controls.Add(this.lblSelectedSearches);
+         this.pnlMetrics.Controls.Add(this.lblSearches);
          this.pnlMetrics.Controls.Add(this.btnRemove);
          this.pnlMetrics.Controls.Add(this.btnAdd);
          this.pnlMetrics.Controls.Add(this.lstBoxSelected);
          this.pnlMetrics.Controls.Add(this.lstBoxOptions);
-         this.pnlMetrics.Location = new System.Drawing.Point(715, 14);
+         this.pnlMetrics.Location = new System.Drawing.Point(715, 88);
          this.pnlMetrics.Name = "pnlMetrics";
-         this.pnlMetrics.Size = new System.Drawing.Size(200, 700);
+         this.pnlMetrics.Size = new System.Drawing.Size(200, 604);
          this.pnlMetrics.TabIndex = 15;
          // 
          // btnMetrics
          // 
-         this.btnMetrics.Location = new System.Drawing.Point(38, 645);
+         this.btnMetrics.Location = new System.Drawing.Point(3, 37);
          this.btnMetrics.Name = "btnMetrics";
-         this.btnMetrics.Size = new System.Drawing.Size(120, 23);
+         this.btnMetrics.Size = new System.Drawing.Size(103, 23);
          this.btnMetrics.TabIndex = 7;
          this.btnMetrics.Text = "Run Metrics";
          this.btnMetrics.UseVisualStyleBackColor = true;
@@ -216,7 +226,7 @@
          // 
          // btnRemove
          // 
-         this.btnRemove.Location = new System.Drawing.Point(95, 498);
+         this.btnRemove.Location = new System.Drawing.Point(100, 393);
          this.btnRemove.Name = "btnRemove";
          this.btnRemove.Size = new System.Drawing.Size(63, 23);
          this.btnRemove.TabIndex = 6;
@@ -226,7 +236,7 @@
          // 
          // btnAdd
          // 
-         this.btnAdd.Location = new System.Drawing.Point(38, 498);
+         this.btnAdd.Location = new System.Drawing.Point(43, 393);
          this.btnAdd.Name = "btnAdd";
          this.btnAdd.Size = new System.Drawing.Size(63, 23);
          this.btnAdd.TabIndex = 5;
@@ -237,9 +247,9 @@
          // lstBoxSelected
          // 
          this.lstBoxSelected.FormattingEnabled = true;
-         this.lstBoxSelected.Location = new System.Drawing.Point(38, 544);
+         this.lstBoxSelected.Location = new System.Drawing.Point(43, 451);
          this.lstBoxSelected.Name = "lstBoxSelected";
-         this.lstBoxSelected.Size = new System.Drawing.Size(120, 95);
+         this.lstBoxSelected.Size = new System.Drawing.Size(120, 147);
          this.lstBoxSelected.TabIndex = 4;
          // 
          // lstBoxOptions
@@ -248,7 +258,7 @@
          this.lstBoxOptions.Items.AddRange(new object[] {
             "Breadth First (Levon)",
             "Depth FIrst (Levon)"});
-         this.lstBoxOptions.Location = new System.Drawing.Point(38, 385);
+         this.lstBoxOptions.Location = new System.Drawing.Point(43, 292);
          this.lstBoxOptions.Name = "lstBoxOptions";
          this.lstBoxOptions.Size = new System.Drawing.Size(120, 95);
          this.lstBoxOptions.TabIndex = 3;
@@ -357,7 +367,7 @@
          // 
          // PBarMetrics
          // 
-         this.PBarMetrics.Location = new System.Drawing.Point(715, 714);
+         this.PBarMetrics.Location = new System.Drawing.Point(715, 691);
          this.PBarMetrics.Name = "PBarMetrics";
          this.PBarMetrics.Size = new System.Drawing.Size(200, 23);
          this.PBarMetrics.TabIndex = 23;
@@ -482,6 +492,7 @@
          // pnlMapGeneration
          // 
          this.pnlMapGeneration.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+         this.pnlMapGeneration.Controls.Add(this.lblMapGenerationTime);
          this.pnlMapGeneration.Controls.Add(this.RBEnd);
          this.pnlMapGeneration.Controls.Add(this.RBStart);
          this.pnlMapGeneration.Controls.Add(this.BtnSetStartEnd);
@@ -494,8 +505,41 @@
          this.pnlMapGeneration.Controls.Add(this.txtBoxPercent);
          this.pnlMapGeneration.Location = new System.Drawing.Point(1158, 12);
          this.pnlMapGeneration.Name = "pnlMapGeneration";
-         this.pnlMapGeneration.Size = new System.Drawing.Size(200, 151);
+         this.pnlMapGeneration.Size = new System.Drawing.Size(200, 171);
          this.pnlMapGeneration.TabIndex = 31;
+         // 
+         // RBEnd
+         // 
+         this.RBEnd.AutoSize = true;
+         this.RBEnd.Location = new System.Drawing.Point(137, 120);
+         this.RBEnd.Name = "RBEnd";
+         this.RBEnd.Size = new System.Drawing.Size(44, 17);
+         this.RBEnd.TabIndex = 15;
+         this.RBEnd.TabStop = true;
+         this.RBEnd.Text = "End";
+         this.RBEnd.UseVisualStyleBackColor = true;
+         // 
+         // RBStart
+         // 
+         this.RBStart.AutoSize = true;
+         this.RBStart.Checked = true;
+         this.RBStart.Location = new System.Drawing.Point(84, 120);
+         this.RBStart.Name = "RBStart";
+         this.RBStart.Size = new System.Drawing.Size(47, 17);
+         this.RBStart.TabIndex = 14;
+         this.RBStart.TabStop = true;
+         this.RBStart.Text = "Start";
+         this.RBStart.UseVisualStyleBackColor = true;
+         // 
+         // BtnSetStartEnd
+         // 
+         this.BtnSetStartEnd.Location = new System.Drawing.Point(3, 117);
+         this.BtnSetStartEnd.Name = "BtnSetStartEnd";
+         this.BtnSetStartEnd.Size = new System.Drawing.Size(75, 23);
+         this.BtnSetStartEnd.TabIndex = 13;
+         this.BtnSetStartEnd.Text = "Set";
+         this.BtnSetStartEnd.UseVisualStyleBackColor = true;
+         this.BtnSetStartEnd.Click += new System.EventHandler(this.BtnSetStartEnd_Click);
          // 
          // lblMapGeneration
          // 
@@ -517,44 +561,91 @@
          this.Canvas.Click += new System.EventHandler(this.Canvas_Click);
          this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
          // 
-         // BtnSetStartEnd
+         // lblSearches
          // 
-         this.BtnSetStartEnd.Location = new System.Drawing.Point(3, 117);
-         this.BtnSetStartEnd.Name = "BtnSetStartEnd";
-         this.BtnSetStartEnd.Size = new System.Drawing.Size(75, 23);
-         this.BtnSetStartEnd.TabIndex = 13;
-         this.BtnSetStartEnd.Text = "Set";
-         this.BtnSetStartEnd.UseVisualStyleBackColor = true;
-         this.BtnSetStartEnd.Click += new System.EventHandler(this.BtnSetStartEnd_Click);
+         this.lblSearches.AutoSize = true;
+         this.lblSearches.Location = new System.Drawing.Point(43, 267);
+         this.lblSearches.Name = "lblSearches";
+         this.lblSearches.Size = new System.Drawing.Size(55, 13);
+         this.lblSearches.TabIndex = 8;
+         this.lblSearches.Text = "Searches:";
          // 
-         // RBStart
+         // lblSelectedSearches
          // 
-         this.RBStart.AutoSize = true;
-         this.RBStart.Checked = true;
-         this.RBStart.Location = new System.Drawing.Point(84, 120);
-         this.RBStart.Name = "RBStart";
-         this.RBStart.Size = new System.Drawing.Size(47, 17);
-         this.RBStart.TabIndex = 14;
-         this.RBStart.TabStop = true;
-         this.RBStart.Text = "Start";
-         this.RBStart.UseVisualStyleBackColor = true;
+         this.lblSelectedSearches.AutoSize = true;
+         this.lblSelectedSearches.Location = new System.Drawing.Point(43, 429);
+         this.lblSelectedSearches.Name = "lblSelectedSearches";
+         this.lblSelectedSearches.Size = new System.Drawing.Size(100, 13);
+         this.lblSelectedSearches.TabIndex = 9;
+         this.lblSelectedSearches.Text = "Selected Searches:";
          // 
-         // RBEnd
+         // pnlMetricOptions
          // 
-         this.RBEnd.AutoSize = true;
-         this.RBEnd.Location = new System.Drawing.Point(137, 120);
-         this.RBEnd.Name = "RBEnd";
-         this.RBEnd.Size = new System.Drawing.Size(44, 17);
-         this.RBEnd.TabIndex = 15;
-         this.RBEnd.TabStop = true;
-         this.RBEnd.Text = "End";
-         this.RBEnd.UseVisualStyleBackColor = true;
+         this.pnlMetricOptions.Controls.Add(this.btnClearMetrics);
+         this.pnlMetricOptions.Controls.Add(this.label1);
+         this.pnlMetricOptions.Controls.Add(this.NUDRuns);
+         this.pnlMetricOptions.Controls.Add(this.btnMetrics);
+         this.pnlMetricOptions.Location = new System.Drawing.Point(715, 14);
+         this.pnlMetricOptions.Name = "pnlMetricOptions";
+         this.pnlMetricOptions.Size = new System.Drawing.Size(200, 68);
+         this.pnlMetricOptions.TabIndex = 32;
+         // 
+         // NUDRuns
+         // 
+         this.NUDRuns.Location = new System.Drawing.Point(100, 11);
+         this.NUDRuns.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+         this.NUDRuns.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+         this.NUDRuns.Name = "NUDRuns";
+         this.NUDRuns.Size = new System.Drawing.Size(97, 20);
+         this.NUDRuns.TabIndex = 33;
+         this.NUDRuns.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+         // 
+         // label1
+         // 
+         this.label1.AutoSize = true;
+         this.label1.Location = new System.Drawing.Point(3, 13);
+         this.label1.Name = "label1";
+         this.label1.Size = new System.Drawing.Size(82, 13);
+         this.label1.TabIndex = 34;
+         this.label1.Text = "Number of runs:";
+         // 
+         // btnClearMetrics
+         // 
+         this.btnClearMetrics.Location = new System.Drawing.Point(112, 37);
+         this.btnClearMetrics.Name = "btnClearMetrics";
+         this.btnClearMetrics.Size = new System.Drawing.Size(85, 23);
+         this.btnClearMetrics.TabIndex = 35;
+         this.btnClearMetrics.Text = "Clear Metrics";
+         this.btnClearMetrics.UseVisualStyleBackColor = true;
+         this.btnClearMetrics.Click += new System.EventHandler(this.btnClearMetrics_Click);
+         // 
+         // lblMapGenerationTime
+         // 
+         this.lblMapGenerationTime.AutoSize = true;
+         this.lblMapGenerationTime.Location = new System.Drawing.Point(15, 147);
+         this.lblMapGenerationTime.Name = "lblMapGenerationTime";
+         this.lblMapGenerationTime.Size = new System.Drawing.Size(88, 13);
+         this.lblMapGenerationTime.TabIndex = 16;
+         this.lblMapGenerationTime.Text = "Generation Time:\r\n";
          // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(1370, 749);
+         this.Controls.Add(this.pnlMetricOptions);
          this.Controls.Add(this.pnlMapGeneration);
          this.Controls.Add(this.pnlSingleSearch);
          this.Controls.Add(this.pnlRealtimeSettings);
@@ -569,6 +660,7 @@
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).EndInit();
          this.pnlMetrics.ResumeLayout(false);
+         this.pnlMetrics.PerformLayout();
          ((System.ComponentModel.ISupportInitialize)(this.pbPath)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbVisited)).EndInit();
          this.pnlKey.ResumeLayout(false);
@@ -581,6 +673,9 @@
          this.pnlSingleSearch.PerformLayout();
          this.pnlMapGeneration.ResumeLayout(false);
          this.pnlMapGeneration.PerformLayout();
+         this.pnlMetricOptions.ResumeLayout(false);
+         this.pnlMetricOptions.PerformLayout();
+         ((System.ComponentModel.ISupportInitialize)(this.NUDRuns)).EndInit();
          this.ResumeLayout(false);
          this.PerformLayout();
 
@@ -633,6 +728,13 @@
       private System.Windows.Forms.RadioButton RBEnd;
       private System.Windows.Forms.RadioButton RBStart;
       private System.Windows.Forms.Button BtnSetStartEnd;
+      private System.Windows.Forms.Label lblSelectedSearches;
+      private System.Windows.Forms.Label lblSearches;
+      private System.Windows.Forms.Panel pnlMetricOptions;
+      private System.Windows.Forms.Label label1;
+      private System.Windows.Forms.NumericUpDown NUDRuns;
+      private System.Windows.Forms.Button btnClearMetrics;
+      private System.Windows.Forms.Label lblMapGenerationTime;
    }
 }
 
