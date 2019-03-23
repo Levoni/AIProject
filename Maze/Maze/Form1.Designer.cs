@@ -146,7 +146,7 @@
          this.txtBoxPercent.Name = "txtBoxPercent";
          this.txtBoxPercent.Size = new System.Drawing.Size(100, 20);
          this.txtBoxPercent.TabIndex = 7;
-         this.txtBoxPercent.Text = "20";
+         this.txtBoxPercent.Text = "50";
          // 
          // lblCutPercent
          // 
@@ -603,11 +603,6 @@
          // NUDRuns
          // 
          this.NUDRuns.Location = new System.Drawing.Point(100, 11);
-         this.NUDRuns.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
          this.NUDRuns.Minimum = new decimal(new int[] {
             1,
             0,

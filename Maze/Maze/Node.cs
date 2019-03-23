@@ -74,7 +74,7 @@ namespace Maze
             if (n != null)
                connection++;
          }
-         if (connection >= 1)
+         if (connection <= 1)
             return true;
          return false;
       }
