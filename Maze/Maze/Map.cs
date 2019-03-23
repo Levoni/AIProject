@@ -188,9 +188,6 @@ namespace Maze
       {
          Tile n = nodeStack.Peek();
 
-         // TODO: This needs to be fixed so it cuts out the wall directly 
-         // opposite of the previous node
-
          // Removes wall by moving to the next node then poping that node
          // off the stack.
          if (n.nodes[(int)dir.UP] != null && n.yPos != height - 1)

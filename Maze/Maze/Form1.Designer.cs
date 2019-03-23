@@ -61,7 +61,7 @@
          this.PBarMetrics = new System.Windows.Forms.ProgressBar();
          this.NUDLoopsPerTick = new System.Windows.Forms.NumericUpDown();
          this.NUDInterval = new System.Windows.Forms.NumericUpDown();
-         this.lblToickLoop = new System.Windows.Forms.Label();
+         this.lblTickLoop = new System.Windows.Forms.Label();
          this.lblInterval = new System.Windows.Forms.Label();
          this.cBoxSelection = new System.Windows.Forms.ComboBox();
          this.pnlRealtimeSettings = new System.Windows.Forms.Panel();
@@ -78,7 +78,7 @@
          this.lblSelectedSearches = new System.Windows.Forms.Label();
          this.pnlMetricOptions = new System.Windows.Forms.Panel();
          this.NUDRuns = new System.Windows.Forms.NumericUpDown();
-         this.label1 = new System.Windows.Forms.Label();
+         this.lblNumOfRuns = new System.Windows.Forms.Label();
          this.btnClearMetrics = new System.Windows.Forms.Button();
          this.lblMapGenerationTime = new System.Windows.Forms.Label();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
@@ -423,14 +423,14 @@
             0});
          this.NUDInterval.ValueChanged += new System.EventHandler(this.NUDInterval_ValueChanged);
          // 
-         // lblToickLoop
+         // lblTickLoop
          // 
-         this.lblToickLoop.AutoSize = true;
-         this.lblToickLoop.Location = new System.Drawing.Point(9, 35);
-         this.lblToickLoop.Name = "lblToickLoop";
-         this.lblToickLoop.Size = new System.Drawing.Size(67, 13);
-         this.lblToickLoop.TabIndex = 26;
-         this.lblToickLoop.Text = "TickAmount:";
+         this.lblTickLoop.AutoSize = true;
+         this.lblTickLoop.Location = new System.Drawing.Point(9, 35);
+         this.lblTickLoop.Name = "lblTickLoop";
+         this.lblTickLoop.Size = new System.Drawing.Size(67, 13);
+         this.lblTickLoop.TabIndex = 26;
+         this.lblTickLoop.Text = "TickAmount:";
          // 
          // lblInterval
          // 
@@ -457,7 +457,7 @@
          // 
          this.pnlRealtimeSettings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
          this.pnlRealtimeSettings.Controls.Add(this.lblRealtimeSettings);
-         this.pnlRealtimeSettings.Controls.Add(this.lblToickLoop);
+         this.pnlRealtimeSettings.Controls.Add(this.lblTickLoop);
          this.pnlRealtimeSettings.Controls.Add(this.NUDLoopsPerTick);
          this.pnlRealtimeSettings.Controls.Add(this.lblInterval);
          this.pnlRealtimeSettings.Controls.Add(this.NUDInterval);
@@ -495,9 +495,9 @@
          this.lblSingleSearch.AutoSize = true;
          this.lblSingleSearch.Location = new System.Drawing.Point(57, 8);
          this.lblSingleSearch.Name = "lblSingleSearch";
-         this.lblSingleSearch.Size = new System.Drawing.Size(70, 13);
+         this.lblSingleSearch.Size = new System.Drawing.Size(73, 13);
          this.lblSingleSearch.TabIndex = 0;
-         this.lblSingleSearch.Text = "SingleSearch";
+         this.lblSingleSearch.Text = "Single Search";
          // 
          // pnlMapGeneration
          // 
@@ -592,7 +592,7 @@
          // pnlMetricOptions
          // 
          this.pnlMetricOptions.Controls.Add(this.btnClearMetrics);
-         this.pnlMetricOptions.Controls.Add(this.label1);
+         this.pnlMetricOptions.Controls.Add(this.lblNumOfRuns);
          this.pnlMetricOptions.Controls.Add(this.NUDRuns);
          this.pnlMetricOptions.Controls.Add(this.btnMetrics);
          this.pnlMetricOptions.Location = new System.Drawing.Point(715, 14);
@@ -617,14 +617,14 @@
             0,
             0});
          // 
-         // label1
+         // lblNumOfRuns
          // 
-         this.label1.AutoSize = true;
-         this.label1.Location = new System.Drawing.Point(3, 13);
-         this.label1.Name = "label1";
-         this.label1.Size = new System.Drawing.Size(82, 13);
-         this.label1.TabIndex = 34;
-         this.label1.Text = "Number of runs:";
+         this.lblNumOfRuns.AutoSize = true;
+         this.lblNumOfRuns.Location = new System.Drawing.Point(3, 13);
+         this.lblNumOfRuns.Name = "lblNumOfRuns";
+         this.lblNumOfRuns.Size = new System.Drawing.Size(82, 13);
+         this.lblNumOfRuns.TabIndex = 34;
+         this.lblNumOfRuns.Text = "Number of runs:";
          // 
          // btnClearMetrics
          // 
@@ -721,7 +721,7 @@
       private System.Windows.Forms.ProgressBar PBarMetrics;
       private System.Windows.Forms.NumericUpDown NUDLoopsPerTick;
       private System.Windows.Forms.NumericUpDown NUDInterval;
-      private System.Windows.Forms.Label lblToickLoop;
+      private System.Windows.Forms.Label lblTickLoop;
       private System.Windows.Forms.Label lblInterval;
       private System.Windows.Forms.ComboBox cBoxSelection;
       private System.Windows.Forms.Panel pnlRealtimeSettings;
@@ -736,7 +736,7 @@
       private System.Windows.Forms.Label lblSelectedSearches;
       private System.Windows.Forms.Label lblSearches;
       private System.Windows.Forms.Panel pnlMetricOptions;
-      private System.Windows.Forms.Label label1;
+      private System.Windows.Forms.Label lblNumOfRuns;
       private System.Windows.Forms.NumericUpDown NUDRuns;
       private System.Windows.Forms.Button btnClearMetrics;
       private System.Windows.Forms.Label lblMapGenerationTime;
