@@ -154,9 +154,11 @@ namespace Maze
       /// <param name="xEnd">start x position</param>
       /// <param name="yEnd">start y position</param>
       /// <returns></returns>
-      public bool RunRealtimeSearch(int ticks)
+      public bool RunRealtimeSearch(int ticks, out List<AINode> nodesSearched)
       {
-         return currentSearch.RunRealTimeTick(ticks);
+         nodesSearched = new List<AINode>();
+         bool done = currentSearch.RunRealTimeTick(ticks, out nodesSearched);
+         return done;
       }
    }
 }

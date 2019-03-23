@@ -73,8 +73,9 @@ namespace Maze
          return st.ElapsedMilliseconds;
       }
 
-      public override bool RunRealTimeTick(int times)
+      public override bool RunRealTimeTick(int times, out List<AINode> nodesSearched)
       {
+         nodesSearched = new List<AINode>();
          if (open.Count != 0)
          {
             for (int i = 0; i < times; i++)
@@ -86,6 +87,7 @@ namespace Maze
                {
                   if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
                   {
+                     nodesSearched.Add(node);
                      if (node.x == xEnd && node.y == yEnd)
                      {
                         node.visited = true;

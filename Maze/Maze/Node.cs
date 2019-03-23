@@ -17,12 +17,6 @@ namespace Maze
       public Tile[] nodes;
       public int xPos, yPos;
 
-      // Vairiables used for storing search information
-      //public place pl;
-      //public Tile Parent;
-      //public bool visited;
-
-
       /// <summary>
       /// Creates a node at a specific location.
       /// </summary>
@@ -37,7 +31,6 @@ namespace Maze
          nodes = new Tile[4];
          for (int i = 0; i < nodes.Length; i++)
             nodes[i] = null;
-
       }
 
       /// <summary>
@@ -50,16 +43,6 @@ namespace Maze
       {
          nodes[(int)d] = n;
       }
-
-      /// <summary>
-      /// Resets information used in the search algorithim
-      /// </summary>
-      //public void ResetInfo()
-      //{
-      //   Parent = null;
-      //   visited = false;
-      //   pl = place.none;
-      //}
 
       /// <summary>
       /// Checks to see if the node has one or less children nodes.

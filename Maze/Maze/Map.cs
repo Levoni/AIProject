@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Maze
 {
+   //TODO: look into possibly cutting wall even if not dead end ex) isWallCount < 2 vs isWallCount < 1
+
    /// <summary>
    /// Class responsible for creating and managing the nodes in the maze
    /// </summary>

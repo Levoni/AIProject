@@ -46,7 +46,7 @@ namespace Maze
       /// </summary>
       /// <param name="times">number of ticks to run</param>
       /// <returns>True is goal is found, false otherwise</returns>
-      public abstract bool RunRealTimeTick(int times);
+      public abstract bool RunRealTimeTick(int times, out List<AINode> nodesSearched);
 
       /// <summary>
       /// Used to create a unique key (string) for a single node in the maze.

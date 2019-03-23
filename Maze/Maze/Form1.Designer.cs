@@ -42,11 +42,13 @@
          this.lblXY = new System.Windows.Forms.Label();
          this.lblDrawTime = new System.Windows.Forms.Label();
          this.pnlMetrics = new System.Windows.Forms.Panel();
-         this.btnMetrics = new System.Windows.Forms.Button();
+         this.lblSelectedSearches = new System.Windows.Forms.Label();
+         this.lblSearches = new System.Windows.Forms.Label();
          this.btnRemove = new System.Windows.Forms.Button();
          this.btnAdd = new System.Windows.Forms.Button();
          this.lstBoxSelected = new System.Windows.Forms.ListBox();
          this.lstBoxOptions = new System.Windows.Forms.ListBox();
+         this.btnMetrics = new System.Windows.Forms.Button();
          this.lblPathLength = new System.Windows.Forms.Label();
          this.lblVisited = new System.Windows.Forms.Label();
          this.lblElapsedAvg = new System.Windows.Forms.Label();
@@ -69,18 +71,17 @@
          this.pnlSingleSearch = new System.Windows.Forms.Panel();
          this.lblSingleSearch = new System.Windows.Forms.Label();
          this.pnlMapGeneration = new System.Windows.Forms.Panel();
+         this.lblMapGenerationTime = new System.Windows.Forms.Label();
          this.RBEnd = new System.Windows.Forms.RadioButton();
          this.RBStart = new System.Windows.Forms.RadioButton();
          this.BtnSetStartEnd = new System.Windows.Forms.Button();
          this.lblMapGeneration = new System.Windows.Forms.Label();
-         this.Canvas = new Maze.DBPanel();
-         this.lblSearches = new System.Windows.Forms.Label();
-         this.lblSelectedSearches = new System.Windows.Forms.Label();
          this.pnlMetricOptions = new System.Windows.Forms.Panel();
-         this.NUDRuns = new System.Windows.Forms.NumericUpDown();
-         this.lblNumOfRuns = new System.Windows.Forms.Label();
          this.btnClearMetrics = new System.Windows.Forms.Button();
-         this.lblMapGenerationTime = new System.Windows.Forms.Label();
+         this.lblNumOfRuns = new System.Windows.Forms.Label();
+         this.NUDRuns = new System.Windows.Forms.NumericUpDown();
+         this.lblDrawTimeText = new System.Windows.Forms.Label();
+         this.Canvas = new Maze.DBPanel();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
@@ -195,11 +196,11 @@
          // lblDrawTime
          // 
          this.lblDrawTime.AutoSize = true;
-         this.lblDrawTime.Location = new System.Drawing.Point(1161, 255);
+         this.lblDrawTime.Location = new System.Drawing.Point(1225, 269);
          this.lblDrawTime.Name = "lblDrawTime";
-         this.lblDrawTime.Size = new System.Drawing.Size(55, 13);
+         this.lblDrawTime.Size = new System.Drawing.Size(13, 13);
          this.lblDrawTime.TabIndex = 14;
-         this.lblDrawTime.Text = "DrawTime";
+         this.lblDrawTime.Text = "0";
          // 
          // pnlMetrics
          // 
@@ -214,15 +215,23 @@
          this.pnlMetrics.Size = new System.Drawing.Size(200, 604);
          this.pnlMetrics.TabIndex = 15;
          // 
-         // btnMetrics
+         // lblSelectedSearches
          // 
-         this.btnMetrics.Location = new System.Drawing.Point(3, 37);
-         this.btnMetrics.Name = "btnMetrics";
-         this.btnMetrics.Size = new System.Drawing.Size(103, 23);
-         this.btnMetrics.TabIndex = 7;
-         this.btnMetrics.Text = "Run Metrics";
-         this.btnMetrics.UseVisualStyleBackColor = true;
-         this.btnMetrics.Click += new System.EventHandler(this.btnMetrics_Click);
+         this.lblSelectedSearches.AutoSize = true;
+         this.lblSelectedSearches.Location = new System.Drawing.Point(43, 429);
+         this.lblSelectedSearches.Name = "lblSelectedSearches";
+         this.lblSelectedSearches.Size = new System.Drawing.Size(100, 13);
+         this.lblSelectedSearches.TabIndex = 9;
+         this.lblSelectedSearches.Text = "Selected Searches:";
+         // 
+         // lblSearches
+         // 
+         this.lblSearches.AutoSize = true;
+         this.lblSearches.Location = new System.Drawing.Point(43, 267);
+         this.lblSearches.Name = "lblSearches";
+         this.lblSearches.Size = new System.Drawing.Size(55, 13);
+         this.lblSearches.TabIndex = 8;
+         this.lblSearches.Text = "Searches:";
          // 
          // btnRemove
          // 
@@ -238,7 +247,7 @@
          // 
          this.btnAdd.Location = new System.Drawing.Point(43, 393);
          this.btnAdd.Name = "btnAdd";
-         this.btnAdd.Size = new System.Drawing.Size(63, 23);
+         this.btnAdd.Size = new System.Drawing.Size(55, 23);
          this.btnAdd.TabIndex = 5;
          this.btnAdd.Text = "Add";
          this.btnAdd.UseVisualStyleBackColor = true;
@@ -263,6 +272,16 @@
          this.lstBoxOptions.Size = new System.Drawing.Size(120, 95);
          this.lstBoxOptions.TabIndex = 3;
          // 
+         // btnMetrics
+         // 
+         this.btnMetrics.Location = new System.Drawing.Point(3, 37);
+         this.btnMetrics.Name = "btnMetrics";
+         this.btnMetrics.Size = new System.Drawing.Size(95, 23);
+         this.btnMetrics.TabIndex = 7;
+         this.btnMetrics.Text = "Run Metrics";
+         this.btnMetrics.UseVisualStyleBackColor = true;
+         this.btnMetrics.Click += new System.EventHandler(this.btnMetrics_Click);
+         // 
          // lblPathLength
          // 
          this.lblPathLength.AutoSize = true;
@@ -286,9 +305,9 @@
          this.lblElapsedAvg.AutoSize = true;
          this.lblElapsedAvg.Location = new System.Drawing.Point(3, 94);
          this.lblElapsedAvg.Name = "lblElapsedAvg";
-         this.lblElapsedAvg.Size = new System.Drawing.Size(55, 13);
+         this.lblElapsedAvg.Size = new System.Drawing.Size(96, 13);
          this.lblElapsedAvg.TabIndex = 0;
-         this.lblElapsedAvg.Text = "Time (ms):";
+         this.lblElapsedAvg.Text = "Elapsed Time (ms):";
          // 
          // lblKey
          // 
@@ -518,6 +537,15 @@
          this.pnlMapGeneration.Size = new System.Drawing.Size(200, 171);
          this.pnlMapGeneration.TabIndex = 31;
          // 
+         // lblMapGenerationTime
+         // 
+         this.lblMapGenerationTime.AutoSize = true;
+         this.lblMapGenerationTime.Location = new System.Drawing.Point(15, 147);
+         this.lblMapGenerationTime.Name = "lblMapGenerationTime";
+         this.lblMapGenerationTime.Size = new System.Drawing.Size(88, 13);
+         this.lblMapGenerationTime.TabIndex = 16;
+         this.lblMapGenerationTime.Text = "Generation Time:\r\n";
+         // 
          // RBEnd
          // 
          this.RBEnd.AutoSize = true;
@@ -560,35 +588,6 @@
          this.lblMapGeneration.TabIndex = 0;
          this.lblMapGeneration.Text = "Map Generation";
          // 
-         // Canvas
-         // 
-         this.Canvas.AutoSize = true;
-         this.Canvas.Location = new System.Drawing.Point(14, 14);
-         this.Canvas.Margin = new System.Windows.Forms.Padding(5, 5, 200, 5);
-         this.Canvas.Name = "Canvas";
-         this.Canvas.Size = new System.Drawing.Size(700, 700);
-         this.Canvas.TabIndex = 0;
-         this.Canvas.Click += new System.EventHandler(this.Canvas_Click);
-         this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
-         // 
-         // lblSearches
-         // 
-         this.lblSearches.AutoSize = true;
-         this.lblSearches.Location = new System.Drawing.Point(43, 267);
-         this.lblSearches.Name = "lblSearches";
-         this.lblSearches.Size = new System.Drawing.Size(55, 13);
-         this.lblSearches.TabIndex = 8;
-         this.lblSearches.Text = "Searches:";
-         // 
-         // lblSelectedSearches
-         // 
-         this.lblSelectedSearches.AutoSize = true;
-         this.lblSelectedSearches.Location = new System.Drawing.Point(43, 429);
-         this.lblSelectedSearches.Name = "lblSelectedSearches";
-         this.lblSelectedSearches.Size = new System.Drawing.Size(100, 13);
-         this.lblSelectedSearches.TabIndex = 9;
-         this.lblSelectedSearches.Text = "Selected Searches:";
-         // 
          // pnlMetricOptions
          // 
          this.pnlMetricOptions.Controls.Add(this.btnClearMetrics);
@@ -599,6 +598,25 @@
          this.pnlMetricOptions.Name = "pnlMetricOptions";
          this.pnlMetricOptions.Size = new System.Drawing.Size(200, 68);
          this.pnlMetricOptions.TabIndex = 32;
+         // 
+         // btnClearMetrics
+         // 
+         this.btnClearMetrics.Location = new System.Drawing.Point(100, 37);
+         this.btnClearMetrics.Name = "btnClearMetrics";
+         this.btnClearMetrics.Size = new System.Drawing.Size(97, 23);
+         this.btnClearMetrics.TabIndex = 35;
+         this.btnClearMetrics.Text = "Clear Metrics";
+         this.btnClearMetrics.UseVisualStyleBackColor = true;
+         this.btnClearMetrics.Click += new System.EventHandler(this.btnClearMetrics_Click);
+         // 
+         // lblNumOfRuns
+         // 
+         this.lblNumOfRuns.AutoSize = true;
+         this.lblNumOfRuns.Location = new System.Drawing.Point(3, 13);
+         this.lblNumOfRuns.Name = "lblNumOfRuns";
+         this.lblNumOfRuns.Size = new System.Drawing.Size(82, 13);
+         this.lblNumOfRuns.TabIndex = 34;
+         this.lblNumOfRuns.Text = "Number of runs:";
          // 
          // NUDRuns
          // 
@@ -617,39 +635,32 @@
             0,
             0});
          // 
-         // lblNumOfRuns
+         // lblDrawTimeText
          // 
-         this.lblNumOfRuns.AutoSize = true;
-         this.lblNumOfRuns.Location = new System.Drawing.Point(3, 13);
-         this.lblNumOfRuns.Name = "lblNumOfRuns";
-         this.lblNumOfRuns.Size = new System.Drawing.Size(82, 13);
-         this.lblNumOfRuns.TabIndex = 34;
-         this.lblNumOfRuns.Text = "Number of runs:";
+         this.lblDrawTimeText.AutoSize = true;
+         this.lblDrawTimeText.Location = new System.Drawing.Point(1158, 269);
+         this.lblDrawTimeText.Name = "lblDrawTimeText";
+         this.lblDrawTimeText.Size = new System.Drawing.Size(61, 13);
+         this.lblDrawTimeText.TabIndex = 33;
+         this.lblDrawTimeText.Text = "Draw Time:";
          // 
-         // btnClearMetrics
+         // Canvas
          // 
-         this.btnClearMetrics.Location = new System.Drawing.Point(112, 37);
-         this.btnClearMetrics.Name = "btnClearMetrics";
-         this.btnClearMetrics.Size = new System.Drawing.Size(85, 23);
-         this.btnClearMetrics.TabIndex = 35;
-         this.btnClearMetrics.Text = "Clear Metrics";
-         this.btnClearMetrics.UseVisualStyleBackColor = true;
-         this.btnClearMetrics.Click += new System.EventHandler(this.btnClearMetrics_Click);
-         // 
-         // lblMapGenerationTime
-         // 
-         this.lblMapGenerationTime.AutoSize = true;
-         this.lblMapGenerationTime.Location = new System.Drawing.Point(15, 147);
-         this.lblMapGenerationTime.Name = "lblMapGenerationTime";
-         this.lblMapGenerationTime.Size = new System.Drawing.Size(88, 13);
-         this.lblMapGenerationTime.TabIndex = 16;
-         this.lblMapGenerationTime.Text = "Generation Time:\r\n";
+         this.Canvas.AutoSize = true;
+         this.Canvas.Location = new System.Drawing.Point(14, 14);
+         this.Canvas.Margin = new System.Windows.Forms.Padding(5, 5, 200, 5);
+         this.Canvas.Name = "Canvas";
+         this.Canvas.Size = new System.Drawing.Size(700, 700);
+         this.Canvas.TabIndex = 0;
+         this.Canvas.Click += new System.EventHandler(this.Canvas_Click);
+         this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
          // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(1370, 749);
+         this.Controls.Add(this.lblDrawTimeText);
          this.Controls.Add(this.pnlMetricOptions);
          this.Controls.Add(this.pnlMapGeneration);
          this.Controls.Add(this.pnlSingleSearch);
@@ -740,6 +751,7 @@
       private System.Windows.Forms.NumericUpDown NUDRuns;
       private System.Windows.Forms.Button btnClearMetrics;
       private System.Windows.Forms.Label lblMapGenerationTime;
+      private System.Windows.Forms.Label lblDrawTimeText;
    }
 }
 

@@ -11,10 +11,9 @@ using System.Threading;
 
 namespace Maze
 {
-   //TODO: rename form components to proper names
-   //TODO: Unenable button and etc... when they should be and vise versa
-   //TODO: Create Drawing method for a list of tiles to be drawn
-   //TODO: confirm Draw time metric is correct and format it better on form
+   //TODO: Comment
+   //TODO: Disable button and etc... when they should be and vise versa
+   //TODO: confirm Draw time metric is correct
    public partial class Form1 : Form
    {
       Map m;
@@ -79,7 +78,7 @@ namespace Maze
       /// <summary>
       /// Creats the bitmap for current Tile map
       /// </summary>
-      /// <returns></returns>
+      /// <returns>Bitmap of map with only the walls displayed</returns>
       Bitmap CreateWallBitmap()
       {
          st.Restart();
@@ -127,7 +126,7 @@ namespace Maze
       /// Creates the bitmap with the current search information and 
       /// wallBitmap.
       /// </summary>
-      /// <returns></returns>
+      /// <returns>Bitmap of map with current search information displayed</returns>
       Bitmap CreateSearchBitmap()
       {
          st.Start();
@@ -164,6 +163,52 @@ namespace Maze
 
          g.DrawImage(WallBitmap, 0, 0); // Draws wall bitmap to currently generating bitmap
          st.Stop();
+         return tempBitmap;
+      }
+
+      /// <summary>
+      /// Creates a bitmap with main bitmap and new node informaiton. Used
+      /// for faster realtime drawing.
+      /// </summary>
+      /// <param name="nodes">List of new nodes to draw</param>
+      /// <returns>Bitmap of map with current search information</returns>
+      Bitmap DrawNodes(List<AINode> nodes)
+      {
+         st.Start();
+         // Creates new bitmap and grpahics for the bitmap
+         Bitmap tempBitmap = new Bitmap(Canvas.Width, Canvas.Height);
+         Graphics g = Graphics.FromImage(tempBitmap);
+
+         // Creates all the pens/brushes used for drawing
+         Pen b = new Pen(Color.Black, 1);
+         SolidBrush sbStart = new SolidBrush(Color.Blue);
+         SolidBrush sbEnd = new SolidBrush(Color.Red);
+         SolidBrush sbVisited = new SolidBrush(Color.Cyan);
+         SolidBrush sbPath = new SolidBrush(Color.Purple);
+
+         foreach (AINode n in nodes)
+         {
+            //creating local variables used in drawing calculations for current node
+            int tileHeight = (Canvas.Height / mapHeight);
+            int tilewidth = (Canvas.Width / mapWidth);
+            int xPixel = n.x * tilewidth;
+            int yPixel = n.y * tileHeight;
+
+            // Drawing the results of x search algorithm after it runs
+            if (n.pl == place.start)
+               g.FillRectangle(sbStart, xPixel, yPixel, tilewidth, tileHeight);
+            else if (n.pl == place.end)
+               g.FillRectangle(sbEnd, xPixel, yPixel, tilewidth, tileHeight);
+            else if (n.pl == place.path)
+               g.FillRectangle(sbPath, xPixel, yPixel, tilewidth, tileHeight);
+            else if (n.visited)
+               g.FillRectangle(sbVisited, xPixel, yPixel, tilewidth, tileHeight);
+         }
+
+         g.DrawImage(MainBitmap,0,0);
+
+         st.Stop();
+
          return tempBitmap;
       }
 
@@ -241,6 +286,8 @@ namespace Maze
             }
             else
             {
+               pathfinding.CreateNodeMap(m.map, mapWidth, mapHeight, m.Start, m.End);
+               MainBitmap = CreateSearchBitmap(); // resets drawn map
                pathfinding.StartRealtimeSearch(cBoxSelection.SelectedItem.ToString() + " Realtime", m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
                timerTick.Enabled = true;
             }
@@ -403,9 +450,17 @@ namespace Maze
       /// <param name="e">Tick Event</param>
       private void timerTick_Tick(object sender, EventArgs e)
       {
-         if (pathfinding.RunRealtimeSearch(ticksPerLoops))
+         if (pathfinding.RunRealtimeSearch(ticksPerLoops, out List<AINode> tempNodes))
+         {
             timerTick.Enabled = false;
-         MainBitmap = CreateSearchBitmap();
+            MainBitmap = CreateSearchBitmap();
+            pathfinding.GenerateMetrics();
+            SetMetricLabelText(lblElapsedAvg, lblVisited, lblPathLength);
+            lblElapsedAvg.Text = "Elapsed Time (ms): N/A";
+         }
+         else
+            MainBitmap = DrawNodes(tempNodes);
+
          Canvas.Invalidate();
          
       }
