@@ -40,8 +40,7 @@ namespace Maze
          mapWidth = int.Parse(txtBoxX.Text);
          mapHeight = int.Parse(txtBoxY.Text);
          m = new Map(mapWidth, mapHeight);
-         lblMapGenerationTime.Text = "Generation Time: " + m.GenerateMap(int.Parse(txtBoxX.Text), int.Parse(txtBoxY.Text), int.Parse(txtBoxPercent.Text)).ToString();
-         MainBitmap = WallBitmap = CreateWallBitmap();
+         lblMapGenerationTime.Text = "Generation Time: " + m.GenerateMap(int.Parse(txtBoxPercent.Text)).ToString();
 
          //Set up AI info for the generated map
          pathfinding = new AI();
@@ -53,8 +52,13 @@ namespace Maze
          pbVisited.BackColor = Color.Cyan;
          pbPath.BackColor = Color.Purple;
 
+         // Sets Realtime variables
          ticksPerLoops = (int) NUDLoopsPerTick.Value;
          timerTick.Interval = (int) NUDInterval.Value;
+
+         // Draws map
+         WallBitmap = CreateWallBitmap();
+         MainBitmap = CreateSearchBitmap();
       }
 
       /// <summary>
@@ -188,10 +192,10 @@ namespace Maze
          mapWidth = int.Parse(txtBoxX.Text);
          mapHeight = int.Parse(txtBoxY.Text);
          m = new Map(mapWidth, mapHeight);
-         int percent = int.Parse(txtBoxPercent.Text);
 
          // Generate Map
-         lblMapGenerationTime.Text = "Generation Time: " + m.GenerateMap(0, 0, percent).ToString();
+         int percent = int.Parse(txtBoxPercent.Text);
+         lblMapGenerationTime.Text = "Generation Time: " + m.GenerateMap(percent).ToString();
          
          //Removes any Metric panels that are still being displayed
          foreach (Control c in MetricPanels)

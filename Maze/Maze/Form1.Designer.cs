@@ -380,6 +380,11 @@
             0,
             0,
             0});
+         this.NUDLoopsPerTick.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
          this.NUDLoopsPerTick.Name = "NUDLoopsPerTick";
          this.NUDLoopsPerTick.Size = new System.Drawing.Size(120, 20);
          this.NUDLoopsPerTick.TabIndex = 24;
@@ -400,6 +405,11 @@
          this.NUDInterval.Location = new System.Drawing.Point(11, 105);
          this.NUDInterval.Maximum = new decimal(new int[] {
             1000,
+            0,
+            0,
+            0});
+         this.NUDInterval.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});

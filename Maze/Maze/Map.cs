@@ -53,23 +53,22 @@ namespace Maze
       /// <summary>
       /// Generates a solvable maze with a start and end point.
       /// </summary>
-      /// <param name="xStart">Start X location for the maze</param>
-      /// <param name="yStart">Start Y location for the maze</param>
       /// <param name="cutPercent">The chance that dead are opened up</param>
       /// <returns>Time needed to generate maze in miliseconds</returns>
-      public float GenerateMap(int xStart = 0, int yStart = 0, int cutPercent = 0)
+      public float GenerateMap(int cutPercent)
       {
          st.Start(); // starts timmer for time generation
          
          // Resets map information
-         xStart = rand.Next() % width;
-         yStart = rand.Next() % height;
          map = new Tile[width, height];
          for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
             {
                map[x, y] = new Tile(x, y);
             }
+
+         int xStart = rand.Next() % width;
+         int yStart = rand.Next() % height;
          Start = map[xStart, yStart];
          
          // Set up local variables for generating the map
