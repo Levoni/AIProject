@@ -12,8 +12,13 @@ namespace Maze
    public class AINode
    {
       // Position and huristics
-      public int x, y;
-      public int g, h;
+      public int x { get; set; }
+
+      public int y { get; set; }
+
+      public int g { get; set; }
+
+      public int h { get; set; }
 
       // Children nodes
       public AINode[] AINodes;
