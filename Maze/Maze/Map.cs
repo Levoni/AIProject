@@ -175,8 +175,8 @@ namespace Maze
          int test2 = ((int)moveDirection + 2) % 4; //direction opposite of first direction
 
          // connects the nodes
-         oldNode.nodes[(int)moveDirection] = newNode;
-         newNode.nodes[((int)moveDirection + 2) % 4] = oldNode;
+         oldNode.adjacentTiles[(int)moveDirection] = newNode;
+         newNode.adjacentTiles[((int)moveDirection + 2) % 4] = oldNode;
 
          // pushes new tile onto the stack
          nodeStack.Push(newNode);
@@ -192,22 +192,22 @@ namespace Maze
 
          // Removes wall by moving to the next node then poping that node
          // off the stack.
-         if (n.nodes[(int)dir.UP] != null && n.yPos != height - 1)
+         if (n.adjacentTiles[(int)dir.UP] != null && n.yPos != height - 1)
          {
             MoveToNextNode(nodeStack, n, map[n.xPos, n.yPos + 1], dir.DOWN);
             nodeStack.Pop();
          }
-         else if (n.nodes[(int)dir.DOWN] != null && n.yPos != 0)
+         else if (n.adjacentTiles[(int)dir.DOWN] != null && n.yPos != 0)
          {
             MoveToNextNode(nodeStack, n, map[n.xPos, n.yPos - 1], dir.UP);
             nodeStack.Pop();
          }
-         else if (n.nodes[(int)dir.RIGHT] != null && n.xPos != 0)
+         else if (n.adjacentTiles[(int)dir.RIGHT] != null && n.xPos != 0)
          {
             MoveToNextNode(nodeStack, n, map[n.xPos - 1, n.yPos], dir.LEFT);
             nodeStack.Pop();
          }
-         else if (n.nodes[(int)dir.LEFT] != null && n.xPos != width - 1)
+         else if (n.adjacentTiles[(int)dir.LEFT] != null && n.xPos != width - 1)
          {
             MoveToNextNode(nodeStack, n, map[n.xPos + 1, n.yPos], dir.RIGHT);
             nodeStack.Pop();

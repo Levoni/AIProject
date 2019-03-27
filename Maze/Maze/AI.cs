@@ -47,13 +47,13 @@ namespace Maze
          for (int x = 0; x < xSize; x++)
             for (int y = 0; y < ySize; y++)
             {
-               if (tileMap[x, y].nodes[(int)dir.UP] != null)
+               if (tileMap[x, y].adjacentTiles[(int)dir.UP] != null)
                   nodeMap[x, y].AINodes[(int)dir.UP] = nodeMap[x, y - 1];
-               if (tileMap[x, y].nodes[(int)dir.RIGHT] != null)
+               if (tileMap[x, y].adjacentTiles[(int)dir.RIGHT] != null)
                   nodeMap[x, y].AINodes[(int)dir.RIGHT] = nodeMap[x + 1, y];
-               if (tileMap[x, y].nodes[(int)dir.DOWN] != null)
+               if (tileMap[x, y].adjacentTiles[(int)dir.DOWN] != null)
                   nodeMap[x, y].AINodes[(int)dir.DOWN] = nodeMap[x, y + 1];
-               if (tileMap[x, y].nodes[(int)dir.LEFT] != null)
+               if (tileMap[x, y].adjacentTiles[(int)dir.LEFT] != null)
                   nodeMap[x, y].AINodes[(int)dir.LEFT] = nodeMap[x - 1, y];
                if (tileMap[x, y] == start)
                   nodeMap[x, y].pl = place.start;

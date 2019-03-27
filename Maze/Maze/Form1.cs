@@ -51,6 +51,17 @@ namespace Maze
 
          // Sets Realtime variables
          timerTick.Interval = (int) NUDInterval.Value;
+      }
+
+      /// <summary>
+      /// Resizes and repositions components on form.
+      /// It then draws the bitmaps for the canvas panel.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void Form1_Load(object sender, EventArgs e)
+      {
+         RepositionAndResize();
 
          // Draws map
          WallBitmap = CreateWallBitmap();
@@ -68,8 +79,48 @@ namespace Maze
          e.Graphics.DrawImage(MainBitmap, 0, 0);
          
          st.Stop();
-         lblDrawTime.Text = st.ElapsedMilliseconds.ToString();
+         lblDrawTime.Text = "Draw Time: " + st.ElapsedMilliseconds.ToString();
          st.Reset();
+      }
+
+      /// <summary>
+      /// Repositions and/or resizes conponents on the form
+      /// </summary>
+      public void RepositionAndResize()
+      {
+         int titleHeight = this.Height - this.ClientRectangle.Height;
+
+         int formWidth = ClientRectangle.Width;
+         int formHeight = this.Height - titleHeight;
+
+         Canvas.Bounds = new Rectangle(14, 14, formHeight - 28, formHeight - 28);
+
+         lblCanvasSize.Text = "Canvas Size: " + Canvas.Width.ToString() + " , " + Canvas.Height.ToString();
+
+         pnlMetricOptions.Bounds = new Rectangle(formHeight - 14 + 20, 14, formWidth / 7, formHeight / 7);
+         btnMetrics.Bounds = new Rectangle(0, pnlMetricOptions.Height / 2, pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 2);
+         btnClearMetrics.Bounds = new Rectangle(pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 2, pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 2);
+         
+         pnlMetrics.Bounds = new Rectangle(pnlMetricOptions.Bounds.X, 14 + formHeight / 7, formWidth / 7, formHeight - pnlMetricOptions.Bottom - PBarMetrics.Height - 14);
+         lblSearches.Bounds = new Rectangle(0, 0, pnlMetrics.Bounds.Width, pnlMetrics.Bounds.Height / 10);
+         lstBoxOptions.Bounds = new Rectangle(0, pnlMetrics.Height / 10, pnlMetrics.Width, pnlMetrics.Height / 5);
+         btnAdd.Bounds = new Rectangle(0, pnlMetrics.Height / 10 * 4, pnlMetrics.Width / 2, pnlMetrics.Height / 10);
+         btnRemove.Bounds = new Rectangle(pnlMetrics.Width / 2, pnlMetrics.Height / 10 * 4, pnlMetrics.Width / 2, pnlMetrics.Height / 10);
+         lblSelectedSearches.Bounds = new Rectangle(0, pnlMetrics.Height / 10 * 5, pnlMetrics.Width, pnlMetrics.Height / 10);
+         lstBoxSelected.Bounds = new Rectangle(0, pnlMetrics.Height / 10 * 6, pnlMetrics.Width, pnlMetrics.Height / 5);
+
+         PBarMetrics.Bounds = new Rectangle(pnlMetrics.Location.X, pnlMetrics.Location.Y + pnlMetrics.Height, pnlMetrics.Width, formHeight / 7);
+
+         pnlMapGeneration.Location = new Point(formWidth - pnlMapGeneration.Width - 28, 14);
+
+         lblDrawTime.Location = new Point(pnlMapGeneration.Location.X, pnlMapGeneration.Location.Y + pnlMapGeneration.Height + 6);
+
+         pnlSingleSearch.Location = new Point(pnlMapGeneration.Location.X, pnlMapGeneration.Location.Y + pnlMapGeneration.Height + 24);
+
+         pnlRealtimeSettings.Location = new Point(pnlMapGeneration.Location.X, pnlSingleSearch.Bottom);
+
+         pnlKey.Location = new Point(pnlMapGeneration.Left, formHeight - pnlKey.Height - 28);
+
       }
 
       /// <summary>
@@ -81,7 +132,7 @@ namespace Maze
          st.Restart();
 
          // Creates new bitmap and grpahics for the bitmap
-         Bitmap wallBit = new Bitmap(700, 700);
+         Bitmap wallBit = new Bitmap(Canvas.Width, Canvas.Height);
          Graphics g = Graphics.FromImage(wallBit);
 
          // Creating the differnt pens/brushes used to draw in diffent colors
@@ -102,16 +153,16 @@ namespace Maze
             int yPixel = n.yPos * tileHeight;
 
             // Drawing the walls of each tile
-            if (n.nodes[(int)dir.UP] == null)
+            if (n.adjacentTiles[(int)dir.UP] == null)
                g.DrawLine(b,
                   xPixel, yPixel, xPixel + tilewidth, yPixel);
-            if (n.nodes[(int)dir.RIGHT] == null)
+            if (n.adjacentTiles[(int)dir.RIGHT] == null)
                g.DrawLine(b,
                   xPixel + tilewidth, yPixel, xPixel + tilewidth, yPixel + tileHeight);
-            if (n.nodes[(int)dir.DOWN] == null)
+            if (n.adjacentTiles[(int)dir.DOWN] == null)
                g.DrawLine(b,
                   xPixel, yPixel + tileHeight, xPixel + tilewidth, yPixel + tileHeight);
-            if (n.nodes[(int)dir.LEFT] == null)
+            if (n.adjacentTiles[(int)dir.LEFT] == null)
                g.DrawLine(b,
                   xPixel, yPixel, xPixel, yPixel + tileHeight);
          }
@@ -525,7 +576,6 @@ namespace Maze
       /// <param name="e">click</param>
       private void btnClearMetrics_Click(object sender, EventArgs e)
       {
-
          // Removes any Metric Panels currently being displayed
          foreach (Control c in MetricPanels)
          {
