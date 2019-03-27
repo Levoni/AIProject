@@ -11,10 +11,10 @@ namespace Maze
    /// </summary>
    public class Tile
    {
-      //Array of children nodes that connect in the four direction.
+      //Array of children tiles that connect in the four direction.
       //index for the node correlates with the dir enum value for that
       // direction.
-      public Tile[] nodes;
+      public Tile[] adjacentTiles; //adjacent tiles
       public int xPos, yPos;
 
       /// <summary>
@@ -28,9 +28,9 @@ namespace Maze
          yPos = y;
          //visited = false;
          //pl = place.none;
-         nodes = new Tile[4];
-         for (int i = 0; i < nodes.Length; i++)
-            nodes[i] = null;
+         adjacentTiles = new Tile[4];
+         for (int i = 0; i < adjacentTiles.Length; i++)
+            adjacentTiles[i] = null;
       }
 
       /// <summary>
@@ -41,7 +41,7 @@ namespace Maze
       /// <param name="d">Direction the added node is connecting to</param>
       public void AddNode(Tile n, dir d)
       {
-         nodes[(int)d] = n;
+         adjacentTiles[(int)d] = n;
       }
 
       /// <summary>
@@ -52,7 +52,7 @@ namespace Maze
       public bool IsDeadEnd()
       {
          int connection = 0;
-         foreach(Tile n in nodes)
+         foreach(Tile n in adjacentTiles)
          {
             if (n != null)
                connection++;

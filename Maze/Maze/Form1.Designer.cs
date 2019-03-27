@@ -80,8 +80,8 @@
          this.btnClearMetrics = new System.Windows.Forms.Button();
          this.lblNumOfRuns = new System.Windows.Forms.Label();
          this.NUDRuns = new System.Windows.Forms.NumericUpDown();
-         this.lblDrawTimeText = new System.Windows.Forms.Label();
          this.Canvas = new Maze.DBPanel();
+         this.lblCanvasSize = new System.Windows.Forms.Label();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
@@ -196,11 +196,11 @@
          // lblDrawTime
          // 
          this.lblDrawTime.AutoSize = true;
-         this.lblDrawTime.Location = new System.Drawing.Point(1225, 269);
+         this.lblDrawTime.Location = new System.Drawing.Point(1162, 269);
          this.lblDrawTime.Name = "lblDrawTime";
-         this.lblDrawTime.Size = new System.Drawing.Size(13, 13);
+         this.lblDrawTime.Size = new System.Drawing.Size(70, 13);
          this.lblDrawTime.TabIndex = 14;
-         this.lblDrawTime.Text = "0";
+         this.lblDrawTime.Text = "Draw Time: 0";
          // 
          // pnlMetrics
          // 
@@ -217,21 +217,21 @@
          // 
          // lblSelectedSearches
          // 
-         this.lblSelectedSearches.AutoSize = true;
          this.lblSelectedSearches.Location = new System.Drawing.Point(43, 429);
          this.lblSelectedSearches.Name = "lblSelectedSearches";
          this.lblSelectedSearches.Size = new System.Drawing.Size(100, 13);
          this.lblSelectedSearches.TabIndex = 9;
          this.lblSelectedSearches.Text = "Selected Searches:";
+         this.lblSelectedSearches.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
          // 
          // lblSearches
          // 
-         this.lblSearches.AutoSize = true;
          this.lblSearches.Location = new System.Drawing.Point(43, 267);
          this.lblSearches.Name = "lblSearches";
          this.lblSearches.Size = new System.Drawing.Size(55, 13);
          this.lblSearches.TabIndex = 8;
          this.lblSearches.Text = "Searches:";
+         this.lblSearches.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
          // 
          // btnRemove
          // 
@@ -275,8 +275,9 @@
          // btnMetrics
          // 
          this.btnMetrics.Location = new System.Drawing.Point(3, 37);
+         this.btnMetrics.MaximumSize = new System.Drawing.Size(200, 25);
          this.btnMetrics.Name = "btnMetrics";
-         this.btnMetrics.Size = new System.Drawing.Size(95, 23);
+         this.btnMetrics.Size = new System.Drawing.Size(94, 25);
          this.btnMetrics.TabIndex = 7;
          this.btnMetrics.Text = "Run Metrics";
          this.btnMetrics.UseVisualStyleBackColor = true;
@@ -387,6 +388,7 @@
          // PBarMetrics
          // 
          this.PBarMetrics.Location = new System.Drawing.Point(715, 691);
+         this.PBarMetrics.MaximumSize = new System.Drawing.Size(500, 23);
          this.PBarMetrics.Name = "PBarMetrics";
          this.PBarMetrics.Size = new System.Drawing.Size(200, 23);
          this.PBarMetrics.TabIndex = 23;
@@ -589,6 +591,7 @@
          // 
          // pnlMetricOptions
          // 
+         this.pnlMetricOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
          this.pnlMetricOptions.Controls.Add(this.btnClearMetrics);
          this.pnlMetricOptions.Controls.Add(this.lblNumOfRuns);
          this.pnlMetricOptions.Controls.Add(this.NUDRuns);
@@ -601,8 +604,9 @@
          // btnClearMetrics
          // 
          this.btnClearMetrics.Location = new System.Drawing.Point(100, 37);
+         this.btnClearMetrics.MaximumSize = new System.Drawing.Size(200, 25);
          this.btnClearMetrics.Name = "btnClearMetrics";
-         this.btnClearMetrics.Size = new System.Drawing.Size(97, 23);
+         this.btnClearMetrics.Size = new System.Drawing.Size(97, 25);
          this.btnClearMetrics.TabIndex = 35;
          this.btnClearMetrics.Text = "Clear Metrics";
          this.btnClearMetrics.UseVisualStyleBackColor = true;
@@ -634,15 +638,6 @@
             0,
             0});
          // 
-         // lblDrawTimeText
-         // 
-         this.lblDrawTimeText.AutoSize = true;
-         this.lblDrawTimeText.Location = new System.Drawing.Point(1158, 269);
-         this.lblDrawTimeText.Name = "lblDrawTimeText";
-         this.lblDrawTimeText.Size = new System.Drawing.Size(61, 13);
-         this.lblDrawTimeText.TabIndex = 33;
-         this.lblDrawTimeText.Text = "Draw Time:";
-         // 
          // Canvas
          // 
          this.Canvas.AutoSize = true;
@@ -654,12 +649,22 @@
          this.Canvas.Click += new System.EventHandler(this.Canvas_Click);
          this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
          // 
+         // lblCanvasSize
+         // 
+         this.lblCanvasSize.AutoSize = true;
+         this.lblCanvasSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+         this.lblCanvasSize.Location = new System.Drawing.Point(16, 3);
+         this.lblCanvasSize.Name = "lblCanvasSize";
+         this.lblCanvasSize.Size = new System.Drawing.Size(78, 9);
+         this.lblCanvasSize.TabIndex = 33;
+         this.lblCanvasSize.Text = "Canvas Size: 700,700";
+         // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(1370, 749);
-         this.Controls.Add(this.lblDrawTimeText);
+         this.Controls.Add(this.lblCanvasSize);
          this.Controls.Add(this.pnlMetricOptions);
          this.Controls.Add(this.pnlMapGeneration);
          this.Controls.Add(this.pnlSingleSearch);
@@ -672,10 +677,11 @@
          this.DoubleBuffered = true;
          this.Name = "Form1";
          this.Text = "Form1";
+         this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+         this.Load += new System.EventHandler(this.Form1_Load);
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).EndInit();
          this.pnlMetrics.ResumeLayout(false);
-         this.pnlMetrics.PerformLayout();
          ((System.ComponentModel.ISupportInitialize)(this.pbPath)).EndInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbVisited)).EndInit();
          this.pnlKey.ResumeLayout(false);
@@ -750,7 +756,7 @@
       private System.Windows.Forms.NumericUpDown NUDRuns;
       private System.Windows.Forms.Button btnClearMetrics;
       private System.Windows.Forms.Label lblMapGenerationTime;
-      private System.Windows.Forms.Label lblDrawTimeText;
+      private System.Windows.Forms.Label lblCanvasSize;
    }
 }
 
