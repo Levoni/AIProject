@@ -80,8 +80,8 @@
          this.btnClearMetrics = new System.Windows.Forms.Button();
          this.lblNumOfRuns = new System.Windows.Forms.Label();
          this.NUDRuns = new System.Windows.Forms.NumericUpDown();
-         this.Canvas = new Maze.DBPanel();
          this.lblCanvasSize = new System.Windows.Forms.Label();
+         this.Canvas = new Maze.DBPanel();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
@@ -266,7 +266,8 @@
          this.lstBoxOptions.FormattingEnabled = true;
          this.lstBoxOptions.Items.AddRange(new object[] {
             "Breadth First (Levon)",
-            "Depth FIrst (Levon)"});
+            "Depth First (Levon)",
+            "A* (Ryan)"});
          this.lstBoxOptions.Location = new System.Drawing.Point(43, 292);
          this.lstBoxOptions.Name = "lstBoxOptions";
          this.lstBoxOptions.Size = new System.Drawing.Size(120, 95);
@@ -466,7 +467,8 @@
          this.cBoxSelection.FormattingEnabled = true;
          this.cBoxSelection.Items.AddRange(new object[] {
             "Breadth First (Levon)",
-            "Depth First (Levon)"});
+            "Depth First (Levon)",
+            "A* (Ryan)"});
          this.cBoxSelection.Location = new System.Drawing.Point(6, 28);
          this.cBoxSelection.Name = "cBoxSelection";
          this.cBoxSelection.Size = new System.Drawing.Size(121, 21);
@@ -638,6 +640,16 @@
             0,
             0});
          // 
+         // lblCanvasSize
+         // 
+         this.lblCanvasSize.AutoSize = true;
+         this.lblCanvasSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+         this.lblCanvasSize.Location = new System.Drawing.Point(16, 3);
+         this.lblCanvasSize.Name = "lblCanvasSize";
+         this.lblCanvasSize.Size = new System.Drawing.Size(78, 9);
+         this.lblCanvasSize.TabIndex = 33;
+         this.lblCanvasSize.Text = "Canvas Size: 700,700";
+         // 
          // Canvas
          // 
          this.Canvas.AutoSize = true;
@@ -648,16 +660,6 @@
          this.Canvas.TabIndex = 0;
          this.Canvas.Click += new System.EventHandler(this.Canvas_Click);
          this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
-         // 
-         // lblCanvasSize
-         // 
-         this.lblCanvasSize.AutoSize = true;
-         this.lblCanvasSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-         this.lblCanvasSize.Location = new System.Drawing.Point(16, 3);
-         this.lblCanvasSize.Name = "lblCanvasSize";
-         this.lblCanvasSize.Size = new System.Drawing.Size(78, 9);
-         this.lblCanvasSize.TabIndex = 33;
-         this.lblCanvasSize.Text = "Canvas Size: 700,700";
          // 
          // Form1
          // 

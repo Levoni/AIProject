@@ -80,14 +80,21 @@ namespace Maze
             time = (int) s.RunSearch();
             return (float)time;
          }
-         else
+         else if(searchType == "Depth First (Levon)")
          {
             Search s = new DepthFirstLevon();
             s.SetupSearch(nodeMap, XStart, YStart, XEnd, YEnd);
             time = (int) s.RunSearch();
             return (float)time;
          }
-
+         else if(searchType == "A* (Ryan)")
+         {
+            Search s = new AStarRyan();
+            s.SetupSearch(nodeMap, XStart, YStart, XEnd, YEnd);
+            time = (int)s.RunSearch();
+            return (float)time;
+         }
+         return 0;
       }
 
       /// <summary>
@@ -144,6 +151,11 @@ namespace Maze
          else if(search == "Depth First (Levon) Realtime")
          {
             currentSearch = new DepthFirstLevon();
+            currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
+         }
+         else if(search == "A* (Ryan) Realtime")
+         {
+            currentSearch = new AStarRyan();
             currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
          }
       }
