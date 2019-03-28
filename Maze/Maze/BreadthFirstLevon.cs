@@ -13,6 +13,7 @@ namespace Maze
    {
       // Specific search variables
       protected Queue<AINode> open;
+      protected bool[,] storedChildren;
 
       public BreadthFirstLevon():base()
       {
@@ -24,8 +25,16 @@ namespace Maze
          closed.Clear();
          open.Clear();
 
-         //TODO: fix this bc it will not find path if start = end
-         // puts start node in queue
+         storedChildren = new bool[nodeMap.GetLength(0), nodeMap.GetLength(1)];
+         for(int i = 0; i < storedChildren.GetLength(0); i++)
+         {
+            for (int j = 0; j < storedChildren.GetLength(1); j++)
+            {
+               storedChildren[i,j] = false;
+            }
+         }
+         storedChildren[StartX, StartY] = true;
+
          open.Enqueue(nodeMap[StartX, StartY]);
          open.Peek().visited = true;
 
@@ -33,6 +42,12 @@ namespace Maze
          yStart = StartY;
          xEnd = EndX;
          yEnd = EndY;
+
+         if (xStart == xEnd && yStart == yEnd)
+         {
+            open.Peek().pl = place.start;
+            open.Dequeue();
+         }
       }
 
       public override float RunSearch()
@@ -41,30 +56,31 @@ namespace Maze
          while (open.Count != 0)
          {
             closed[MakeKey(open.Peek().x, open.Peek().y)] = open.Peek();
-            // Checks all children nodes of current node for goal
-            foreach (AINode node in open.Peek().AINodes)
+            AINode n = open.Dequeue();
+            n.visited = true;
+
+            if (n.x == xEnd && n.y == yEnd)
             {
-               if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
+               BackTrack(n);
+               st.Stop();
+               return (float)st.ElapsedMilliseconds;
+            }
+            else
+            {
+               // Adds all children nodes of current node
+               foreach (AINode node in n.AINodes)
                {
-                  if (node.x == xEnd && node.y == yEnd)
+                  if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
                   {
-                     node.visited = true;
-                     node.Parent = open.Peek();
-                     BackTrack(node); // Creates path from start to end
-                     st.Stop();
-                     return (float)st.ElapsedMilliseconds;
-                  }
-                  else
-                  {
-                     // Adds node to queue if it hasn't been visited yet
-                     node.Parent = open.Peek();
-                     if (!node.visited)
+                     if (!storedChildren[node.x, node.y])
+                     {
                         open.Enqueue(node);
-                     node.visited = true;
+                        storedChildren[node.x, node.y] = true;
+                     }
+                     node.Parent = n;
                   }
                }
             }
-            open.Dequeue();
          }
          st.Stop();
          return (float)st.ElapsedMilliseconds;
@@ -78,29 +94,31 @@ namespace Maze
             for (int i = 0; i < times; i++)
             {
                closed[MakeKey(open.Peek().x, open.Peek().y)] = open.Peek();
-               foreach (AINode node in open.Peek().AINodes)
+               AINode n = open.Dequeue();
+               n.visited = true;
+               nodesSearched.Add(n);
+
+               if (n.x == xEnd && n.y == yEnd)
                {
-                  if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
+                  BackTrack(n);
+                  return true;
+               }
+               else
+               {
+                  // Adds all children nodes of current node
+                  foreach (AINode node in n.AINodes)
                   {
-                     nodesSearched.Add(node);
-                     if (node.x == xEnd && node.y == yEnd)
+                     if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
                      {
-                        node.visited = true;
-                        node.Parent = open.Peek();
-                        BackTrack(node);
-                        st.Stop();
-                        return true;
-                     }
-                     else
-                     {
-                        node.Parent = open.Peek();
-                        if (!node.visited)
+                        if (!storedChildren[node.x, node.y])
+                        {
                            open.Enqueue(node);
-                        node.visited = true;
+                           storedChildren[node.x, node.y] = true;
+                        }
+                        node.Parent = n;
                      }
                   }
                }
-               open.Dequeue();
             }
             return false;
          }

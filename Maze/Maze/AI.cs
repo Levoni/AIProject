@@ -120,7 +120,7 @@ namespace Maze
          {
             if (n.visited)
                visitedTiles++;
-            if (n.pl != place.none)
+            if (n.pl != place.none && n.pl != place.start)
                pathLength++;
          }
       }

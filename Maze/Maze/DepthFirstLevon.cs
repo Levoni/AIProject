@@ -24,8 +24,7 @@ namespace Maze
          closed.Clear();
          open.Clear();
 
-         //TODO: fix this bc it will not find path if start = end
-         // puts start node in queue
+         // puts start node in stack
          open.Push(nodeMap[StartX, StartY]);
          open.Peek().visited = true;
 
@@ -34,6 +33,11 @@ namespace Maze
          xEnd = EndX;
          yEnd = EndY;
 
+         if (xStart == xEnd && yStart == yEnd)
+         {
+            open.Peek().pl = place.start;
+            open.Pop();
+         }
       }
 
       public override float RunSearch()
@@ -43,27 +47,23 @@ namespace Maze
          while (open.Count != 0)
          {
             closed[MakeKey(open.Peek().x, open.Peek().y)] = open.Peek();
-            open.Peek().visited = true;
             AINode n = open.Pop();
-            // Checks each child node to see if it is the goal
-            foreach (AINode node in n.AINodes)
+            n.visited = true;
+
+            if (n.x == xEnd && n.y == yEnd)
             {
-               if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
+               BackTrack(n); // Creates path from start to end
+               st.Stop();
+               return st.ElapsedMilliseconds;
+            }
+            else
+            {
+               // Adds all children nodes of current node
+               foreach (AINode node in n.AINodes)
                {
-                  if (node.x == xEnd && node.y == yEnd)
+                  if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
                   {
-                     node.visited = true;
-                     node.Parent = n;
-                     BackTrack(node); // Creates path from start to end
-                     st.Stop();
-                     return st.ElapsedMilliseconds;
-                  }
-                  else
-                  {
-                     // Adds node to stack if it hasn't been visited yet
-                     if (!node.visited)
-                        open.Push(node);
-                     node.visited = true;
+                     open.Push(node);
                      node.Parent = n;
                   }
                }
@@ -83,24 +83,20 @@ namespace Maze
                closed[MakeKey(open.Peek().x, open.Peek().y)] = open.Peek();
                open.Peek().visited = true;
                AINode n = open.Pop();
-               foreach (AINode node in n.AINodes)
+               nodesSearched.Add(n);
+
+               if (n.x == xEnd && n.y == yEnd)
                {
-                  if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
+                  BackTrack(n); // Creates path from start to end
+                  return true;
+               }
+               else
+               {
+                  foreach (AINode node in n.AINodes)
                   {
-                     nodesSearched.Add(node);
-                     if (node.x == xEnd && node.y == yEnd)
+                     if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
                      {
-                        node.visited = true;
-                        node.Parent = n;
-                        BackTrack(node);
-                        st.Stop();
-                        return true;
-                     }
-                     else
-                     {
-                        if (!node.visited)
-                           open.Push(node);
-                        node.visited = true;
+                        open.Push(node);
                         node.Parent = n;
                      }
                   }
