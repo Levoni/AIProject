@@ -94,7 +94,14 @@ namespace Maze
             time = (int)s.RunSearch();
             return (float)time;
          }
-         return 0;
+         else if(searchType == "Greedy Best First (Ryan)")
+			{
+				Search s = new GreedyBestRyan();
+				s.SetupSearch(nodeMap, XStart, YStart, XEnd, YEnd);
+				time = (int)s.RunSearch();
+				return (float)time;
+         }
+			return 0;
       }
 
       /// <summary>
@@ -158,6 +165,11 @@ namespace Maze
             currentSearch = new AStarRyan();
             currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
          }
+			else if(search == "Greedy Best First (Ryan) Realtime")
+			{
+				currentSearch = new GreedyBestRyan();
+				currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
+			}
       }
 
       /// <summary>
