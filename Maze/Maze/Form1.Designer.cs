@@ -272,8 +272,9 @@
          this.lstBoxOptions.Items.AddRange(new object[] {
             "Breadth First (Levon)",
             "Depth First (Levon)",
+            "Hill Climb (Levon)",
             "A* (Ryan)",
-			"Greedy Best First (Ryan)"});
+            "Greedy Best First (Ryan)"});
          this.lstBoxOptions.Location = new System.Drawing.Point(43, 292);
          this.lstBoxOptions.Name = "lstBoxOptions";
          this.lstBoxOptions.Size = new System.Drawing.Size(120, 95);
@@ -475,7 +476,8 @@
             "Breadth First (Levon)",
             "Depth First (Levon)",
             "Hill Climb (Levon)",
-            "A* (Ryan)"});
+            "A* (Ryan)",
+            "Greedy Best First (Ryan)"});
          this.cBoxSelection.Location = new System.Drawing.Point(6, 28);
          this.cBoxSelection.Name = "cBoxSelection";
          this.cBoxSelection.Size = new System.Drawing.Size(121, 21);

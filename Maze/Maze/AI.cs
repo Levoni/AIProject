@@ -143,6 +143,8 @@ namespace Maze
                visitedTiles++;
             if (n.pl != place.none && n.pl != place.start)
                pathLength++;
+            if (n.pl == place.end && n.Parent == null)
+               pathLength = 0;
          }
       }
 
@@ -165,6 +167,11 @@ namespace Maze
          else if(search == "Depth First (Levon) Realtime")
          {
             currentSearch = new DepthFirstLevon();
+            currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
+         }
+         else if(search == "Hill Climb (Levon) Realtime")
+         {
+            currentSearch = new HillClimbLevon();
             currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
          }
          else if(search == "A* (Ryan) Realtime")

@@ -273,6 +273,8 @@ namespace Maze
          time.Text = "Elapsed Time (ms): " + pathfinding.time.ToString();
          visited.Text = "Visited Nodes: " + pathfinding.visitedTiles.ToString();
          length.Text = "Path Length: " + pathfinding.pathLength.ToString();
+         if (pathfinding.pathLength == 0)
+            length.Text = "Path Length: N/A";
       }
 
       /// <summary>
@@ -422,7 +424,7 @@ namespace Maze
             tempB.Click += new EventHandler((sender, e) => btnShow_Click(sender, e, tempBitmap));
 
             SetMetricLabelText(tempElapsed, tempVisited, tempPathLength);
-            tempElapsed.Text = time.ToString();
+            tempElapsed.Text = "Elapsed Time (ms): " + time.ToString();
 
             // Adds bitmap for search into the global bitmap list
             //SearchBitmaps.Add(CreateSearchBitmap());

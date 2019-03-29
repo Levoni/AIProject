@@ -9,6 +9,8 @@ namespace Maze
    class HillClimbLevon : Search
    {
       AINode currentNode;
+      AINode start;
+      AINode end;
 
       public HillClimbLevon() : base()
       {
@@ -26,6 +28,9 @@ namespace Maze
          xEnd = EndX;
          yEnd = EndY;
 
+         start = nodeMap[xStart, yStart];
+         end = nodeMap[xEnd, yEnd];
+
          currentNode = nodeMap[xStart, yStart];
 
          if (xStart == xEnd && yStart == yEnd)
@@ -37,7 +42,60 @@ namespace Maze
 
       public override bool RunRealTimeTick(int times, out List<AINode> nodesSearched)
       {
-         throw new NotImplementedException();
+         nodesSearched = new List<AINode>();
+         if (currentNode != null)
+         {
+            for (int k = 0; k < times; k++)
+            {
+               nodesSearched.Add(currentNode);
+               if (currentNode.x == xEnd && currentNode.y == yEnd)
+               {
+                  BackTrack(currentNode);
+                  st.Stop();
+                  return true;
+               }
+               else
+               {
+                  AINode nextNode = null;
+                  for (int i = 0; i < 4; i++)
+                  {
+                     if (currentNode.AINodes[i] != null && !closed.ContainsKey(MakeKey(currentNode.AINodes[i].x, currentNode.AINodes[i].y)))
+                     {
+                        if (nextNode == null)
+                        {
+                           currentNode.AINodes[i].Parent = currentNode;
+                           nextNode = currentNode.AINodes[i];
+                        }
+                        else if (currentNode.AINodes[i].h < nextNode.h)
+                        {
+                           currentNode.AINodes[i].Parent = currentNode;
+                           nextNode = currentNode.AINodes[i];
+                        }
+                     }
+                  }
+                  currentNode.visited = true;
+                  if (nextNode == null)
+                  {
+                     currentNode = nextNode;
+                     start.pl = place.start;
+                     end.pl = place.end;
+                     return true;
+                  }
+                  else
+                  {
+                     nextNode.Parent = currentNode;
+                     currentNode = nextNode;
+                     if (currentNode != null)
+                     {
+                        if (currentNode.Parent != null)
+                           closed.Add(MakeKey(currentNode.Parent.x, currentNode.Parent.y), currentNode.Parent);
+                     }
+                  }
+               }
+            }
+            return false;
+         }
+         return true;
       }
 
       public override float RunSearch()
@@ -56,24 +114,36 @@ namespace Maze
                AINode nextNode = null;
                for (int i = 0; i < 4; i++)
                {
-                  if (currentNode.AINodes[i] != null && !closed.ContainsKey(MakeKey(currentNode.x, currentNode.y)))
+                  if (currentNode.AINodes[i] != null && !closed.ContainsKey(MakeKey(currentNode.AINodes[i].x, currentNode.AINodes[i].y)))
                   {
                      if (nextNode == null)
                      {
                         currentNode.AINodes[i].Parent = currentNode;
+                        nextNode = currentNode.AINodes[i];
                      }
                      else if (currentNode.AINodes[i].h < nextNode.h)
                      {
                         currentNode.AINodes[i].Parent = currentNode;
+                        nextNode = currentNode.AINodes[i];
                      }
                   }
                }
-               nextNode.Parent = currentNode;
-               currentNode = nextNode;
-               if (currentNode != null)
+               currentNode.visited = true;
+               if (nextNode == null)
                {
-                  if (currentNode.Parent != null)
-                     closed.Add(MakeKey(currentNode.Parent.x, currentNode.Parent.y), currentNode.Parent);
+                  currentNode = nextNode;
+                  start.pl = place.start;
+                  end.pl = place.end;
+               }
+               else
+               {
+                  nextNode.Parent = currentNode;
+                  currentNode = nextNode;
+                  if (currentNode != null)
+                  {
+                     if (currentNode.Parent != null)
+                        closed.Add(MakeKey(currentNode.Parent.x, currentNode.Parent.y), currentNode.Parent);
+                  }
                }
             }
          }
