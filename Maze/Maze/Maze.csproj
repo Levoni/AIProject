@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AI.cs" />
     <Compile Include="AINode.cs" />
+    <Compile Include="AStarRyan.cs" />
     <Compile Include="BreadthFirstLevon.cs" />
     <Compile Include="DBPanel.cs">
       <SubType>Component</SubType>

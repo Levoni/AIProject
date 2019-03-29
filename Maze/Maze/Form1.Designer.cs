@@ -86,6 +86,7 @@
          this.pnlFileIO = new System.Windows.Forms.Panel();
          this.lblFileIO = new System.Windows.Forms.Label();
          this.Canvas = new Maze.DBPanel();
+        
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
@@ -271,7 +272,8 @@
          this.lstBoxOptions.FormattingEnabled = true;
          this.lstBoxOptions.Items.AddRange(new object[] {
             "Breadth First (Levon)",
-            "Depth FIrst (Levon)"});
+            "Depth First (Levon)",
+            "A* (Ryan)"});
          this.lstBoxOptions.Location = new System.Drawing.Point(43, 292);
          this.lstBoxOptions.Name = "lstBoxOptions";
          this.lstBoxOptions.Size = new System.Drawing.Size(120, 95);
@@ -471,7 +473,8 @@
          this.cBoxSelection.FormattingEnabled = true;
          this.cBoxSelection.Items.AddRange(new object[] {
             "Breadth First (Levon)",
-            "Depth First (Levon)"});
+            "Depth First (Levon)",
+            "A* (Ryan)"});
          this.cBoxSelection.Location = new System.Drawing.Point(6, 28);
          this.cBoxSelection.Name = "cBoxSelection";
          this.cBoxSelection.Size = new System.Drawing.Size(121, 21);
