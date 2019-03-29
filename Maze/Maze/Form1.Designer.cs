@@ -475,8 +475,8 @@
          this.cBoxSelection.Items.AddRange(new object[] {
             "Breadth First (Levon)",
             "Depth First (Levon)",
-            "A* (Ryan)"
-			"Greedy Best First (Ryan)"});
+            "A* (Ryan)",
+				"Greedy Best First (Ryan)"});
          this.cBoxSelection.Location = new System.Drawing.Point(6, 28);
          this.cBoxSelection.Name = "cBoxSelection";
          this.cBoxSelection.Size = new System.Drawing.Size(121, 21);
