@@ -62,7 +62,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GreedyLevon.cs" />
+    <Compile Include="HillClimbLevon.cs" />
 	<Compile Include="GreedyBestRyan.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Node.cs" />

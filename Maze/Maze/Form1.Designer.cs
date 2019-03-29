@@ -86,7 +86,6 @@
          this.pnlFileIO = new System.Windows.Forms.Panel();
          this.lblFileIO = new System.Windows.Forms.Label();
          this.Canvas = new Maze.DBPanel();
-        
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
@@ -475,8 +474,8 @@
          this.cBoxSelection.Items.AddRange(new object[] {
             "Breadth First (Levon)",
             "Depth First (Levon)",
-            "A* (Ryan)",
-				"Greedy Best First (Ryan)"});
+            "Hill Climb (Levon)",
+            "A* (Ryan)"});
          this.cBoxSelection.Location = new System.Drawing.Point(6, 28);
          this.cBoxSelection.Name = "cBoxSelection";
          this.cBoxSelection.Size = new System.Drawing.Size(121, 21);
