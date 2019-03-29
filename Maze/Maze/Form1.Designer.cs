@@ -81,7 +81,12 @@
          this.lblNumOfRuns = new System.Windows.Forms.Label();
          this.NUDRuns = new System.Windows.Forms.NumericUpDown();
          this.lblCanvasSize = new System.Windows.Forms.Label();
+         this.btnSave = new System.Windows.Forms.Button();
+         this.btnLoad = new System.Windows.Forms.Button();
+         this.pnlFileIO = new System.Windows.Forms.Panel();
+         this.lblFileIO = new System.Windows.Forms.Label();
          this.Canvas = new Maze.DBPanel();
+        
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
@@ -95,6 +100,7 @@
          this.pnlMapGeneration.SuspendLayout();
          this.pnlMetricOptions.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.NUDRuns)).BeginInit();
+         this.pnlFileIO.SuspendLayout();
          this.SuspendLayout();
          // 
          // btnRegen
@@ -650,6 +656,46 @@
          this.lblCanvasSize.TabIndex = 33;
          this.lblCanvasSize.Text = "Canvas Size: 700,700";
          // 
+         // btnSave
+         // 
+         this.btnSave.Location = new System.Drawing.Point(24, 29);
+         this.btnSave.Name = "btnSave";
+         this.btnSave.Size = new System.Drawing.Size(75, 23);
+         this.btnSave.TabIndex = 34;
+         this.btnSave.Text = "Save";
+         this.btnSave.UseVisualStyleBackColor = true;
+         this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+         // 
+         // btnLoad
+         // 
+         this.btnLoad.Location = new System.Drawing.Point(105, 29);
+         this.btnLoad.Name = "btnLoad";
+         this.btnLoad.Size = new System.Drawing.Size(75, 23);
+         this.btnLoad.TabIndex = 35;
+         this.btnLoad.Text = "Load";
+         this.btnLoad.UseVisualStyleBackColor = true;
+         this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+         // 
+         // pnlFileIO
+         // 
+         this.pnlFileIO.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+         this.pnlFileIO.Controls.Add(this.lblFileIO);
+         this.pnlFileIO.Controls.Add(this.btnSave);
+         this.pnlFileIO.Controls.Add(this.btnLoad);
+         this.pnlFileIO.Location = new System.Drawing.Point(1158, 189);
+         this.pnlFileIO.Name = "pnlFileIO";
+         this.pnlFileIO.Size = new System.Drawing.Size(200, 65);
+         this.pnlFileIO.TabIndex = 36;
+         // 
+         // lblFileIO
+         // 
+         this.lblFileIO.AutoSize = true;
+         this.lblFileIO.Location = new System.Drawing.Point(85, 7);
+         this.lblFileIO.Name = "lblFileIO";
+         this.lblFileIO.Size = new System.Drawing.Size(38, 13);
+         this.lblFileIO.TabIndex = 36;
+         this.lblFileIO.Text = "FIle IO";
+         // 
          // Canvas
          // 
          this.Canvas.AutoSize = true;
@@ -666,6 +712,7 @@
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(1370, 749);
+         this.Controls.Add(this.pnlFileIO);
          this.Controls.Add(this.lblCanvasSize);
          this.Controls.Add(this.pnlMetricOptions);
          this.Controls.Add(this.pnlMapGeneration);
@@ -699,6 +746,8 @@
          this.pnlMetricOptions.ResumeLayout(false);
          this.pnlMetricOptions.PerformLayout();
          ((System.ComponentModel.ISupportInitialize)(this.NUDRuns)).EndInit();
+         this.pnlFileIO.ResumeLayout(false);
+         this.pnlFileIO.PerformLayout();
          this.ResumeLayout(false);
          this.PerformLayout();
 
@@ -759,6 +808,10 @@
       private System.Windows.Forms.Button btnClearMetrics;
       private System.Windows.Forms.Label lblMapGenerationTime;
       private System.Windows.Forms.Label lblCanvasSize;
+      private System.Windows.Forms.Button btnSave;
+      private System.Windows.Forms.Button btnLoad;
+      private System.Windows.Forms.Panel pnlFileIO;
+      private System.Windows.Forms.Label lblFileIO;
    }
 }
 
