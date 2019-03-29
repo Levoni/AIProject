@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -214,6 +215,71 @@ namespace Maze
          }
       }
 
-      
+      public void SaveMap(string saveName)
+      {
+         using (StreamWriter sw = new StreamWriter(saveName))
+         {
+            string walls = string.Empty;
+            sw.WriteLine(width.ToString() + "," + height.ToString());
+            sw.WriteLine(Start.xPos + "," + Start.yPos + "," + End.xPos + "," + End.yPos);
+            for(int j = 0; j < height; j++)
+            {
+               walls = string.Empty;
+               for (int i = 0; i < width; i++)
+               {
+                  foreach(Tile t in map[i,j].adjacentTiles)
+                  {
+                     if (t != null)
+                        walls += "1";
+                     else
+                        walls += "0";
+                  }
+                  walls += ":";
+               }
+               walls = walls.Substring(0, walls.Length - 1);
+               sw.WriteLine(walls);
+            }
+         }
+      }
+
+      public void LoadMap(string fileName)
+      {
+         using (StreamReader sr = new StreamReader(fileName))
+         {
+            string[] size = sr.ReadLine().Split(',');
+            string[] startEnd = sr.ReadLine().Split(',');
+            map = new Tile[int.Parse(size[0]), int.Parse(size[1])];
+            width = int.Parse(size[0]);
+            height = int.Parse(size[1]);
+
+            for (int i = 0; i < width; i++)
+            {
+               for (int j = 0; j < height; j++)
+               {
+                  map[i, j] = new Tile(i,j);
+               }
+            }
+
+            Start = map[int.Parse(startEnd[0]), int.Parse(startEnd[1])];
+            End = map[int.Parse(startEnd[2]), int.Parse(startEnd[3])];
+
+            for (int j = 0; j < height; j++)
+            {
+               string[] row = sr.ReadLine().Split(':');
+               for(int i = 0; i < width; i++)
+               {
+                  string tile = row[i];
+                  if (tile[(int)dir.UP] == '1')
+                     map[i, j].adjacentTiles[(int)dir.UP] = map[i, j - 1];
+                  if (tile[(int)dir.RIGHT] == '1')
+                     map[i, j].adjacentTiles[(int)dir.RIGHT] = map[i + 1, j];
+                  if (tile[(int)dir.DOWN] == '1')
+                     map[i, j].adjacentTiles[(int)dir.DOWN] = map[i, j + 1];
+                  if (tile[(int)dir.LEFT] == '1')
+                     map[i, j].adjacentTiles[(int)dir.LEFT] = map[i - 1, j];
+               }
+            }
+         }
+      }
    }
 }

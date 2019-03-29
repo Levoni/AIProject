@@ -113,9 +113,11 @@ namespace Maze
 
          pnlMapGeneration.Location = new Point(formWidth - pnlMapGeneration.Width - 28, 14);
 
-         lblDrawTime.Location = new Point(pnlMapGeneration.Location.X, pnlMapGeneration.Location.Y + pnlMapGeneration.Height + 6);
+         pnlFileIO.Location = new Point(formWidth - pnlMapGeneration.Width - 28, pnlMapGeneration.Bottom);
 
-         pnlSingleSearch.Location = new Point(pnlMapGeneration.Location.X, pnlMapGeneration.Location.Y + pnlMapGeneration.Height + 24);
+         lblDrawTime.Location = new Point(pnlMapGeneration.Location.X, pnlFileIO.Bottom);
+
+         pnlSingleSearch.Location = new Point(pnlMapGeneration.Location.X, pnlFileIO.Bottom + 24);
 
          pnlRealtimeSettings.Location = new Point(pnlMapGeneration.Location.X, pnlSingleSearch.Bottom);
 
@@ -588,6 +590,62 @@ namespace Maze
          GC.Collect();
          GC.WaitForPendingFinalizers();
          GC.Collect();
+      }
+
+      /// <summary>
+      /// Saves a map's information to a file
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void btnSave_Click(object sender, EventArgs e)
+      {
+         if (!System.IO.Directory.Exists("./maps"))
+         {
+            System.IO.Directory.CreateDirectory("./maps");
+         }
+
+         using (SaveFileDialog save = new SaveFileDialog())
+         {
+            save.InitialDirectory = System.IO.Directory.GetCurrentDirectory() + "/maps";
+            save.Filter = "tile map files (*.tm)|*.tm|All files (*.*)|*.*";
+            if (save.ShowDialog() == DialogResult.OK)
+            {
+               m.SaveMap(save.FileName);
+            }
+         }
+      }
+
+      /// <summary>
+      /// Loads a map's information from a file
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void btnLoad_Click(object sender, EventArgs e)
+      {
+         if (!System.IO.Directory.Exists("./maps"))
+         {
+            System.IO.Directory.CreateDirectory("./maps");
+         }
+
+         using (OpenFileDialog load = new OpenFileDialog())
+         {
+            load.InitialDirectory = System.IO.Directory.GetCurrentDirectory() + "/maps";
+            load.Filter = "tile map files (*.tm)|*.tm|All files (*.*)|*.*";
+            if (load.ShowDialog() == DialogResult.OK)
+            {
+               m.LoadMap(load.FileName);
+            }
+         }
+
+         pathfinding.CreateNodeMap(m.map, m.map.GetLength(0), m.map.GetLength(1), m.Start, m.End);
+
+         mapWidth = m.map.GetLength(0);
+         mapHeight = m.map.GetLength(1);
+
+         WallBitmap = CreateWallBitmap();
+         MainBitmap = CreateSearchBitmap();
+
+         Canvas.Invalidate();
       }
    }
 }
