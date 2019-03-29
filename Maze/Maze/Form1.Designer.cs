@@ -81,7 +81,6 @@
          this.lblNumOfRuns = new System.Windows.Forms.Label();
          this.NUDRuns = new System.Windows.Forms.NumericUpDown();
          this.lblCanvasSize = new System.Windows.Forms.Label();
-         this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
          this.btnSave = new System.Windows.Forms.Button();
          this.btnLoad = new System.Windows.Forms.Button();
          this.pnlFileIO = new System.Windows.Forms.Panel();
@@ -654,11 +653,6 @@
          this.lblCanvasSize.TabIndex = 33;
          this.lblCanvasSize.Text = "Canvas Size: 700,700";
          // 
-         // folderBrowserDialog1
-         // 
-         this.folderBrowserDialog1.SelectedPath = "./";
-         this.folderBrowserDialog1.ShowNewFolderButton = false;
-         // 
          // btnSave
          // 
          this.btnSave.Location = new System.Drawing.Point(24, 29);
@@ -811,7 +805,6 @@
       private System.Windows.Forms.Button btnClearMetrics;
       private System.Windows.Forms.Label lblMapGenerationTime;
       private System.Windows.Forms.Label lblCanvasSize;
-      private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
       private System.Windows.Forms.Button btnSave;
       private System.Windows.Forms.Button btnLoad;
       private System.Windows.Forms.Panel pnlFileIO;
