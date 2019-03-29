@@ -638,6 +638,10 @@ namespace Maze
          }
 
          pathfinding.CreateNodeMap(m.map, m.map.GetLength(0), m.map.GetLength(1), m.Start, m.End);
+
+         mapWidth = m.map.GetLength(0);
+         mapHeight = m.map.GetLength(1);
+
          WallBitmap = CreateWallBitmap();
          MainBitmap = CreateSearchBitmap();
 
