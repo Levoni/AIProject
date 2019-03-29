@@ -24,9 +24,7 @@ namespace Maze
             {
                closed[MakeKey(openNodes.ElementAt(0).Key.x, openNodes.ElementAt(0).Key.y)] = openNodes.ElementAt(0).Key;
                AINode nextNode = openNodes.ElementAt(0).Key;
-               //nodesSearched.Add(nextNode);
                foreach (AINode node in nextNode.AINodes)
-               {
                   if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y))) //Checking for legal node
                   {
                      if (node.x == xEnd && node.y == yEnd) //If at the end node
@@ -48,7 +46,6 @@ namespace Maze
                         nodesSearched.Add(node);
                      }
                   }
-               }
                openNodes.Remove(nextNode); //Removing parent node and ordering by least cost
                if (openNodes.Count > 0)
                   openNodes = openNodes.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
@@ -66,7 +63,6 @@ namespace Maze
             closed[MakeKey(openNodes.ElementAt(0).Key.x, openNodes.ElementAt(0).Key.y)] = openNodes.ElementAt(0).Key;
             AINode nextNode = openNodes.ElementAt(0).Key;
             foreach (AINode node in nextNode.AINodes)
-            {
                if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y))) //Checking for legal node
                {
                   if (node.x == xEnd && node.y == yEnd) //if at the end node
@@ -82,13 +78,10 @@ namespace Maze
                      node.Parent = nextNode;
                      node.g += nextNode.g;
                      if (!openNodes.ContainsKey(node))
-                     {
-                        openNodes.Add(node, (node.g + node.h)); //remove '+1' later
-                     }
+                        openNodes.Add(node, (node.g + node.h));
                      node.visited = true;
                   }
                }
-            }
             openNodes.Remove(nextNode); //Removing parent node and ordering by least cost
             if (openNodes.Count > 0)
                openNodes = openNodes.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
@@ -119,13 +112,14 @@ namespace Maze
             }
       }
 
-      private void generateHeuristicsAndValues(AINode[,] map) //manhattan distance
+      private void generateHeuristicsAndValues(AINode[,] map) //diagonal distance
       {
          foreach (AINode n in map)
          {
             int distX = Math.Abs(xEnd - n.x);
             int distY = Math.Abs(yEnd - n.y);
-            n.h = distX + distY;
+				//n.h = distX + distY;
+				n.h = (int)Math.Sqrt((distX * distX) + (distY * distY));
             n.g = 1;
          }
       }
