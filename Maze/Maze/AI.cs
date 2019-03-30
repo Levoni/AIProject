@@ -113,7 +113,7 @@ namespace Maze
             Search s = new DijkstraMatthew();
             s.SetupSearch(nodeMap, XStart, YStart, XEnd, YEnd);
             time = (int)s.RunSearch();
-            return (float)time;
+            return time;
          }
          return 0;
       }

@@ -9,10 +9,12 @@ namespace Maze
    class DijkstraMatthew : Search
    {
       private Dictionary<string, AINode> open;
+      private AINode goalNode;
 
       public DijkstraMatthew() : base()
       {
          open = new Dictionary<string, AINode>();
+         goalNode = null;
       }
 
       public override void SetupSearch(AINode[,] nodeMap, int startX, int startY, int endX, int endY)
@@ -21,6 +23,7 @@ namespace Maze
          yStart = startY;
          xEnd = endX;
          yEnd = endY;
+         goalNode = nodeMap[endX, endY];
 
          for (int x = 0; x < nodeMap.GetLength(0); x++)
          {
@@ -38,43 +41,41 @@ namespace Maze
 
       public override float RunSearch()
       {
+         st.Restart();
          AINode currentNode = null;
-         while(!closed.ContainsKey(MakeKey(xEnd, yEnd)) && open.Count != 0)
+
+         while(!goalNode.visited && open.Count != 0)
          {
             currentNode = SelectNextNode();
-            currentNode.visited = true;
+            
             foreach (AINode neighborNode in currentNode.AINodes)
             {
-               if (neighborNode != null && !closed.ContainsKey(MakeKey(neighborNode.x, neighborNode.y)))
+               if (neighborNode != null && !neighborNode.visited)
                {
-                  AINode nodeToEdit;
-                  if (open.ContainsKey(MakeKey(neighborNode.x, neighborNode.y)))
-                  {
-                     open.TryGetValue(MakeKey(neighborNode.x, neighborNode.y), out nodeToEdit);
-                     open.Remove(MakeKey(neighborNode.x, neighborNode.y));
-                  }
-                  else
-                  {
-                     nodeToEdit = neighborNode;
-                  }
-
                   int distanceFromStart = currentNode.g + 1;
                   if (distanceFromStart < neighborNode.g || neighborNode.g == -1)
                   {
                      neighborNode.g = distanceFromStart;
                      neighborNode.Parent = currentNode;
                   }
-                  open.Add(MakeKey(neighborNode.x, neighborNode.y), neighborNode);
+
+                  if (!open.ContainsKey(MakeKey(neighborNode.x, neighborNode.y)))
+                  {
+                     open.Add(MakeKey(neighborNode.x, neighborNode.y), neighborNode);
+                  }
                }
             }
 
             open.Remove(MakeKey(currentNode.x, currentNode.y));
             closed.Add(MakeKey(currentNode.x, currentNode.y), currentNode);
+
+            currentNode.visited = true;
          }
 
+         st.Stop();
          BackTrack(currentNode);
-
-         return 0;
+         
+         return st.ElapsedMilliseconds;
       }
 
       public override bool RunRealTimeTick(int times, out List<AINode> nodesSearched)
