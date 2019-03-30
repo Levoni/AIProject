@@ -191,6 +191,11 @@ namespace Maze
             currentSearch = new GreedyBestRyan();
             currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
          }
+         else if (search == "Dijkstra (Matthew) Realtime")
+         {
+            currentSearch = new DijkstraMatthew();
+            currentSearch.SetupSearch(nodeMap, xStart, yStart, xEnd, yEnd);
+         }
       }
 
       /// <summary>

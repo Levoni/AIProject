@@ -47,33 +47,15 @@ namespace Maze
          while(!goalNode.visited && open.Count != 0)
          {
             currentNode = SelectNextNode();
-            
-            foreach (AINode neighborNode in currentNode.AINodes)
-            {
-               if (neighborNode != null && !neighborNode.visited)
-               {
-                  int distanceFromStart = currentNode.g + 1;
-                  if (distanceFromStart < neighborNode.g || neighborNode.g == -1)
-                  {
-                     neighborNode.g = distanceFromStart;
-                     neighborNode.Parent = currentNode;
-                  }
-
-                  if (!open.ContainsKey(MakeKey(neighborNode.x, neighborNode.y)))
-                  {
-                     open.Add(MakeKey(neighborNode.x, neighborNode.y), neighborNode);
-                  }
-               }
-            }
-
-            open.Remove(MakeKey(currentNode.x, currentNode.y));
-            closed.Add(MakeKey(currentNode.x, currentNode.y), currentNode);
-
-            currentNode.visited = true;
+            ProcessCurrentNode(currentNode);
          }
 
          st.Stop();
-         BackTrack(currentNode);
+
+         if (currentNode != null)
+         {
+            BackTrack(currentNode);
+         }
          
          return st.ElapsedMilliseconds;
       }
@@ -81,6 +63,22 @@ namespace Maze
       public override bool RunRealTimeTick(int times, out List<AINode> nodesSearched)
       {
          nodesSearched = new List<AINode>();
+         AINode currentNode = null;
+
+         for (int i = 0; i < times; i++)
+         {
+            currentNode = SelectNextNode();
+            ProcessCurrentNode(currentNode);
+            nodesSearched.Add(currentNode);
+
+            if (goalNode.visited)
+            {
+               st.Stop();
+               BackTrack(currentNode);
+               return true;
+            }
+         }
+
          return false;
       }
 
@@ -98,6 +96,32 @@ namespace Maze
          }
 
          return nextCandidate;
+      }
+
+      private void ProcessCurrentNode(AINode currentNode)
+      {
+         foreach (AINode neighborNode in currentNode.AINodes)
+         {
+            if (neighborNode != null && !neighborNode.visited)
+            {
+               int distanceFromStart = currentNode.g + 1;
+               if (distanceFromStart < neighborNode.g || neighborNode.g == -1)
+               {
+                  neighborNode.g = distanceFromStart;
+                  neighborNode.Parent = currentNode;
+               }
+
+               if (!open.ContainsKey(MakeKey(neighborNode.x, neighborNode.y)))
+               {
+                  open.Add(MakeKey(neighborNode.x, neighborNode.y), neighborNode);
+               }
+            }
+         }
+
+         open.Remove(MakeKey(currentNode.x, currentNode.y));
+         closed.Add(MakeKey(currentNode.x, currentNode.y), currentNode);
+
+         currentNode.visited = true;
       }
    }
 }
