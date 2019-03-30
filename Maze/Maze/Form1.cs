@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace Maze
 {
@@ -20,10 +14,15 @@ namespace Maze
       int mapWidth;
       int mapHeight;
       System.Diagnostics.Stopwatch st;
-      Bitmap WallBitmap = new Bitmap(700, 700);
-      Bitmap MainBitmap = new Bitmap(700, 700);
+      Bitmap WallBitmap;
+      Bitmap MainBitmap;
       List<Panel> MetricPanels = new List<Panel>();
       bool selectingStartEnd = false;
+
+      Timer EditTimer = new Timer();
+      bool[] selectedEditingwalls;
+      int highlightXStart, highlightYStart;
+      int highlightXEnd, highlightYEnd;
 
       public Form1()
       {
@@ -32,7 +31,7 @@ namespace Maze
          // Initialize AI Class and stopwatch
          pathfinding = new AI();
          st = new System.Diagnostics.Stopwatch();
-
+         
          //Generates the first map
          mapWidth = int.Parse(txtBoxX.Text);
          mapHeight = int.Parse(txtBoxY.Text);
@@ -41,7 +40,7 @@ namespace Maze
 
          //Set up AI info for the generated map
          pathfinding = new AI();
-         pathfinding.CreateNodeMap(m.map, int.Parse(txtBoxX.Text), int.Parse(txtBoxX.Text),m.Start,m.End);
+         pathfinding.CreateNodeMap(m.map, int.Parse(txtBoxX.Text), int.Parse(txtBoxX.Text), m.Start, m.End);
 
          //sets coor of picture boxes in the legend
          pbStart.BackColor = Color.Blue;
@@ -50,7 +49,13 @@ namespace Maze
          pbPath.BackColor = Color.Purple;
 
          // Sets Realtime variables
-         timerTick.Interval = (int) NUDInterval.Value;
+         timerTick.Interval = (int)NUDInterval.Value;
+
+         // Sets up Paste variales
+         selectedEditingwalls = new bool[4];
+         for (int i = 0; i < 4; i++)
+            selectedEditingwalls[i] = false;
+         EditTimer.Tick += EditTimer_Tick;
       }
 
       /// <summary>
@@ -77,7 +82,7 @@ namespace Maze
       {
          st.Start();
          e.Graphics.DrawImage(MainBitmap, 0, 0);
-         
+
          st.Stop();
          lblDrawTime.Text = "Draw Time: " + st.ElapsedMilliseconds.ToString();
          st.Reset();
@@ -100,7 +105,7 @@ namespace Maze
          pnlMetricOptions.Bounds = new Rectangle(formHeight - 14 + 20, 14, formWidth / 7, formHeight / 7);
          btnMetrics.Bounds = new Rectangle(0, pnlMetricOptions.Height / 2, pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 2);
          btnClearMetrics.Bounds = new Rectangle(pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 2, pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 2);
-         
+
          pnlMetrics.Bounds = new Rectangle(pnlMetricOptions.Bounds.X, 14 + formHeight / 7, formWidth / 7, formHeight - pnlMetricOptions.Bottom - PBarMetrics.Height - 14);
          lblSearches.Bounds = new Rectangle(0, 0, pnlMetrics.Bounds.Width, pnlMetrics.Bounds.Height / 10);
          lstBoxOptions.Bounds = new Rectangle(0, pnlMetrics.Height / 10, pnlMetrics.Width, pnlMetrics.Height / 5);
@@ -122,6 +127,8 @@ namespace Maze
          pnlRealtimeSettings.Location = new Point(pnlMapGeneration.Location.X, pnlSingleSearch.Bottom);
 
          pnlKey.Location = new Point(pnlMapGeneration.Left, formHeight - pnlKey.Height - 28);
+
+         pnlEditOptions.Location = new Point(pnlMapGeneration.Left - pnlEditOptions.Width,pnlMapGeneration.Top);
 
       }
 
@@ -255,7 +262,7 @@ namespace Maze
                g.FillRectangle(sbVisited, xPixel, yPixel, tilewidth, tileHeight);
          }
 
-         g.DrawImage(MainBitmap,0,0);
+         g.DrawImage(MainBitmap, 0, 0);
 
          st.Stop();
 
@@ -293,7 +300,7 @@ namespace Maze
          // Generate Map
          int percent = int.Parse(txtBoxPercent.Text);
          lblMapGenerationTime.Text = "Generation Time: " + m.GenerateMap(percent).ToString();
-         
+
          //Removes any Metric panels that are still being displayed
          foreach (Control c in MetricPanels)
          {
@@ -304,7 +311,7 @@ namespace Maze
 
 
          // Generate the coorisponding node map for tile map
-         pathfinding.CreateNodeMap(m.map, int.Parse(txtBoxX.Text), int.Parse(txtBoxY.Text),m.Start,m.End);
+         pathfinding.CreateNodeMap(m.map, int.Parse(txtBoxX.Text), int.Parse(txtBoxY.Text), m.Start, m.End);
 
          // Creates the bitmaps that will be drawn 
          WallBitmap = CreateWallBitmap();
@@ -313,7 +320,7 @@ namespace Maze
          // Forces Garbage to be collected
          GC.Collect();
          GC.WaitForPendingFinalizers();
-         GC.Collect();  
+         GC.Collect();
 
          Canvas.Invalidate(); // Forces Canvas to redraw
       }
@@ -326,12 +333,12 @@ namespace Maze
       /// <param name="e"></param>
       private void btnRunSearch_Click(object sender, EventArgs e)
       {
-         if (cBoxSelection.SelectedItem != null)
+         if (cmbSelection.SelectedItem != null)
          {
             pathfinding.ResetNodeSearchInfo();
-            if (!cbRealtime.Checked)
+            if (!cboxRealtime.Checked)
             {
-               pathfinding.RunSearch(cBoxSelection.SelectedItem.ToString(), m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
+               pathfinding.RunSearch(cmbSelection.SelectedItem.ToString(), m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
                pathfinding.GenerateMetrics();
                SetMetricLabelText(lblElapsedAvg, lblVisited, lblPathLength);
                MainBitmap = CreateSearchBitmap();
@@ -340,7 +347,7 @@ namespace Maze
             {
                pathfinding.CreateNodeMap(m.map, mapWidth, mapHeight, m.Start, m.End);
                MainBitmap = CreateSearchBitmap(); // resets drawn map
-               pathfinding.StartRealtimeSearch(cBoxSelection.SelectedItem.ToString() + " Realtime", m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
+               pathfinding.StartRealtimeSearch(cmbSelection.SelectedItem.ToString() + " Realtime", m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
                timerTick.Enabled = true;
             }
          }
@@ -387,7 +394,7 @@ namespace Maze
             {
                pathfinding.ResetNodeSearchInfo();
                time += pathfinding.RunSearch(searches[i], m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
-               PBarMetrics.Value = (int) (100 * (++curRun / totalRuns));
+               PBarMetrics.Value = (int)(100 * (++curRun / totalRuns));
             }
             time = time / (float)NUDRuns.Value;
             pathfinding.GenerateMetrics();
@@ -419,7 +426,7 @@ namespace Maze
             tempB.AutoSize = true;
             tempB.Text = "Show Bitmap";
             Bitmap tempBitmap = CreateSearchBitmap();
-            
+
             // TODO: look into passing bitmap into lambda function to remove global variable
             tempB.Click += new EventHandler((sender, e) => btnShow_Click(sender, e, tempBitmap));
 
@@ -514,7 +521,7 @@ namespace Maze
             MainBitmap = DrawNodes(tempNodes);
 
          Canvas.Invalidate();
-         
+
       }
 
       /// <summary>
@@ -524,7 +531,7 @@ namespace Maze
       /// <param name="e">valueChanged</param>
       private void NUDInterval_ValueChanged(object sender, EventArgs e)
       {
-         timerTick.Interval = (int) NUDInterval.Value;
+         timerTick.Interval = (int)NUDInterval.Value;
       }
 
       /// <summary>
@@ -546,16 +553,15 @@ namespace Maze
       /// <param name="e"></param>
       private void Canvas_Click(object sender, EventArgs e)
       {
-         if(selectingStartEnd)
+         int x = MousePosition.X - Canvas.PointToScreen(new Point(0, 0)).X;
+         int y = MousePosition.Y - Canvas.PointToScreen(new Point(0, 0)).Y;
+
+         // Determines which tile the click occured at
+         int xTile = x / (Canvas.Width / mapWidth);
+         int yTile = y / (Canvas.Height / mapHeight);
+
+         if (selectingStartEnd)
          {
-            // Gets the mouse position relative to the canvas's top left pixel position
-            int x = MousePosition.X - Canvas.PointToScreen(new Point(0, 0)).X;
-            int y = MousePosition.Y - Canvas.PointToScreen(new Point(0, 0)).Y;
-
-            // Determines which tile the click occured at
-            int xTile = x / (Canvas.Width / mapWidth);
-            int yTile = y / (Canvas.Height / mapHeight);
-
             if (RBStart.Checked)
                m.Start = m.map[xTile, yTile];
             else
@@ -648,6 +654,197 @@ namespace Maze
          MainBitmap = CreateSearchBitmap();
 
          Canvas.Invalidate();
+      }
+
+      //TODO: refactor all the below code.
+
+      /// <summary>
+      /// Stars edit timmer if checkbox Editing is checked. Sets start of highlight position.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void Canvas_MouseDown(object sender, MouseEventArgs e)
+      {
+         if (cBoxEditing.Checked)
+         {
+            highlightXStart = MousePosition.X - Canvas.PointToScreen(new Point(0, 0)).X;
+            highlightYStart = MousePosition.Y - Canvas.PointToScreen(new Point(0, 0)).Y;
+
+            EditTimer.Interval = 1;
+            EditTimer.Enabled = true;
+         }
+      }
+
+      /// <summary>
+      /// Finds current endPoint of highlight and draws the highlight.
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="e"></param>
+      private void EditTimer_Tick(Object source, EventArgs e)
+      {
+         if (cBoxEditing.Checked)
+         {
+            // Gets the mouse position relative to the canvas's top left pixel position
+            highlightXEnd = MousePosition.X - Canvas.PointToScreen(new Point(0, 0)).X;
+            highlightYEnd = MousePosition.Y - Canvas.PointToScreen(new Point(0, 0)).Y;
+
+            MainBitmap = CreateSearchBitmap();
+            Graphics.FromImage(MainBitmap).FillRectangle(new SolidBrush(Color.FromArgb(50, Color.Red)), new Rectangle(Math.Min(highlightXEnd, highlightXStart), Math.Min(highlightYEnd, highlightYStart), Math.Abs(highlightXEnd - highlightXStart), Math.Abs(highlightYEnd - highlightYStart)));
+            Canvas.Invalidate();
+         }
+      }
+
+      /// <summary>
+      /// Uses the highlighted area and edit contorol info to set the tiles walls.
+      /// Stops timer.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void Canvas_MouseUp(object sender, MouseEventArgs e)
+      {
+         int tileHeight = (Canvas.Height / mapHeight);
+         int tilewidth = (Canvas.Width / mapWidth);
+
+         if (cmbEditOptions.SelectedItem != null && cmbEditOptions.SelectedItem.ToString() == "Fill")
+            foreach (Tile t in m.map)
+            {
+               int xPixel = t.xPos * tilewidth;
+               int yPixel = t.yPos * tileHeight;
+
+               if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
+                   && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
+               {
+                  if (t.yPos - 1 >= 0)
+                     if ((!selectedEditingwalls[0] && rbReplace.Checked) || (selectedEditingwalls[0] && rbRemove.Checked))
+                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
+                     else if (selectedEditingwalls[0] && !rbRemove.Checked)
+                        m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
+                  if (t.xPos + 1 < mapWidth)
+                     if ((!selectedEditingwalls[1] && rbReplace.Checked) || (selectedEditingwalls[1] && rbRemove.Checked))
+                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
+                     else if (selectedEditingwalls[1] && !rbRemove.Checked)
+                        m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
+                  if (t.yPos + 1 < mapHeight)
+                     if ((!selectedEditingwalls[2] && rbReplace.Checked) || (selectedEditingwalls[2] && rbRemove.Checked))
+                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
+                     else if (selectedEditingwalls[2] && !rbRemove.Checked)
+                        m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
+                  if (t.xPos - 1 >= 0)
+                     if ((!selectedEditingwalls[3] && rbReplace.Checked) || (selectedEditingwalls[3] && rbRemove.Checked))
+                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
+                     else if (selectedEditingwalls[3] && !rbRemove.Checked)
+                        m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
+               }
+
+            }
+         else if (cmbEditOptions.SelectedItem != null && cmbEditOptions.SelectedItem.ToString() == "Perimeter")
+            foreach (Tile t in m.map)
+            {
+               int xPixel = t.xPos * tilewidth;
+               int yPixel = t.yPos * tileHeight;
+
+               if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
+                && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
+               {
+                  if (t.xPos - 1 >= 0)
+                     m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
+                  if (t.yPos + 1 < mapHeight)
+                     m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
+                  if (t.xPos + 1 < mapWidth)
+                     m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
+                  if (t.yPos - 1 >= 0)
+                     m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
+
+                  if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
+                && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Min(highlightYStart, highlightYEnd) > yPixel)
+                  {
+                     if (t.yPos - 1 >= 0)
+                        if (selectedEditingwalls[0])
+                           m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
+                  }
+                  if (Math.Max(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
+                   && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
+                  {
+                     if (t.xPos + 1 < mapWidth)
+                        if (selectedEditingwalls[1])
+                           m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
+                  }
+                  if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
+                   && Math.Max(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
+                  {
+                     if (t.yPos + 1 < mapHeight)
+                        if (selectedEditingwalls[2])
+                           m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
+                  }
+                  if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Min(highlightXStart, highlightXEnd) > xPixel
+                   && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
+                  {
+                     if (t.xPos - 1 >= 0)
+                        if (selectedEditingwalls[3])
+                           m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
+                  }
+               }
+            }
+
+         pathfinding.CreateNodeMap(m.map, mapWidth, mapHeight, m.Start, m.End);
+         WallBitmap = CreateWallBitmap();
+         MainBitmap = CreateSearchBitmap();
+         Canvas.Invalidate();
+
+         EditTimer.Enabled = false;
+      }
+
+      /// <summary>
+      /// Paints the walls of the pnlEdit example tile based on the info in selectedEditingWalls.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void panel1_Paint(object sender, PaintEventArgs e)
+      {
+         Pen p = new Pen(Color.Black);
+         SolidBrush sb = new SolidBrush(Color.Black);
+
+         e.Graphics.DrawRectangle(p, new Rectangle(pnlEdit.Width / 5, pnlEdit.Height / 5, pnlEdit.Width / 5 * 3, pnlEdit.Height / 5 * 3));
+
+         if (selectedEditingwalls[0])
+            e.Graphics.FillRectangle(sb, new Rectangle(0, 0, pnlEdit.Width, pnlEdit.Height / 5));
+         if (selectedEditingwalls[1])
+            e.Graphics.FillRectangle(sb, new Rectangle(pnlEdit.Width / 5 * 4, 0, pnlEdit.Width / 5, pnlEdit.Height));
+         if (selectedEditingwalls[2])
+            e.Graphics.FillRectangle(sb, new Rectangle(0, pnlEdit.Height / 5 * 4, pnlEdit.Width, pnlEdit.Height / 5));
+         if (selectedEditingwalls[3])
+            e.Graphics.FillRectangle(sb, new Rectangle(0, 0, pnlEdit.Width / 5, pnlEdit.Height));
+      }
+     
+      /// <summary>
+      /// Changes info in selectedEditingWalls if correct area is clicked. It
+      /// then forces a redraw of the pnlEdit
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void panel1_Click(object sender, EventArgs e)
+      {
+         int x = MousePosition.X - pnlEdit.PointToScreen(new Point(0, 0)).X;
+         int y = MousePosition.Y - pnlEdit.PointToScreen(new Point(0, 0)).Y;
+
+         if (x > 0 && x < pnlEdit.Width / 5)
+            selectedEditingwalls[3] = !selectedEditingwalls[3];
+         if (x > pnlEdit.Width / 5 * 4 && x < pnlEdit.Width)
+            selectedEditingwalls[1] = !selectedEditingwalls[1];
+         if (y > 0 && y < pnlEdit.Height / 5)
+            selectedEditingwalls[0] = !selectedEditingwalls[0];
+         if (y > pnlEdit.Height / 5 * 4 && y < pnlEdit.Height)
+            selectedEditingwalls[2] = !selectedEditingwalls[2];
+         if (x > pnlEdit.Width / 5 && x < pnlEdit.Width / 5 * 4 &&
+                  y > pnlEdit.Height / 5 && y < pnlEdit.Height / 5 * 4)
+         {
+            selectedEditingwalls[0] = false;
+            selectedEditingwalls[1] = false;
+            selectedEditingwalls[2] = false;
+            selectedEditingwalls[3] = false;
+         }
+
+         pnlEdit.Invalidate();
       }
    }
 }
