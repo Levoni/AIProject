@@ -105,6 +105,7 @@ namespace Maze
          pnlMetricOptions.Bounds = new Rectangle(formHeight - 14 + 20, 14, formWidth / 7, formHeight / 7);
          btnMetrics.Bounds = new Rectangle(0, pnlMetricOptions.Height / 2, pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 2);
          btnClearMetrics.Bounds = new Rectangle(pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 2, pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 2);
+         btnSaveMetrics.Bounds = new Rectangle(0,pnlMetricOptions.Height / 4 * 3,pnlMetricOptions.Width / 2, pnlMetricOptions.Height / 4);
 
          pnlMetrics.Bounds = new Rectangle(pnlMetricOptions.Bounds.X, 14 + formHeight / 7, formWidth / 7, formHeight - pnlMetricOptions.Bottom - PBarMetrics.Height - 14);
          lblSearches.Bounds = new Rectangle(0, 0, pnlMetrics.Bounds.Width, pnlMetrics.Bounds.Height / 10);
@@ -322,6 +323,9 @@ namespace Maze
          GC.WaitForPendingFinalizers();
          GC.Collect();
 
+         btnClearMetrics.Enabled = false;
+         btnSaveMetrics.Enabled = false;
+
          Canvas.Invalidate(); // Forces Canvas to redraw
       }
 
@@ -349,6 +353,10 @@ namespace Maze
                MainBitmap = CreateSearchBitmap(); // resets drawn map
                pathfinding.StartRealtimeSearch(cmbSelection.SelectedItem.ToString() + " Realtime", m.Start.xPos, m.Start.yPos, m.End.xPos, m.End.yPos);
                timerTick.Enabled = true;
+               btnRunSearch.Enabled = false;
+               btnRegen.Enabled = false;
+               cBoxEditing.Checked = false;
+               cBoxEditing.Enabled = false;
             }
          }
          Canvas.Invalidate(); // forces Canvas to redraw
@@ -453,6 +461,39 @@ namespace Maze
       }
 
       /// <summary>
+      /// Saves metric run information to text file
+      /// </summary>
+      public void SaveMetrics()
+      {
+         using (SaveFileDialog sfd = new SaveFileDialog())
+         {
+            if (!System.IO.Directory.Exists(System.IO.Directory.GetCurrentDirectory() + "/Metrics"))
+               System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "/Metrics");
+            sfd.InitialDirectory = System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + "Metrics";
+            sfd.Filter = "Text FIles|*.txt|All Files|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+               using (System.IO.StreamWriter sw = new System.IO.StreamWriter(sfd.FileName))
+               {
+                  sw.WriteLine("Map Information:");
+                  sw.WriteLine("Map Width: " + mapWidth + ", Map Height: " + mapHeight);
+                  sw.WriteLine("Total Tiles: " + (mapWidth * mapHeight).ToString());
+                  sw.WriteLine("Open Percent: " + m.GetCutPercent() + Environment.NewLine);
+                  sw.WriteLine("Searches: " + NUDRuns.Value.ToString() + " Runs" + Environment.NewLine);
+                  foreach (Panel p in MetricPanels)
+                  {
+                     sw.WriteLine(p.Controls[0].Text);
+                     sw.WriteLine(p.Controls[1].Text);
+                     sw.WriteLine(p.Controls[2].Text);
+                     sw.WriteLine(p.Controls[3].Text);
+                     sw.WriteLine(Environment.NewLine);
+                  }
+               }
+            }
+         }
+      }
+
+      /// <summary>
       /// Shows the bitmap that corrisponding location of SearchBitmaps.
       /// </summary>
       /// <param name="sender">Button</param>
@@ -493,12 +534,17 @@ namespace Maze
       /// <param name="e">Click Event</param>
       private void btnMetrics_Click(object sender, EventArgs e)
       {
-         List<string> stringList = new List<string>();
-         foreach (object o in lstBoxSelected.Items)
+         if (lstBoxSelected.Items.Count > 0)
          {
-            stringList.Add(o.ToString());
+            List<string> stringList = new List<string>();
+            foreach (object o in lstBoxSelected.Items)
+            {
+               stringList.Add(o.ToString());
+            }
+            btnSaveMetrics.Enabled = true;
+            btnClearMetrics.Enabled = true;
+            CreateMetricComponents(stringList.Count, stringList);
          }
-         CreateMetricComponents(lstBoxSelected.Items.Count, stringList);
       }
 
       /// <summary>
@@ -516,6 +562,9 @@ namespace Maze
             pathfinding.GenerateMetrics();
             SetMetricLabelText(lblElapsedAvg, lblVisited, lblPathLength);
             lblElapsedAvg.Text = "Elapsed Time (ms): N/A";
+            btnRegen.Enabled = true;
+            btnRunSearch.Enabled = true;
+            cBoxEditing.Enabled = true;
          }
          else
             MainBitmap = DrawNodes(tempNodes);
@@ -598,6 +647,8 @@ namespace Maze
          GC.Collect();
          GC.WaitForPendingFinalizers();
          GC.Collect();
+         btnClearMetrics.Enabled = false;
+         btnSaveMetrics.Enabled = false;
       }
 
       /// <summary>
@@ -614,7 +665,7 @@ namespace Maze
 
          using (SaveFileDialog save = new SaveFileDialog())
          {
-            save.InitialDirectory = System.IO.Directory.GetCurrentDirectory() + "/maps";
+            save.InitialDirectory = System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + "maps";
             save.Filter = "tile map files (*.tm)|*.tm|All files (*.*)|*.*";
             if (save.ShowDialog() == DialogResult.OK)
             {
@@ -637,7 +688,7 @@ namespace Maze
 
          using (OpenFileDialog load = new OpenFileDialog())
          {
-            load.InitialDirectory = System.IO.Directory.GetCurrentDirectory() + "/maps";
+            load.InitialDirectory = System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + "maps";
             load.Filter = "tile map files (*.tm)|*.tm|All files (*.*)|*.*";
             if (load.ShowDialog() == DialogResult.OK)
             {
@@ -702,96 +753,104 @@ namespace Maze
       /// <param name="e"></param>
       private void Canvas_MouseUp(object sender, MouseEventArgs e)
       {
-         int tileHeight = (Canvas.Height / mapHeight);
-         int tilewidth = (Canvas.Width / mapWidth);
+         if (cBoxEditing.Checked)
+         {
+            int tileHeight = (Canvas.Height / mapHeight);
+            int tilewidth = (Canvas.Width / mapWidth);
 
-         if (cmbEditOptions.SelectedItem != null && cmbEditOptions.SelectedItem.ToString() == "Fill")
-            foreach (Tile t in m.map)
-            {
-               int xPixel = t.xPos * tilewidth;
-               int yPixel = t.yPos * tileHeight;
-
-               if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
-                   && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
+            if (cmbEditOptions.SelectedItem != null && cmbEditOptions.SelectedItem.ToString() == "Fill")
+               foreach (Tile t in m.map)
                {
-                  if (t.yPos - 1 >= 0)
-                     if ((!selectedEditingwalls[0] && rbReplace.Checked) || (selectedEditingwalls[0] && rbRemove.Checked))
-                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
-                     else if (selectedEditingwalls[0] && !rbRemove.Checked)
-                        m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
-                  if (t.xPos + 1 < mapWidth)
-                     if ((!selectedEditingwalls[1] && rbReplace.Checked) || (selectedEditingwalls[1] && rbRemove.Checked))
-                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
-                     else if (selectedEditingwalls[1] && !rbRemove.Checked)
-                        m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
-                  if (t.yPos + 1 < mapHeight)
-                     if ((!selectedEditingwalls[2] && rbReplace.Checked) || (selectedEditingwalls[2] && rbRemove.Checked))
-                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
-                     else if (selectedEditingwalls[2] && !rbRemove.Checked)
-                        m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
-                  if (t.xPos - 1 >= 0)
-                     if ((!selectedEditingwalls[3] && rbReplace.Checked) || (selectedEditingwalls[3] && rbRemove.Checked))
-                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
-                     else if (selectedEditingwalls[3] && !rbRemove.Checked)
-                        m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
-               }
-
-            }
-         else if (cmbEditOptions.SelectedItem != null && cmbEditOptions.SelectedItem.ToString() == "Perimeter")
-            foreach (Tile t in m.map)
-            {
-               int xPixel = t.xPos * tilewidth;
-               int yPixel = t.yPos * tileHeight;
-
-               if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
-                && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
-               {
-                  if (t.xPos - 1 >= 0)
-                     m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
-                  if (t.yPos + 1 < mapHeight)
-                     m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
-                  if (t.xPos + 1 < mapWidth)
-                     m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
-                  if (t.yPos - 1 >= 0)
-                     m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
+                  int xPixel = t.xPos * tilewidth;
+                  int yPixel = t.yPos * tileHeight;
 
                   if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
-                && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Min(highlightYStart, highlightYEnd) > yPixel)
+                      && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
                   {
                      if (t.yPos - 1 >= 0)
-                        if (selectedEditingwalls[0])
+                        if ((!selectedEditingwalls[0] && rbReplace.Checked) || (selectedEditingwalls[0] && rbRemove.Checked))
+                           m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
+                        else if (selectedEditingwalls[0] && !rbRemove.Checked)
                            m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
-                  }
-                  if (Math.Max(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
-                   && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
-                  {
                      if (t.xPos + 1 < mapWidth)
-                        if (selectedEditingwalls[1])
+                        if ((!selectedEditingwalls[1] && rbReplace.Checked) || (selectedEditingwalls[1] && rbRemove.Checked))
+                           m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
+                        else if (selectedEditingwalls[1] && !rbRemove.Checked)
                            m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
-                  }
-                  if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
-                   && Math.Max(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
-                  {
                      if (t.yPos + 1 < mapHeight)
-                        if (selectedEditingwalls[2])
+                        if ((!selectedEditingwalls[2] && rbReplace.Checked) || (selectedEditingwalls[2] && rbRemove.Checked))
+                           m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
+                        else if (selectedEditingwalls[2] && !rbRemove.Checked)
                            m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
+                     if (t.xPos - 1 >= 0)
+                        if ((!selectedEditingwalls[3] && rbReplace.Checked) || (selectedEditingwalls[3] && rbRemove.Checked))
+                           m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
+                        else if (selectedEditingwalls[3] && !rbRemove.Checked)
+                           m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
                   }
-                  if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Min(highlightXStart, highlightXEnd) > xPixel
+
+               }
+            else if (cmbEditOptions.SelectedItem != null && cmbEditOptions.SelectedItem.ToString() == "Perimeter")
+               foreach (Tile t in m.map)
+               {
+                  int xPixel = t.xPos * tilewidth;
+                  int yPixel = t.yPos * tileHeight;
+
+                  if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
                    && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
                   {
                      if (t.xPos - 1 >= 0)
-                        if (selectedEditingwalls[3])
-                           m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
+                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
+                     if (t.yPos + 1 < mapHeight)
+                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
+                     if (t.xPos + 1 < mapWidth)
+                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
+                     if (t.yPos - 1 >= 0)
+                        m.RemoveWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
+
+                     if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
+                   && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Min(highlightYStart, highlightYEnd) > yPixel)
+                     {
+                        if (t.yPos - 1 >= 0)
+                           if (selectedEditingwalls[0])
+                              m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos - 1], dir.UP);
+                     }
+                     if (Math.Max(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
+                      && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
+                     {
+                        if (t.xPos + 1 < mapWidth)
+                           if (selectedEditingwalls[1])
+                              m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos + 1, t.yPos], dir.RIGHT);
+                     }
+                     if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Max(highlightXStart, highlightXEnd) > xPixel
+                      && Math.Max(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
+                     {
+                        if (t.yPos + 1 < mapHeight)
+                           if (selectedEditingwalls[2])
+                              m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos, t.yPos + 1], dir.DOWN);
+                     }
+                     if (Math.Min(highlightXStart, highlightXEnd) < xPixel + tilewidth && Math.Min(highlightXStart, highlightXEnd) > xPixel
+                      && Math.Min(highlightYStart, highlightYEnd) < yPixel + tileHeight && Math.Max(highlightYStart, highlightYEnd) > yPixel)
+                     {
+                        if (t.xPos - 1 >= 0)
+                           if (selectedEditingwalls[3])
+                              m.AddWall(m.map[t.xPos, t.yPos], m.map[t.xPos - 1, t.yPos], dir.LEFT);
+                     }
                   }
                }
-            }
 
-         pathfinding.CreateNodeMap(m.map, mapWidth, mapHeight, m.Start, m.End);
-         WallBitmap = CreateWallBitmap();
-         MainBitmap = CreateSearchBitmap();
-         Canvas.Invalidate();
+            pathfinding.CreateNodeMap(m.map, mapWidth, mapHeight, m.Start, m.End);
+            WallBitmap = CreateWallBitmap();
+            MainBitmap = CreateSearchBitmap();
+            Canvas.Invalidate();
 
-         EditTimer.Enabled = false;
+            EditTimer.Enabled = false;
+         }
+      }
+
+      private void btnSaveMetrics_Click(object sender, EventArgs e)
+      {
+         SaveMetrics();
       }
 
       /// <summary>

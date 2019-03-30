@@ -18,7 +18,7 @@ namespace Maze
       private Random rand;
       private int width, height;
       public Tile Start, End;
-      private const int cutChance = 10;
+      private const int cutChance = 50;
       System.Diagnostics.Stopwatch st;
 
       /// <summary>
@@ -39,6 +39,15 @@ namespace Maze
             {
                map[x, y] = new Tile(x, y);
             }
+      }
+
+      /// <summary>
+      /// Returns cutChance
+      /// </summary>
+      /// <returns>int cutChance</returns>
+      public int GetCutPercent()
+      {
+         return cutChance;
       }
 
       /// <summary>

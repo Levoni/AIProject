@@ -77,6 +77,7 @@
          this.BtnSetStartEnd = new System.Windows.Forms.Button();
          this.lblMapGeneration = new System.Windows.Forms.Label();
          this.pnlMetricOptions = new System.Windows.Forms.Panel();
+         this.btnSaveMetrics = new System.Windows.Forms.Button();
          this.btnClearMetrics = new System.Windows.Forms.Button();
          this.lblNumOfRuns = new System.Windows.Forms.Label();
          this.NUDRuns = new System.Windows.Forms.NumericUpDown();
@@ -87,13 +88,13 @@
          this.lblFileIO = new System.Windows.Forms.Label();
          this.cBoxEditing = new System.Windows.Forms.CheckBox();
          this.pnlEdit = new System.Windows.Forms.Panel();
-         this.Canvas = new Maze.DBPanel();
          this.rbAdd = new System.Windows.Forms.RadioButton();
          this.rbRemove = new System.Windows.Forms.RadioButton();
          this.rbReplace = new System.Windows.Forms.RadioButton();
          this.cmbEditOptions = new System.Windows.Forms.ComboBox();
          this.pnlEditOptions = new System.Windows.Forms.Panel();
          this.lblEditOptions = new System.Windows.Forms.Label();
+         this.Canvas = new Maze.DBPanel();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
@@ -113,10 +114,9 @@
          // 
          // btnRegen
          // 
-         this.btnRegen.Location = new System.Drawing.Point(163, 112);
-         this.btnRegen.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.btnRegen.Location = new System.Drawing.Point(122, 91);
          this.btnRegen.Name = "btnRegen";
-         this.btnRegen.Size = new System.Drawing.Size(100, 28);
+         this.btnRegen.Size = new System.Drawing.Size(75, 23);
          this.btnRegen.TabIndex = 1;
          this.btnRegen.Text = "Regenerate";
          this.btnRegen.UseVisualStyleBackColor = true;
@@ -125,66 +125,59 @@
          // lblStartKey
          // 
          this.lblStartKey.AutoSize = true;
-         this.lblStartKey.Location = new System.Drawing.Point(15, 58);
-         this.lblStartKey.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblStartKey.Location = new System.Drawing.Point(11, 47);
          this.lblStartKey.Name = "lblStartKey";
-         this.lblStartKey.Size = new System.Drawing.Size(42, 17);
+         this.lblStartKey.Size = new System.Drawing.Size(32, 13);
          this.lblStartKey.TabIndex = 2;
          this.lblStartKey.Text = "Start:";
          // 
          // lblEndKey
          // 
          this.lblEndKey.AutoSize = true;
-         this.lblEndKey.Location = new System.Drawing.Point(16, 112);
-         this.lblEndKey.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblEndKey.Location = new System.Drawing.Point(12, 91);
          this.lblEndKey.Name = "lblEndKey";
-         this.lblEndKey.Size = new System.Drawing.Size(37, 17);
+         this.lblEndKey.Size = new System.Drawing.Size(29, 13);
          this.lblEndKey.TabIndex = 3;
          this.lblEndKey.Text = "End:";
          // 
          // pbStart
          // 
-         this.pbStart.Location = new System.Drawing.Point(57, 47);
-         this.pbStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pbStart.Location = new System.Drawing.Point(43, 38);
          this.pbStart.Name = "pbStart";
-         this.pbStart.Size = new System.Drawing.Size(31, 27);
+         this.pbStart.Size = new System.Drawing.Size(23, 22);
          this.pbStart.TabIndex = 4;
          this.pbStart.TabStop = false;
          // 
          // pbEnd
          // 
-         this.pbEnd.Location = new System.Drawing.Point(57, 101);
-         this.pbEnd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pbEnd.Location = new System.Drawing.Point(43, 82);
          this.pbEnd.Name = "pbEnd";
-         this.pbEnd.Size = new System.Drawing.Size(31, 27);
+         this.pbEnd.Size = new System.Drawing.Size(23, 22);
          this.pbEnd.TabIndex = 5;
          this.pbEnd.TabStop = false;
          // 
          // txtBoxPercent
          // 
-         this.txtBoxPercent.Location = new System.Drawing.Point(8, 57);
-         this.txtBoxPercent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.txtBoxPercent.Location = new System.Drawing.Point(6, 46);
          this.txtBoxPercent.Name = "txtBoxPercent";
-         this.txtBoxPercent.Size = new System.Drawing.Size(132, 22);
+         this.txtBoxPercent.Size = new System.Drawing.Size(100, 20);
          this.txtBoxPercent.TabIndex = 7;
          this.txtBoxPercent.Text = "50";
          // 
          // lblCutPercent
          // 
          this.lblCutPercent.AutoSize = true;
-         this.lblCutPercent.Location = new System.Drawing.Point(4, 37);
-         this.lblCutPercent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblCutPercent.Location = new System.Drawing.Point(3, 30);
          this.lblCutPercent.Name = "lblCutPercent";
-         this.lblCutPercent.Size = new System.Drawing.Size(175, 17);
+         this.lblCutPercent.Size = new System.Drawing.Size(130, 13);
          this.lblCutPercent.TabIndex = 8;
          this.lblCutPercent.Text = "Open Percentage (0-100):";
          // 
          // btnRunSearch
          // 
-         this.btnRunSearch.Location = new System.Drawing.Point(8, 73);
-         this.btnRunSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.btnRunSearch.Location = new System.Drawing.Point(6, 59);
          this.btnRunSearch.Name = "btnRunSearch";
-         this.btnRunSearch.Size = new System.Drawing.Size(100, 28);
+         this.btnRunSearch.Size = new System.Drawing.Size(75, 23);
          this.btnRunSearch.TabIndex = 9;
          this.btnRunSearch.Text = "Run Search";
          this.btnRunSearch.UseVisualStyleBackColor = true;
@@ -192,39 +185,35 @@
          // 
          // txtBoxX
          // 
-         this.txtBoxX.Location = new System.Drawing.Point(8, 112);
-         this.txtBoxX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.txtBoxX.Location = new System.Drawing.Point(6, 91);
          this.txtBoxX.Name = "txtBoxX";
-         this.txtBoxX.Size = new System.Drawing.Size(37, 22);
+         this.txtBoxX.Size = new System.Drawing.Size(29, 20);
          this.txtBoxX.TabIndex = 10;
          this.txtBoxX.Text = "10";
          // 
          // txtBoxY
          // 
-         this.txtBoxY.Location = new System.Drawing.Point(55, 112);
-         this.txtBoxY.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.txtBoxY.Location = new System.Drawing.Point(41, 91);
          this.txtBoxY.Name = "txtBoxY";
-         this.txtBoxY.Size = new System.Drawing.Size(37, 22);
+         this.txtBoxY.Size = new System.Drawing.Size(29, 20);
          this.txtBoxY.TabIndex = 11;
          this.txtBoxY.Text = "10";
          // 
          // lblXY
          // 
          this.lblXY.AutoSize = true;
-         this.lblXY.Location = new System.Drawing.Point(4, 92);
-         this.lblXY.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblXY.Location = new System.Drawing.Point(3, 75);
          this.lblXY.Name = "lblXY";
-         this.lblXY.Size = new System.Drawing.Size(65, 17);
+         this.lblXY.Size = new System.Drawing.Size(50, 13);
          this.lblXY.TabIndex = 12;
          this.lblXY.Text = "Size X,Y:";
          // 
          // lblDrawTime
          // 
          this.lblDrawTime.AutoSize = true;
-         this.lblDrawTime.Location = new System.Drawing.Point(1549, 331);
-         this.lblDrawTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblDrawTime.Location = new System.Drawing.Point(1162, 269);
          this.lblDrawTime.Name = "lblDrawTime";
-         this.lblDrawTime.Size = new System.Drawing.Size(91, 17);
+         this.lblDrawTime.Size = new System.Drawing.Size(70, 13);
          this.lblDrawTime.TabIndex = 14;
          this.lblDrawTime.Text = "Draw Time: 0";
          // 
@@ -236,38 +225,34 @@
          this.pnlMetrics.Controls.Add(this.btnAdd);
          this.pnlMetrics.Controls.Add(this.lstBoxSelected);
          this.pnlMetrics.Controls.Add(this.lstBoxOptions);
-         this.pnlMetrics.Location = new System.Drawing.Point(953, 108);
-         this.pnlMetrics.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pnlMetrics.Location = new System.Drawing.Point(715, 117);
          this.pnlMetrics.Name = "pnlMetrics";
-         this.pnlMetrics.Size = new System.Drawing.Size(267, 743);
+         this.pnlMetrics.Size = new System.Drawing.Size(200, 575);
          this.pnlMetrics.TabIndex = 15;
          // 
          // lblSelectedSearches
          // 
-         this.lblSelectedSearches.Location = new System.Drawing.Point(57, 528);
-         this.lblSelectedSearches.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblSelectedSearches.Location = new System.Drawing.Point(43, 429);
          this.lblSelectedSearches.Name = "lblSelectedSearches";
-         this.lblSelectedSearches.Size = new System.Drawing.Size(133, 16);
+         this.lblSelectedSearches.Size = new System.Drawing.Size(100, 13);
          this.lblSelectedSearches.TabIndex = 9;
          this.lblSelectedSearches.Text = "Selected Searches:";
          this.lblSelectedSearches.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
          // 
          // lblSearches
          // 
-         this.lblSearches.Location = new System.Drawing.Point(57, 329);
-         this.lblSearches.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblSearches.Location = new System.Drawing.Point(43, 267);
          this.lblSearches.Name = "lblSearches";
-         this.lblSearches.Size = new System.Drawing.Size(73, 16);
+         this.lblSearches.Size = new System.Drawing.Size(55, 13);
          this.lblSearches.TabIndex = 8;
          this.lblSearches.Text = "Searches:";
          this.lblSearches.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
          // 
          // btnRemove
          // 
-         this.btnRemove.Location = new System.Drawing.Point(133, 484);
-         this.btnRemove.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.btnRemove.Location = new System.Drawing.Point(100, 393);
          this.btnRemove.Name = "btnRemove";
-         this.btnRemove.Size = new System.Drawing.Size(84, 28);
+         this.btnRemove.Size = new System.Drawing.Size(63, 23);
          this.btnRemove.TabIndex = 6;
          this.btnRemove.Text = "Remove";
          this.btnRemove.UseVisualStyleBackColor = true;
@@ -275,10 +260,9 @@
          // 
          // btnAdd
          // 
-         this.btnAdd.Location = new System.Drawing.Point(57, 484);
-         this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.btnAdd.Location = new System.Drawing.Point(43, 393);
          this.btnAdd.Name = "btnAdd";
-         this.btnAdd.Size = new System.Drawing.Size(73, 28);
+         this.btnAdd.Size = new System.Drawing.Size(55, 23);
          this.btnAdd.TabIndex = 5;
          this.btnAdd.Text = "Add";
          this.btnAdd.UseVisualStyleBackColor = true;
@@ -287,17 +271,14 @@
          // lstBoxSelected
          // 
          this.lstBoxSelected.FormattingEnabled = true;
-         this.lstBoxSelected.ItemHeight = 16;
-         this.lstBoxSelected.Location = new System.Drawing.Point(57, 555);
-         this.lstBoxSelected.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.lstBoxSelected.Location = new System.Drawing.Point(43, 451);
          this.lstBoxSelected.Name = "lstBoxSelected";
-         this.lstBoxSelected.Size = new System.Drawing.Size(159, 180);
+         this.lstBoxSelected.Size = new System.Drawing.Size(120, 147);
          this.lstBoxSelected.TabIndex = 4;
          // 
          // lstBoxOptions
          // 
          this.lstBoxOptions.FormattingEnabled = true;
-         this.lstBoxOptions.ItemHeight = 16;
          this.lstBoxOptions.Items.AddRange(new object[] {
             "Breadth First (Levon)",
             "Depth First (Levon)",
@@ -305,19 +286,17 @@
             "A* (Ryan)",
             "Greedy Best First (Ryan)",
             "Dijkstra (Matthew)"});
-         this.lstBoxOptions.Location = new System.Drawing.Point(57, 359);
-         this.lstBoxOptions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.lstBoxOptions.Location = new System.Drawing.Point(43, 292);
          this.lstBoxOptions.Name = "lstBoxOptions";
-         this.lstBoxOptions.Size = new System.Drawing.Size(159, 116);
+         this.lstBoxOptions.Size = new System.Drawing.Size(120, 95);
          this.lstBoxOptions.TabIndex = 3;
          // 
          // btnMetrics
          // 
-         this.btnMetrics.Location = new System.Drawing.Point(4, 46);
-         this.btnMetrics.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-         this.btnMetrics.MaximumSize = new System.Drawing.Size(267, 31);
+         this.btnMetrics.Location = new System.Drawing.Point(3, 37);
+         this.btnMetrics.MaximumSize = new System.Drawing.Size(200, 25);
          this.btnMetrics.Name = "btnMetrics";
-         this.btnMetrics.Size = new System.Drawing.Size(125, 31);
+         this.btnMetrics.Size = new System.Drawing.Size(94, 25);
          this.btnMetrics.TabIndex = 7;
          this.btnMetrics.Text = "Run Metrics";
          this.btnMetrics.UseVisualStyleBackColor = true;
@@ -326,40 +305,36 @@
          // lblPathLength
          // 
          this.lblPathLength.AutoSize = true;
-         this.lblPathLength.Location = new System.Drawing.Point(4, 172);
-         this.lblPathLength.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblPathLength.Location = new System.Drawing.Point(3, 140);
          this.lblPathLength.Name = "lblPathLength";
-         this.lblPathLength.Size = new System.Drawing.Size(89, 17);
+         this.lblPathLength.Size = new System.Drawing.Size(68, 13);
          this.lblPathLength.TabIndex = 2;
          this.lblPathLength.Text = "Path Length:";
          // 
          // lblVisited
          // 
          this.lblVisited.AutoSize = true;
-         this.lblVisited.Location = new System.Drawing.Point(4, 144);
-         this.lblVisited.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblVisited.Location = new System.Drawing.Point(3, 117);
          this.lblVisited.Name = "lblVisited";
-         this.lblVisited.Size = new System.Drawing.Size(88, 17);
+         this.lblVisited.Size = new System.Drawing.Size(66, 13);
          this.lblVisited.TabIndex = 1;
          this.lblVisited.Text = "Tiles Visited:";
          // 
          // lblElapsedAvg
          // 
          this.lblElapsedAvg.AutoSize = true;
-         this.lblElapsedAvg.Location = new System.Drawing.Point(4, 116);
-         this.lblElapsedAvg.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblElapsedAvg.Location = new System.Drawing.Point(3, 94);
          this.lblElapsedAvg.Name = "lblElapsedAvg";
-         this.lblElapsedAvg.Size = new System.Drawing.Size(130, 17);
+         this.lblElapsedAvg.Size = new System.Drawing.Size(96, 13);
          this.lblElapsedAvg.TabIndex = 0;
          this.lblElapsedAvg.Text = "Elapsed Time (ms):";
          // 
          // lblKey
          // 
          this.lblKey.AutoSize = true;
-         this.lblKey.Location = new System.Drawing.Point(117, 11);
-         this.lblKey.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblKey.Location = new System.Drawing.Point(88, 9);
          this.lblKey.Name = "lblKey";
-         this.lblKey.Size = new System.Drawing.Size(32, 17);
+         this.lblKey.Size = new System.Drawing.Size(25, 13);
          this.lblKey.TabIndex = 16;
          this.lblKey.Text = "Key";
          // 
@@ -370,39 +345,35 @@
          // 
          // pbPath
          // 
-         this.pbPath.Location = new System.Drawing.Point(213, 101);
-         this.pbPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pbPath.Location = new System.Drawing.Point(160, 82);
          this.pbPath.Name = "pbPath";
-         this.pbPath.Size = new System.Drawing.Size(31, 27);
+         this.pbPath.Size = new System.Drawing.Size(23, 22);
          this.pbPath.TabIndex = 20;
          this.pbPath.TabStop = false;
          // 
          // pbVisited
          // 
-         this.pbVisited.Location = new System.Drawing.Point(213, 47);
-         this.pbVisited.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pbVisited.Location = new System.Drawing.Point(160, 38);
          this.pbVisited.Name = "pbVisited";
-         this.pbVisited.Size = new System.Drawing.Size(31, 27);
+         this.pbVisited.Size = new System.Drawing.Size(23, 22);
          this.pbVisited.TabIndex = 19;
          this.pbVisited.TabStop = false;
          // 
          // lblPathKey
          // 
          this.lblPathKey.AutoSize = true;
-         this.lblPathKey.Location = new System.Drawing.Point(163, 112);
-         this.lblPathKey.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblPathKey.Location = new System.Drawing.Point(122, 91);
          this.lblPathKey.Name = "lblPathKey";
-         this.lblPathKey.Size = new System.Drawing.Size(41, 17);
+         this.lblPathKey.Size = new System.Drawing.Size(32, 13);
          this.lblPathKey.TabIndex = 18;
          this.lblPathKey.Text = "Path:";
          // 
          // lblVisitedKey
          // 
          this.lblVisitedKey.AutoSize = true;
-         this.lblVisitedKey.Location = new System.Drawing.Point(151, 58);
-         this.lblVisitedKey.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblVisitedKey.Location = new System.Drawing.Point(113, 47);
          this.lblVisitedKey.Name = "lblVisitedKey";
-         this.lblVisitedKey.Size = new System.Drawing.Size(54, 17);
+         this.lblVisitedKey.Size = new System.Drawing.Size(41, 13);
          this.lblVisitedKey.TabIndex = 17;
          this.lblVisitedKey.Text = "Visited:";
          // 
@@ -418,36 +389,33 @@
          this.pnlKey.Controls.Add(this.pbStart);
          this.pnlKey.Controls.Add(this.lblVisitedKey);
          this.pnlKey.Controls.Add(this.pbEnd);
-         this.pnlKey.Location = new System.Drawing.Point(1544, 730);
-         this.pnlKey.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pnlKey.Location = new System.Drawing.Point(1158, 593);
          this.pnlKey.Name = "pnlKey";
-         this.pnlKey.Size = new System.Drawing.Size(266, 148);
+         this.pnlKey.Size = new System.Drawing.Size(200, 121);
          this.pnlKey.TabIndex = 21;
          // 
          // cboxRealtime
          // 
          this.cboxRealtime.AutoSize = true;
-         this.cboxRealtime.Location = new System.Drawing.Point(151, 73);
-         this.cboxRealtime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+         this.cboxRealtime.Location = new System.Drawing.Point(113, 59);
+         this.cboxRealtime.Margin = new System.Windows.Forms.Padding(2);
          this.cboxRealtime.Name = "cboxRealtime";
-         this.cboxRealtime.Size = new System.Drawing.Size(85, 21);
+         this.cboxRealtime.Size = new System.Drawing.Size(67, 17);
          this.cboxRealtime.TabIndex = 22;
          this.cboxRealtime.Text = "Realtime";
          this.cboxRealtime.UseVisualStyleBackColor = true;
          // 
          // PBarMetrics
          // 
-         this.PBarMetrics.Location = new System.Drawing.Point(953, 850);
-         this.PBarMetrics.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-         this.PBarMetrics.MaximumSize = new System.Drawing.Size(667, 28);
+         this.PBarMetrics.Location = new System.Drawing.Point(715, 691);
+         this.PBarMetrics.MaximumSize = new System.Drawing.Size(500, 23);
          this.PBarMetrics.Name = "PBarMetrics";
-         this.PBarMetrics.Size = new System.Drawing.Size(267, 28);
+         this.PBarMetrics.Size = new System.Drawing.Size(200, 23);
          this.PBarMetrics.TabIndex = 23;
          // 
          // NUDLoopsPerTick
          // 
-         this.NUDLoopsPerTick.Location = new System.Drawing.Point(12, 66);
-         this.NUDLoopsPerTick.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.NUDLoopsPerTick.Location = new System.Drawing.Point(9, 54);
          this.NUDLoopsPerTick.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -459,7 +427,7 @@
             0,
             0});
          this.NUDLoopsPerTick.Name = "NUDLoopsPerTick";
-         this.NUDLoopsPerTick.Size = new System.Drawing.Size(160, 22);
+         this.NUDLoopsPerTick.Size = new System.Drawing.Size(120, 20);
          this.NUDLoopsPerTick.TabIndex = 24;
          this.NUDLoopsPerTick.Value = new decimal(new int[] {
             5,
@@ -474,8 +442,7 @@
             0,
             0,
             0});
-         this.NUDInterval.Location = new System.Drawing.Point(15, 129);
-         this.NUDInterval.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.NUDInterval.Location = new System.Drawing.Point(11, 105);
          this.NUDInterval.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -487,7 +454,7 @@
             0,
             0});
          this.NUDInterval.Name = "NUDInterval";
-         this.NUDInterval.Size = new System.Drawing.Size(160, 22);
+         this.NUDInterval.Size = new System.Drawing.Size(120, 20);
          this.NUDInterval.TabIndex = 25;
          this.NUDInterval.Value = new decimal(new int[] {
             20,
@@ -499,20 +466,18 @@
          // lblTickLoop
          // 
          this.lblTickLoop.AutoSize = true;
-         this.lblTickLoop.Location = new System.Drawing.Point(12, 43);
-         this.lblTickLoop.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblTickLoop.Location = new System.Drawing.Point(9, 35);
          this.lblTickLoop.Name = "lblTickLoop";
-         this.lblTickLoop.Size = new System.Drawing.Size(86, 17);
+         this.lblTickLoop.Size = new System.Drawing.Size(67, 13);
          this.lblTickLoop.TabIndex = 26;
          this.lblTickLoop.Text = "TickAmount:";
          // 
          // lblInterval
          // 
          this.lblInterval.AutoSize = true;
-         this.lblInterval.Location = new System.Drawing.Point(12, 102);
-         this.lblInterval.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblInterval.Location = new System.Drawing.Point(9, 83);
          this.lblInterval.Name = "lblInterval";
-         this.lblInterval.Size = new System.Drawing.Size(125, 17);
+         this.lblInterval.Size = new System.Drawing.Size(93, 13);
          this.lblInterval.TabIndex = 27;
          this.lblInterval.Text = "Interval Time (ms):";
          // 
@@ -526,10 +491,10 @@
             "A* (Ryan)",
             "Greedy Best First (Ryan)",
             "Dijkstra (Matthew)"});
-         this.cmbSelection.Location = new System.Drawing.Point(5, 28);
-         this.cmbSelection.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+         this.cmbSelection.Location = new System.Drawing.Point(4, 23);
+         this.cmbSelection.Margin = new System.Windows.Forms.Padding(2);
          this.cmbSelection.Name = "cmbSelection";
-         this.cmbSelection.Size = new System.Drawing.Size(121, 24);
+         this.cmbSelection.Size = new System.Drawing.Size(92, 21);
          this.cmbSelection.TabIndex = 28;
          this.cmbSelection.Text = "Select Search";
          // 
@@ -541,19 +506,17 @@
          this.pnlRealtimeSettings.Controls.Add(this.NUDLoopsPerTick);
          this.pnlRealtimeSettings.Controls.Add(this.lblInterval);
          this.pnlRealtimeSettings.Controls.Add(this.NUDInterval);
-         this.pnlRealtimeSettings.Location = new System.Drawing.Point(1544, 560);
-         this.pnlRealtimeSettings.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pnlRealtimeSettings.Location = new System.Drawing.Point(1158, 455);
          this.pnlRealtimeSettings.Name = "pnlRealtimeSettings";
-         this.pnlRealtimeSettings.Size = new System.Drawing.Size(266, 162);
+         this.pnlRealtimeSettings.Size = new System.Drawing.Size(200, 132);
          this.pnlRealtimeSettings.TabIndex = 29;
          // 
          // lblRealtimeSettings
          // 
          this.lblRealtimeSettings.AutoSize = true;
-         this.lblRealtimeSettings.Location = new System.Drawing.Point(79, 12);
-         this.lblRealtimeSettings.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblRealtimeSettings.Location = new System.Drawing.Point(59, 10);
          this.lblRealtimeSettings.Name = "lblRealtimeSettings";
-         this.lblRealtimeSettings.Size = new System.Drawing.Size(118, 17);
+         this.lblRealtimeSettings.Size = new System.Drawing.Size(89, 13);
          this.lblRealtimeSettings.TabIndex = 28;
          this.lblRealtimeSettings.Text = "Realtime Settings";
          // 
@@ -567,19 +530,17 @@
          this.pnlSingleSearch.Controls.Add(this.cboxRealtime);
          this.pnlSingleSearch.Controls.Add(this.lblPathLength);
          this.pnlSingleSearch.Controls.Add(this.btnRunSearch);
-         this.pnlSingleSearch.Location = new System.Drawing.Point(1544, 351);
-         this.pnlSingleSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pnlSingleSearch.Location = new System.Drawing.Point(1158, 285);
          this.pnlSingleSearch.Name = "pnlSingleSearch";
-         this.pnlSingleSearch.Size = new System.Drawing.Size(266, 201);
+         this.pnlSingleSearch.Size = new System.Drawing.Size(200, 164);
          this.pnlSingleSearch.TabIndex = 30;
          // 
          // lblSingleSearch
          // 
          this.lblSingleSearch.AutoSize = true;
-         this.lblSingleSearch.Location = new System.Drawing.Point(76, 10);
-         this.lblSingleSearch.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblSingleSearch.Location = new System.Drawing.Point(57, 8);
          this.lblSingleSearch.Name = "lblSingleSearch";
-         this.lblSingleSearch.Size = new System.Drawing.Size(96, 17);
+         this.lblSingleSearch.Size = new System.Drawing.Size(73, 13);
          this.lblSingleSearch.TabIndex = 0;
          this.lblSingleSearch.Text = "Single Search";
          // 
@@ -597,29 +558,26 @@
          this.pnlMapGeneration.Controls.Add(this.lblCutPercent);
          this.pnlMapGeneration.Controls.Add(this.btnRegen);
          this.pnlMapGeneration.Controls.Add(this.txtBoxPercent);
-         this.pnlMapGeneration.Location = new System.Drawing.Point(1544, 15);
-         this.pnlMapGeneration.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pnlMapGeneration.Location = new System.Drawing.Point(1158, 12);
          this.pnlMapGeneration.Name = "pnlMapGeneration";
-         this.pnlMapGeneration.Size = new System.Drawing.Size(266, 210);
+         this.pnlMapGeneration.Size = new System.Drawing.Size(200, 171);
          this.pnlMapGeneration.TabIndex = 31;
          // 
          // lblMapGenerationTime
          // 
          this.lblMapGenerationTime.AutoSize = true;
-         this.lblMapGenerationTime.Location = new System.Drawing.Point(20, 181);
-         this.lblMapGenerationTime.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblMapGenerationTime.Location = new System.Drawing.Point(15, 147);
          this.lblMapGenerationTime.Name = "lblMapGenerationTime";
-         this.lblMapGenerationTime.Size = new System.Drawing.Size(118, 17);
+         this.lblMapGenerationTime.Size = new System.Drawing.Size(88, 13);
          this.lblMapGenerationTime.TabIndex = 16;
          this.lblMapGenerationTime.Text = "Generation Time:\r\n";
          // 
          // RBEnd
          // 
          this.RBEnd.AutoSize = true;
-         this.RBEnd.Location = new System.Drawing.Point(183, 148);
-         this.RBEnd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.RBEnd.Location = new System.Drawing.Point(137, 120);
          this.RBEnd.Name = "RBEnd";
-         this.RBEnd.Size = new System.Drawing.Size(54, 21);
+         this.RBEnd.Size = new System.Drawing.Size(44, 17);
          this.RBEnd.TabIndex = 15;
          this.RBEnd.TabStop = true;
          this.RBEnd.Text = "End";
@@ -629,10 +587,9 @@
          // 
          this.RBStart.AutoSize = true;
          this.RBStart.Checked = true;
-         this.RBStart.Location = new System.Drawing.Point(112, 148);
-         this.RBStart.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.RBStart.Location = new System.Drawing.Point(84, 120);
          this.RBStart.Name = "RBStart";
-         this.RBStart.Size = new System.Drawing.Size(59, 21);
+         this.RBStart.Size = new System.Drawing.Size(47, 17);
          this.RBStart.TabIndex = 14;
          this.RBStart.TabStop = true;
          this.RBStart.Text = "Start";
@@ -640,10 +597,9 @@
          // 
          // BtnSetStartEnd
          // 
-         this.BtnSetStartEnd.Location = new System.Drawing.Point(4, 144);
-         this.BtnSetStartEnd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.BtnSetStartEnd.Location = new System.Drawing.Point(3, 117);
          this.BtnSetStartEnd.Name = "BtnSetStartEnd";
-         this.BtnSetStartEnd.Size = new System.Drawing.Size(100, 28);
+         this.BtnSetStartEnd.Size = new System.Drawing.Size(75, 23);
          this.BtnSetStartEnd.TabIndex = 13;
          this.BtnSetStartEnd.Text = "Set";
          this.BtnSetStartEnd.UseVisualStyleBackColor = true;
@@ -652,33 +608,44 @@
          // lblMapGeneration
          // 
          this.lblMapGeneration.AutoSize = true;
-         this.lblMapGeneration.Location = new System.Drawing.Point(80, 9);
-         this.lblMapGeneration.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblMapGeneration.Location = new System.Drawing.Point(60, 7);
          this.lblMapGeneration.Name = "lblMapGeneration";
-         this.lblMapGeneration.Size = new System.Drawing.Size(110, 17);
+         this.lblMapGeneration.Size = new System.Drawing.Size(83, 13);
          this.lblMapGeneration.TabIndex = 0;
          this.lblMapGeneration.Text = "Map Generation";
          // 
          // pnlMetricOptions
          // 
          this.pnlMetricOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+         this.pnlMetricOptions.Controls.Add(this.btnSaveMetrics);
          this.pnlMetricOptions.Controls.Add(this.btnClearMetrics);
          this.pnlMetricOptions.Controls.Add(this.lblNumOfRuns);
          this.pnlMetricOptions.Controls.Add(this.NUDRuns);
          this.pnlMetricOptions.Controls.Add(this.btnMetrics);
-         this.pnlMetricOptions.Location = new System.Drawing.Point(953, 17);
-         this.pnlMetricOptions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pnlMetricOptions.Location = new System.Drawing.Point(715, 14);
          this.pnlMetricOptions.Name = "pnlMetricOptions";
-         this.pnlMetricOptions.Size = new System.Drawing.Size(266, 83);
+         this.pnlMetricOptions.Size = new System.Drawing.Size(200, 97);
          this.pnlMetricOptions.TabIndex = 32;
+         // 
+         // btnSaveMetrics
+         // 
+         this.btnSaveMetrics.Enabled = false;
+         this.btnSaveMetrics.Location = new System.Drawing.Point(3, 68);
+         this.btnSaveMetrics.MaximumSize = new System.Drawing.Size(500, 25);
+         this.btnSaveMetrics.Name = "btnSaveMetrics";
+         this.btnSaveMetrics.Size = new System.Drawing.Size(94, 25);
+         this.btnSaveMetrics.TabIndex = 36;
+         this.btnSaveMetrics.Text = "Save Metrics";
+         this.btnSaveMetrics.UseVisualStyleBackColor = true;
+         this.btnSaveMetrics.Click += new System.EventHandler(this.btnSaveMetrics_Click);
          // 
          // btnClearMetrics
          // 
-         this.btnClearMetrics.Location = new System.Drawing.Point(133, 46);
-         this.btnClearMetrics.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-         this.btnClearMetrics.MaximumSize = new System.Drawing.Size(267, 31);
+         this.btnClearMetrics.Enabled = false;
+         this.btnClearMetrics.Location = new System.Drawing.Point(100, 37);
+         this.btnClearMetrics.MaximumSize = new System.Drawing.Size(200, 25);
          this.btnClearMetrics.Name = "btnClearMetrics";
-         this.btnClearMetrics.Size = new System.Drawing.Size(129, 31);
+         this.btnClearMetrics.Size = new System.Drawing.Size(97, 25);
          this.btnClearMetrics.TabIndex = 35;
          this.btnClearMetrics.Text = "Clear Metrics";
          this.btnClearMetrics.UseVisualStyleBackColor = true;
@@ -687,24 +654,27 @@
          // lblNumOfRuns
          // 
          this.lblNumOfRuns.AutoSize = true;
-         this.lblNumOfRuns.Location = new System.Drawing.Point(4, 16);
-         this.lblNumOfRuns.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblNumOfRuns.Location = new System.Drawing.Point(3, 13);
          this.lblNumOfRuns.Name = "lblNumOfRuns";
-         this.lblNumOfRuns.Size = new System.Drawing.Size(110, 17);
+         this.lblNumOfRuns.Size = new System.Drawing.Size(82, 13);
          this.lblNumOfRuns.TabIndex = 34;
          this.lblNumOfRuns.Text = "Number of runs:";
          // 
          // NUDRuns
          // 
-         this.NUDRuns.Location = new System.Drawing.Point(133, 14);
-         this.NUDRuns.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.NUDRuns.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+         this.NUDRuns.Location = new System.Drawing.Point(100, 11);
          this.NUDRuns.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
          this.NUDRuns.Name = "NUDRuns";
-         this.NUDRuns.Size = new System.Drawing.Size(129, 22);
+         this.NUDRuns.Size = new System.Drawing.Size(97, 20);
          this.NUDRuns.TabIndex = 33;
          this.NUDRuns.Value = new decimal(new int[] {
             10,
@@ -716,19 +686,17 @@
          // 
          this.lblCanvasSize.AutoSize = true;
          this.lblCanvasSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-         this.lblCanvasSize.Location = new System.Drawing.Point(21, 4);
-         this.lblCanvasSize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblCanvasSize.Location = new System.Drawing.Point(16, 3);
          this.lblCanvasSize.Name = "lblCanvasSize";
-         this.lblCanvasSize.Size = new System.Drawing.Size(111, 13);
+         this.lblCanvasSize.Size = new System.Drawing.Size(78, 9);
          this.lblCanvasSize.TabIndex = 33;
          this.lblCanvasSize.Text = "Canvas Size: 700,700";
          // 
          // btnSave
          // 
-         this.btnSave.Location = new System.Drawing.Point(32, 36);
-         this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.btnSave.Location = new System.Drawing.Point(24, 29);
          this.btnSave.Name = "btnSave";
-         this.btnSave.Size = new System.Drawing.Size(100, 28);
+         this.btnSave.Size = new System.Drawing.Size(75, 23);
          this.btnSave.TabIndex = 34;
          this.btnSave.Text = "Save";
          this.btnSave.UseVisualStyleBackColor = true;
@@ -736,10 +704,9 @@
          // 
          // btnLoad
          // 
-         this.btnLoad.Location = new System.Drawing.Point(140, 36);
-         this.btnLoad.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.btnLoad.Location = new System.Drawing.Point(105, 29);
          this.btnLoad.Name = "btnLoad";
-         this.btnLoad.Size = new System.Drawing.Size(100, 28);
+         this.btnLoad.Size = new System.Drawing.Size(75, 23);
          this.btnLoad.TabIndex = 35;
          this.btnLoad.Text = "Load";
          this.btnLoad.UseVisualStyleBackColor = true;
@@ -751,19 +718,17 @@
          this.pnlFileIO.Controls.Add(this.lblFileIO);
          this.pnlFileIO.Controls.Add(this.btnSave);
          this.pnlFileIO.Controls.Add(this.btnLoad);
-         this.pnlFileIO.Location = new System.Drawing.Point(1544, 233);
-         this.pnlFileIO.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+         this.pnlFileIO.Location = new System.Drawing.Point(1158, 189);
          this.pnlFileIO.Name = "pnlFileIO";
-         this.pnlFileIO.Size = new System.Drawing.Size(266, 80);
+         this.pnlFileIO.Size = new System.Drawing.Size(200, 65);
          this.pnlFileIO.TabIndex = 36;
          // 
          // lblFileIO
          // 
          this.lblFileIO.AutoSize = true;
-         this.lblFileIO.Location = new System.Drawing.Point(113, 9);
-         this.lblFileIO.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+         this.lblFileIO.Location = new System.Drawing.Point(85, 7);
          this.lblFileIO.Name = "lblFileIO";
-         this.lblFileIO.Size = new System.Drawing.Size(48, 17);
+         this.lblFileIO.Size = new System.Drawing.Size(38, 13);
          this.lblFileIO.TabIndex = 36;
          this.lblFileIO.Text = "FIle IO";
          // 
@@ -771,10 +736,10 @@
          // 
          this.cBoxEditing.AutoSize = true;
          this.cBoxEditing.BackColor = System.Drawing.SystemColors.Control;
-         this.cBoxEditing.Location = new System.Drawing.Point(9, 30);
-         this.cBoxEditing.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+         this.cBoxEditing.Location = new System.Drawing.Point(7, 24);
+         this.cBoxEditing.Margin = new System.Windows.Forms.Padding(2);
          this.cBoxEditing.Name = "cBoxEditing";
-         this.cBoxEditing.Size = new System.Drawing.Size(73, 21);
+         this.cBoxEditing.Size = new System.Drawing.Size(58, 17);
          this.cBoxEditing.TabIndex = 37;
          this.cBoxEditing.Text = "Editing";
          this.cBoxEditing.UseVisualStyleBackColor = false;
@@ -782,34 +747,21 @@
          // pnlEdit
          // 
          this.pnlEdit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-         this.pnlEdit.Location = new System.Drawing.Point(9, 60);
-         this.pnlEdit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+         this.pnlEdit.Location = new System.Drawing.Point(7, 49);
+         this.pnlEdit.Margin = new System.Windows.Forms.Padding(2);
          this.pnlEdit.Name = "pnlEdit";
-         this.pnlEdit.Size = new System.Drawing.Size(73, 67);
+         this.pnlEdit.Size = new System.Drawing.Size(55, 55);
          this.pnlEdit.TabIndex = 38;
          this.pnlEdit.Click += new System.EventHandler(this.panel1_Click);
          this.pnlEdit.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
          // 
-         // Canvas
-         // 
-         this.Canvas.AutoSize = true;
-         this.Canvas.Location = new System.Drawing.Point(19, 17);
-         this.Canvas.Margin = new System.Windows.Forms.Padding(7, 6, 267, 6);
-         this.Canvas.Name = "Canvas";
-         this.Canvas.Size = new System.Drawing.Size(933, 862);
-         this.Canvas.TabIndex = 0;
-         this.Canvas.Click += new System.EventHandler(this.Canvas_Click);
-         this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
-         this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
-         this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
-         // 
          // rbAdd
          // 
          this.rbAdd.AutoSize = true;
-         this.rbAdd.Location = new System.Drawing.Point(92, 60);
-         this.rbAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+         this.rbAdd.Location = new System.Drawing.Point(69, 49);
+         this.rbAdd.Margin = new System.Windows.Forms.Padding(2);
          this.rbAdd.Name = "rbAdd";
-         this.rbAdd.Size = new System.Drawing.Size(54, 21);
+         this.rbAdd.Size = new System.Drawing.Size(44, 17);
          this.rbAdd.TabIndex = 40;
          this.rbAdd.Text = "Add";
          this.rbAdd.UseVisualStyleBackColor = true;
@@ -817,10 +769,10 @@
          // rbRemove
          // 
          this.rbRemove.AutoSize = true;
-         this.rbRemove.Location = new System.Drawing.Point(92, 84);
-         this.rbRemove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+         this.rbRemove.Location = new System.Drawing.Point(69, 68);
+         this.rbRemove.Margin = new System.Windows.Forms.Padding(2);
          this.rbRemove.Name = "rbRemove";
-         this.rbRemove.Size = new System.Drawing.Size(81, 21);
+         this.rbRemove.Size = new System.Drawing.Size(65, 17);
          this.rbRemove.TabIndex = 41;
          this.rbRemove.Text = "Remove";
          this.rbRemove.UseVisualStyleBackColor = true;
@@ -829,10 +781,10 @@
          // 
          this.rbReplace.AutoSize = true;
          this.rbReplace.Checked = true;
-         this.rbReplace.Location = new System.Drawing.Point(92, 105);
-         this.rbReplace.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+         this.rbReplace.Location = new System.Drawing.Point(69, 85);
+         this.rbReplace.Margin = new System.Windows.Forms.Padding(2);
          this.rbReplace.Name = "rbReplace";
-         this.rbReplace.Size = new System.Drawing.Size(81, 21);
+         this.rbReplace.Size = new System.Drawing.Size(65, 17);
          this.rbReplace.TabIndex = 42;
          this.rbReplace.TabStop = true;
          this.rbReplace.Text = "Replace";
@@ -844,10 +796,10 @@
          this.cmbEditOptions.Items.AddRange(new object[] {
             "Fill",
             "Perimeter"});
-         this.cmbEditOptions.Location = new System.Drawing.Point(92, 27);
-         this.cmbEditOptions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+         this.cmbEditOptions.Location = new System.Drawing.Point(69, 22);
+         this.cmbEditOptions.Margin = new System.Windows.Forms.Padding(2);
          this.cmbEditOptions.Name = "cmbEditOptions";
-         this.cmbEditOptions.Size = new System.Drawing.Size(121, 24);
+         this.cmbEditOptions.Size = new System.Drawing.Size(92, 21);
          this.cmbEditOptions.TabIndex = 43;
          this.cmbEditOptions.Text = "Edit Option";
          // 
@@ -861,26 +813,40 @@
          this.pnlEditOptions.Controls.Add(this.rbReplace);
          this.pnlEditOptions.Controls.Add(this.rbAdd);
          this.pnlEditOptions.Controls.Add(this.rbRemove);
-         this.pnlEditOptions.Location = new System.Drawing.Point(1312, 15);
-         this.pnlEditOptions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+         this.pnlEditOptions.Location = new System.Drawing.Point(984, 12);
+         this.pnlEditOptions.Margin = new System.Windows.Forms.Padding(2);
          this.pnlEditOptions.Name = "pnlEditOptions";
-         this.pnlEditOptions.Size = new System.Drawing.Size(230, 141);
+         this.pnlEditOptions.Size = new System.Drawing.Size(173, 115);
          this.pnlEditOptions.TabIndex = 44;
          // 
          // lblEditOptions
          // 
          this.lblEditOptions.AutoSize = true;
-         this.lblEditOptions.Location = new System.Drawing.Point(65, 9);
+         this.lblEditOptions.Location = new System.Drawing.Point(49, 7);
+         this.lblEditOptions.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
          this.lblEditOptions.Name = "lblEditOptions";
-         this.lblEditOptions.Size = new System.Drawing.Size(85, 17);
+         this.lblEditOptions.Size = new System.Drawing.Size(64, 13);
          this.lblEditOptions.TabIndex = 44;
          this.lblEditOptions.Text = "Edit Options";
          // 
+         // Canvas
+         // 
+         this.Canvas.AutoSize = true;
+         this.Canvas.Location = new System.Drawing.Point(14, 14);
+         this.Canvas.Margin = new System.Windows.Forms.Padding(5, 5, 200, 5);
+         this.Canvas.Name = "Canvas";
+         this.Canvas.Size = new System.Drawing.Size(700, 700);
+         this.Canvas.TabIndex = 0;
+         this.Canvas.Click += new System.EventHandler(this.Canvas_Click);
+         this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
+         this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+         this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
+         // 
          // Form1
          // 
-         this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-         this.ClientSize = new System.Drawing.Size(1827, 912);
+         this.ClientSize = new System.Drawing.Size(1366, 749);
          this.Controls.Add(this.pnlEditOptions);
          this.Controls.Add(this.pnlFileIO);
          this.Controls.Add(this.lblCanvasSize);
@@ -894,7 +860,6 @@
          this.Controls.Add(this.lblDrawTime);
          this.Controls.Add(this.Canvas);
          this.DoubleBuffered = true;
-         this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
          this.Name = "Form1";
          this.Text = "Form1";
          this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -993,6 +958,7 @@
       private System.Windows.Forms.ComboBox cmbEditOptions;
       private System.Windows.Forms.Panel pnlEditOptions;
       private System.Windows.Forms.Label lblEditOptions;
+      private System.Windows.Forms.Button btnSaveMetrics;
    }
 }
 
