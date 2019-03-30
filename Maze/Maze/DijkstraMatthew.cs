@@ -42,11 +42,22 @@ namespace Maze
          while(!closed.ContainsKey(MakeKey(xEnd, yEnd)) && open.Count != 0)
          {
             currentNode = SelectNextNode();
-
+            currentNode.visited = true;
             foreach (AINode neighborNode in currentNode.AINodes)
             {
-               if (neighborNode != null)
+               if (neighborNode != null && !closed.ContainsKey(MakeKey(neighborNode.x, neighborNode.y)))
                {
+                  AINode nodeToEdit;
+                  if (open.ContainsKey(MakeKey(neighborNode.x, neighborNode.y)))
+                  {
+                     open.TryGetValue(MakeKey(neighborNode.x, neighborNode.y), out nodeToEdit);
+                     open.Remove(MakeKey(neighborNode.x, neighborNode.y));
+                  }
+                  else
+                  {
+                     nodeToEdit = neighborNode;
+                  }
+
                   int distanceFromStart = currentNode.g + 1;
                   if (distanceFromStart < neighborNode.g || neighborNode.g == -1)
                   {
@@ -60,7 +71,9 @@ namespace Maze
             open.Remove(MakeKey(currentNode.x, currentNode.y));
             closed.Add(MakeKey(currentNode.x, currentNode.y), currentNode);
          }
-         
+
+         BackTrack(currentNode);
+
          return 0;
       }
 

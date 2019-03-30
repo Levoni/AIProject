@@ -108,6 +108,13 @@ namespace Maze
             time = (int)s.RunSearch();
             return (float)time;
          }
+         else if (searchType == "Dijkstra (Matthew)")
+         {
+            Search s = new DijkstraMatthew();
+            s.SetupSearch(nodeMap, XStart, YStart, XEnd, YEnd);
+            time = (int)s.RunSearch();
+            return (float)time;
+         }
          return 0;
       }
 
