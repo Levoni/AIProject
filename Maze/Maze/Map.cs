@@ -88,7 +88,7 @@ namespace Maze
             yOriginal = nodeStack.Peek().yPos;
             dir direction = DetermineDirection(closed, xOriginal, yOriginal); //Get direction to move next tile to
             if (direction == dir.UNKNOWN && nodeStack.Peek().IsDeadEnd() && cutPercent > rand.Next() % 100)
-               CutSection(nodeStack); // removes wall so tile is not a dead end
+               RemoveDeadEnd(nodeStack.Peek()); // removes wall so tile is not a dead end
             closed[MakeKey(xOriginal,yOriginal)] = nodeStack.Peek(); 
             UpdateStack(nodeStack, xOriginal, yOriginal, direction); // moves to next tile 
          }
@@ -150,71 +150,82 @@ namespace Maze
       private void UpdateStack(Stack<Tile> nodeStack ,int xOriginal, int yOriginal,dir moveDirection)
       {
          if (moveDirection == dir.UP)
-            MoveToNextNode(nodeStack, map[xOriginal, yOriginal], map[xOriginal, yOriginal - 1], moveDirection);
+         {
+            RemoveWall(map[xOriginal, yOriginal], map[xOriginal, yOriginal - 1], moveDirection);
+            nodeStack.Push(map[xOriginal, yOriginal - 1]);
+         }
          else if (moveDirection == dir.DOWN)
-            MoveToNextNode(nodeStack, map[xOriginal, yOriginal], map[xOriginal, yOriginal + 1], moveDirection);
+         {
+            RemoveWall(map[xOriginal, yOriginal], map[xOriginal, yOriginal + 1], moveDirection);
+            nodeStack.Push(map[xOriginal, yOriginal + 1]);
+         }
          else if (moveDirection == dir.RIGHT)
-            MoveToNextNode(nodeStack, map[xOriginal, yOriginal], map[xOriginal + 1, yOriginal], moveDirection);
+         {
+            RemoveWall(map[xOriginal, yOriginal], map[xOriginal + 1, yOriginal], moveDirection);
+            nodeStack.Push(map[xOriginal + 1, yOriginal]);
+         }
          else if (moveDirection == dir.LEFT)
-            MoveToNextNode(nodeStack, map[xOriginal, yOriginal], map[xOriginal - 1, yOriginal], moveDirection);
+         {
+            RemoveWall(map[xOriginal, yOriginal], map[xOriginal - 1, yOriginal], moveDirection);
+            nodeStack.Push(map[xOriginal - 1, yOriginal]);
+         }
          else
             nodeStack.Pop();
       }
 
       /// <summary>
-      /// Connects two adjacent nodes in the maze together. Then moves top of the
-      /// nodestack to the newNode.
+      /// Connects two adjacent nodes in the maze together
       /// </summary>
-      /// <param name="nodeStack">The stack of nodes</param>
       /// <param name="oldNode">The node to connect from</param>
       /// <param name="newNode">The node to connect to</param>
       /// <param name="moveDirection">The direction from oldNode to NewNode</param>
-      private void MoveToNextNode(Stack<Tile> nodeStack, Tile oldNode, Tile newNode, dir moveDirection)
+      public void RemoveWall(Tile oldNode, Tile newNode, dir moveDirection)
       {
-         // Create indexes based on directions
-         int test1 = (int)moveDirection;
-         int test2 = ((int)moveDirection + 2) % 4; //direction opposite of first direction
-
-         // connects the nodes
          oldNode.adjacentTiles[(int)moveDirection] = newNode;
          newNode.adjacentTiles[((int)moveDirection + 2) % 4] = oldNode;
+      }
 
-         // pushes new tile onto the stack
-         nodeStack.Push(newNode);
+      /// <summary>
+      /// Disconnects two adjacent nodes in the maze together
+      /// </summary>
+      /// <param name="oldNode">The node to disconnect from</param>
+      /// <param name="newNode">The node to disconnect to</param>
+      /// <param name="moveDirection">The direction from oldNode to NewNode</param>
+      public void AddWall(Tile oldNode, Tile newNode,dir moveDirection)
+      {
+         oldNode.adjacentTiles[(int)moveDirection] = null;
+         newNode.adjacentTiles[((int)moveDirection + 2) % 4] = null;
       }
 
       /// <summary>
       /// Opens up a dead end by cutting out a wall 
       /// </summary>
-      /// <param name="nodeStack">The current stack of nodes</param>
-      private void CutSection(Stack<Tile> nodeStack)
+      /// <param name="DeadEndTile">The Tile that is a dead end</param>
+      private void RemoveDeadEnd(Tile DeadEndTIle)
       {
-         Tile n = nodeStack.Peek();
-
-         // Removes wall by moving to the next node then poping that node
-         // off the stack.
-         if (n.adjacentTiles[(int)dir.UP] != null && n.yPos != height - 1)
+         // Removes wall opposite of the one open side if possible
+         if (DeadEndTIle.adjacentTiles[(int)dir.UP] != null && DeadEndTIle.yPos != height - 1)
          {
-            MoveToNextNode(nodeStack, n, map[n.xPos, n.yPos + 1], dir.DOWN);
-            nodeStack.Pop();
+            RemoveWall(DeadEndTIle,map[DeadEndTIle.xPos, DeadEndTIle.yPos + 1], dir.DOWN);
          }
-         else if (n.adjacentTiles[(int)dir.DOWN] != null && n.yPos != 0)
+         else if (DeadEndTIle.adjacentTiles[(int)dir.DOWN] != null && DeadEndTIle.yPos != 0)
          {
-            MoveToNextNode(nodeStack, n, map[n.xPos, n.yPos - 1], dir.UP);
-            nodeStack.Pop();
+            RemoveWall(DeadEndTIle, map[DeadEndTIle.xPos, DeadEndTIle.yPos - 1], dir.UP);
          }
-         else if (n.adjacentTiles[(int)dir.RIGHT] != null && n.xPos != 0)
+         else if (DeadEndTIle.adjacentTiles[(int)dir.RIGHT] != null && DeadEndTIle.xPos != 0)
          {
-            MoveToNextNode(nodeStack, n, map[n.xPos - 1, n.yPos], dir.LEFT);
-            nodeStack.Pop();
+            RemoveWall(DeadEndTIle, map[DeadEndTIle.xPos - 1, DeadEndTIle.yPos], dir.LEFT);
          }
-         else if (n.adjacentTiles[(int)dir.LEFT] != null && n.xPos != width - 1)
+         else if (DeadEndTIle.adjacentTiles[(int)dir.LEFT] != null && DeadEndTIle.xPos != width - 1)
          {
-            MoveToNextNode(nodeStack, n, map[n.xPos + 1, n.yPos], dir.RIGHT);
-            nodeStack.Pop();
+            RemoveWall(DeadEndTIle, map[DeadEndTIle.xPos + 1, DeadEndTIle.yPos], dir.RIGHT);
          }
       }
 
+      /// <summary>
+      /// Saves current map to .tm file.
+      /// </summary>
+      /// <param name="saveName">Path to save the file to</param>
       public void SaveMap(string saveName)
       {
          using (StreamWriter sw = new StreamWriter(saveName))
@@ -229,7 +240,7 @@ namespace Maze
                {
                   foreach(Tile t in map[i,j].adjacentTiles)
                   {
-                     if (t != null)
+                     if (t == null)
                         walls += "1";
                      else
                         walls += "0";
@@ -242,6 +253,10 @@ namespace Maze
          }
       }
 
+      /// <summary>
+      /// Loads a Map from a .tm file.
+      /// </summary>
+      /// <param name="fileName">Path to the file you want to load</param>
       public void LoadMap(string fileName)
       {
          using (StreamReader sr = new StreamReader(fileName))
@@ -269,13 +284,13 @@ namespace Maze
                for(int i = 0; i < width; i++)
                {
                   string tile = row[i];
-                  if (tile[(int)dir.UP] == '1')
+                  if (tile[(int)dir.UP] == '0')
                      map[i, j].adjacentTiles[(int)dir.UP] = map[i, j - 1];
-                  if (tile[(int)dir.RIGHT] == '1')
+                  if (tile[(int)dir.RIGHT] == '0')
                      map[i, j].adjacentTiles[(int)dir.RIGHT] = map[i + 1, j];
-                  if (tile[(int)dir.DOWN] == '1')
+                  if (tile[(int)dir.DOWN] == '0')
                      map[i, j].adjacentTiles[(int)dir.DOWN] = map[i, j + 1];
-                  if (tile[(int)dir.LEFT] == '1')
+                  if (tile[(int)dir.LEFT] == '0')
                      map[i, j].adjacentTiles[(int)dir.LEFT] = map[i - 1, j];
                }
             }

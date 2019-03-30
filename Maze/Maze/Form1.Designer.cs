@@ -59,13 +59,13 @@
          this.lblPathKey = new System.Windows.Forms.Label();
          this.lblVisitedKey = new System.Windows.Forms.Label();
          this.pnlKey = new System.Windows.Forms.Panel();
-         this.cbRealtime = new System.Windows.Forms.CheckBox();
+         this.cboxRealtime = new System.Windows.Forms.CheckBox();
          this.PBarMetrics = new System.Windows.Forms.ProgressBar();
          this.NUDLoopsPerTick = new System.Windows.Forms.NumericUpDown();
          this.NUDInterval = new System.Windows.Forms.NumericUpDown();
          this.lblTickLoop = new System.Windows.Forms.Label();
          this.lblInterval = new System.Windows.Forms.Label();
-         this.cBoxSelection = new System.Windows.Forms.ComboBox();
+         this.cmbSelection = new System.Windows.Forms.ComboBox();
          this.pnlRealtimeSettings = new System.Windows.Forms.Panel();
          this.lblRealtimeSettings = new System.Windows.Forms.Label();
          this.pnlSingleSearch = new System.Windows.Forms.Panel();
@@ -85,7 +85,15 @@
          this.btnLoad = new System.Windows.Forms.Button();
          this.pnlFileIO = new System.Windows.Forms.Panel();
          this.lblFileIO = new System.Windows.Forms.Label();
+         this.cBoxEditing = new System.Windows.Forms.CheckBox();
+         this.pnlEdit = new System.Windows.Forms.Panel();
          this.Canvas = new Maze.DBPanel();
+         this.rbAdd = new System.Windows.Forms.RadioButton();
+         this.rbRemove = new System.Windows.Forms.RadioButton();
+         this.rbReplace = new System.Windows.Forms.RadioButton();
+         this.cmbEditOptions = new System.Windows.Forms.ComboBox();
+         this.pnlEditOptions = new System.Windows.Forms.Panel();
+         this.lblEditOptions = new System.Windows.Forms.Label();
          ((System.ComponentModel.ISupportInitialize)(this.pbStart)).BeginInit();
          ((System.ComponentModel.ISupportInitialize)(this.pbEnd)).BeginInit();
          this.pnlMetrics.SuspendLayout();
@@ -100,6 +108,7 @@
          this.pnlMetricOptions.SuspendLayout();
          ((System.ComponentModel.ISupportInitialize)(this.NUDRuns)).BeginInit();
          this.pnlFileIO.SuspendLayout();
+         this.pnlEditOptions.SuspendLayout();
          this.SuspendLayout();
          // 
          // btnRegen
@@ -414,16 +423,15 @@
          this.pnlKey.Size = new System.Drawing.Size(266, 148);
          this.pnlKey.TabIndex = 21;
          // 
-         // cbRealtime
+         // cboxRealtime
          // 
-         this.cbRealtime.AutoSize = true;
-         this.cbRealtime.Location = new System.Drawing.Point(131, 79);
-         this.cbRealtime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-         this.cbRealtime.Name = "cbRealtime";
-         this.cbRealtime.Size = new System.Drawing.Size(85, 21);
-         this.cbRealtime.TabIndex = 22;
-         this.cbRealtime.Text = "Realtime";
-         this.cbRealtime.UseVisualStyleBackColor = true;
+         this.cboxRealtime.AutoSize = true;
+         this.cboxRealtime.Location = new System.Drawing.Point(98, 64);
+         this.cboxRealtime.Name = "cboxRealtime";
+         this.cboxRealtime.Size = new System.Drawing.Size(67, 17);
+         this.cboxRealtime.TabIndex = 22;
+         this.cboxRealtime.Text = "Realtime";
+         this.cboxRealtime.UseVisualStyleBackColor = true;
          // 
          // PBarMetrics
          // 
@@ -506,22 +514,21 @@
          this.lblInterval.TabIndex = 27;
          this.lblInterval.Text = "Interval Time (ms):";
          // 
-         // cBoxSelection
+         // cmbSelection
          // 
-         this.cBoxSelection.FormattingEnabled = true;
-         this.cBoxSelection.Items.AddRange(new object[] {
+         this.cmbSelection.FormattingEnabled = true;
+         this.cmbSelection.Items.AddRange(new object[] {
             "Breadth First (Levon)",
             "Depth First (Levon)",
             "Hill Climb (Levon)",
             "A* (Ryan)",
             "Greedy Best First (Ryan)",
             "Dijkstra (Matthew)"});
-         this.cBoxSelection.Location = new System.Drawing.Point(8, 34);
-         this.cBoxSelection.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-         this.cBoxSelection.Name = "cBoxSelection";
-         this.cBoxSelection.Size = new System.Drawing.Size(160, 24);
-         this.cBoxSelection.TabIndex = 28;
-         this.cBoxSelection.Text = "Select Search";
+         this.cmbSelection.Location = new System.Drawing.Point(6, 28);
+         this.cmbSelection.Name = "cmbSelection";
+         this.cmbSelection.Size = new System.Drawing.Size(121, 21);
+         this.cmbSelection.TabIndex = 28;
+         this.cmbSelection.Text = "Select Search";
          // 
          // pnlRealtimeSettings
          // 
@@ -552,9 +559,9 @@
          this.pnlSingleSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
          this.pnlSingleSearch.Controls.Add(this.lblSingleSearch);
          this.pnlSingleSearch.Controls.Add(this.lblElapsedAvg);
-         this.pnlSingleSearch.Controls.Add(this.cBoxSelection);
+         this.pnlSingleSearch.Controls.Add(this.cmbSelection);
          this.pnlSingleSearch.Controls.Add(this.lblVisited);
-         this.pnlSingleSearch.Controls.Add(this.cbRealtime);
+         this.pnlSingleSearch.Controls.Add(this.cboxRealtime);
          this.pnlSingleSearch.Controls.Add(this.lblPathLength);
          this.pnlSingleSearch.Controls.Add(this.btnRunSearch);
          this.pnlSingleSearch.Location = new System.Drawing.Point(1544, 351);
@@ -757,6 +764,27 @@
          this.lblFileIO.TabIndex = 36;
          this.lblFileIO.Text = "FIle IO";
          // 
+         // cBoxEditing
+         // 
+         this.cBoxEditing.AutoSize = true;
+         this.cBoxEditing.BackColor = System.Drawing.SystemColors.Control;
+         this.cBoxEditing.Location = new System.Drawing.Point(7, 23);
+         this.cBoxEditing.Name = "cBoxEditing";
+         this.cBoxEditing.Size = new System.Drawing.Size(58, 17);
+         this.cBoxEditing.TabIndex = 37;
+         this.cBoxEditing.Text = "Editing";
+         this.cBoxEditing.UseVisualStyleBackColor = false;
+         // 
+         // pnlEdit
+         // 
+         this.pnlEdit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+         this.pnlEdit.Location = new System.Drawing.Point(7, 54);
+         this.pnlEdit.Name = "pnlEdit";
+         this.pnlEdit.Size = new System.Drawing.Size(67, 65);
+         this.pnlEdit.TabIndex = 38;
+         this.pnlEdit.Click += new System.EventHandler(this.panel1_Click);
+         this.pnlEdit.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+         // 
          // Canvas
          // 
          this.Canvas.AutoSize = true;
@@ -767,12 +795,83 @@
          this.Canvas.TabIndex = 0;
          this.Canvas.Click += new System.EventHandler(this.Canvas_Click);
          this.Canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Canvas_Paint);
+         this.Canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
+         this.Canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
+         // 
+         // rbAdd
+         // 
+         this.rbAdd.AutoSize = true;
+         this.rbAdd.Location = new System.Drawing.Point(80, 54);
+         this.rbAdd.Name = "rbAdd";
+         this.rbAdd.Size = new System.Drawing.Size(44, 17);
+         this.rbAdd.TabIndex = 40;
+         this.rbAdd.Text = "Add";
+         this.rbAdd.UseVisualStyleBackColor = true;
+         // 
+         // rbRemove
+         // 
+         this.rbRemove.AutoSize = true;
+         this.rbRemove.Location = new System.Drawing.Point(80, 77);
+         this.rbRemove.Name = "rbRemove";
+         this.rbRemove.Size = new System.Drawing.Size(65, 17);
+         this.rbRemove.TabIndex = 41;
+         this.rbRemove.Text = "Remove";
+         this.rbRemove.UseVisualStyleBackColor = true;
+         // 
+         // rbReplace
+         // 
+         this.rbReplace.AutoSize = true;
+         this.rbReplace.Checked = true;
+         this.rbReplace.Location = new System.Drawing.Point(80, 98);
+         this.rbReplace.Name = "rbReplace";
+         this.rbReplace.Size = new System.Drawing.Size(65, 17);
+         this.rbReplace.TabIndex = 42;
+         this.rbReplace.TabStop = true;
+         this.rbReplace.Text = "Replace";
+         this.rbReplace.UseVisualStyleBackColor = true;
+         // 
+         // cmbEditOptions
+         // 
+         this.cmbEditOptions.FormattingEnabled = true;
+         this.cmbEditOptions.Items.AddRange(new object[] {
+            "Fill",
+            "Perimeter"});
+         this.cmbEditOptions.Location = new System.Drawing.Point(71, 21);
+         this.cmbEditOptions.Name = "cmbEditOptions";
+         this.cmbEditOptions.Size = new System.Drawing.Size(94, 21);
+         this.cmbEditOptions.TabIndex = 43;
+         this.cmbEditOptions.Text = "Edit Option";
+         // 
+         // pnlEditOptions
+         // 
+         this.pnlEditOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+         this.pnlEditOptions.Controls.Add(this.lblEditOptions);
+         this.pnlEditOptions.Controls.Add(this.cBoxEditing);
+         this.pnlEditOptions.Controls.Add(this.cmbEditOptions);
+         this.pnlEditOptions.Controls.Add(this.pnlEdit);
+         this.pnlEditOptions.Controls.Add(this.rbReplace);
+         this.pnlEditOptions.Controls.Add(this.rbAdd);
+         this.pnlEditOptions.Controls.Add(this.rbRemove);
+         this.pnlEditOptions.Location = new System.Drawing.Point(975, 12);
+         this.pnlEditOptions.Name = "pnlEditOptions";
+         this.pnlEditOptions.Size = new System.Drawing.Size(177, 130);
+         this.pnlEditOptions.TabIndex = 44;
+         // 
+         // lblEditOptions
+         // 
+         this.lblEditOptions.AutoSize = true;
+         this.lblEditOptions.Location = new System.Drawing.Point(49, 5);
+         this.lblEditOptions.Name = "lblEditOptions";
+         this.lblEditOptions.Size = new System.Drawing.Size(64, 13);
+         this.lblEditOptions.TabIndex = 44;
+         this.lblEditOptions.Text = "Edit Options";
          // 
          // Form1
          // 
          this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-         this.ClientSize = new System.Drawing.Size(1827, 922);
+         this.ClientSize = new System.Drawing.Size(1370, 749);
+         this.Controls.Add(this.pnlEditOptions);
          this.Controls.Add(this.pnlFileIO);
          this.Controls.Add(this.lblCanvasSize);
          this.Controls.Add(this.pnlMetricOptions);
@@ -810,6 +909,8 @@
          ((System.ComponentModel.ISupportInitialize)(this.NUDRuns)).EndInit();
          this.pnlFileIO.ResumeLayout(false);
          this.pnlFileIO.PerformLayout();
+         this.pnlEditOptions.ResumeLayout(false);
+         this.pnlEditOptions.PerformLayout();
          this.ResumeLayout(false);
          this.PerformLayout();
 
@@ -846,13 +947,13 @@
       private System.Windows.Forms.Label lblPathKey;
       private System.Windows.Forms.Label lblVisitedKey;
       private System.Windows.Forms.Panel pnlKey;
-      private System.Windows.Forms.CheckBox cbRealtime;
+      private System.Windows.Forms.CheckBox cboxRealtime;
       private System.Windows.Forms.ProgressBar PBarMetrics;
       private System.Windows.Forms.NumericUpDown NUDLoopsPerTick;
       private System.Windows.Forms.NumericUpDown NUDInterval;
       private System.Windows.Forms.Label lblTickLoop;
       private System.Windows.Forms.Label lblInterval;
-      private System.Windows.Forms.ComboBox cBoxSelection;
+      private System.Windows.Forms.ComboBox cmbSelection;
       private System.Windows.Forms.Panel pnlRealtimeSettings;
       private System.Windows.Forms.Label lblRealtimeSettings;
       private System.Windows.Forms.Panel pnlSingleSearch;
@@ -874,6 +975,14 @@
       private System.Windows.Forms.Button btnLoad;
       private System.Windows.Forms.Panel pnlFileIO;
       private System.Windows.Forms.Label lblFileIO;
+      private System.Windows.Forms.CheckBox cBoxEditing;
+      private System.Windows.Forms.Panel pnlEdit;
+      private System.Windows.Forms.RadioButton rbAdd;
+      private System.Windows.Forms.RadioButton rbRemove;
+      private System.Windows.Forms.RadioButton rbReplace;
+      private System.Windows.Forms.ComboBox cmbEditOptions;
+      private System.Windows.Forms.Panel pnlEditOptions;
+      private System.Windows.Forms.Label lblEditOptions;
    }
 }
 
