@@ -241,9 +241,9 @@ namespace Maze
                   foreach(Tile t in map[i,j].adjacentTiles)
                   {
                      if (t == null)
-                        walls += "1";
-                     else
                         walls += "0";
+                     else
+                        walls += "1";
                   }
                   walls += ":";
                }
