@@ -47,6 +47,8 @@ namespace Maze
          {
             for (int k = 0; k < times; k++)
             {
+               currentNode.visited = true;
+               closed.Add(MakeKey(currentNode.x, currentNode.y), currentNode);
                nodesSearched.Add(currentNode);
                if (currentNode.x == xEnd && currentNode.y == yEnd)
                {
@@ -73,23 +75,14 @@ namespace Maze
                         }
                      }
                   }
-                  currentNode.visited = true;
+                  if (nextNode != null)
+                     nextNode.Parent = currentNode;
+                  currentNode = nextNode;
                   if (nextNode == null)
                   {
-                     currentNode = nextNode;
                      start.pl = place.start;
                      end.pl = place.end;
                      return true;
-                  }
-                  else
-                  {
-                     nextNode.Parent = currentNode;
-                     currentNode = nextNode;
-                     if (currentNode != null)
-                     {
-                        if (currentNode.Parent != null)
-                           closed.Add(MakeKey(currentNode.Parent.x, currentNode.Parent.y), currentNode.Parent);
-                     }
                   }
                }
             }
@@ -103,6 +96,8 @@ namespace Maze
          st.Start();
          while (currentNode != null)
          {
+            currentNode.visited = true;
+            closed.Add(MakeKey(currentNode.x, currentNode.y), currentNode);
             if (currentNode.x == xEnd && currentNode.y == yEnd)
             {
                BackTrack(currentNode);
@@ -128,22 +123,13 @@ namespace Maze
                      }
                   }
                }
-               currentNode.visited = true;
+               if(nextNode != null)
+                  nextNode.Parent = currentNode;
+               currentNode = nextNode;
                if (nextNode == null)
                {
-                  currentNode = nextNode;
                   start.pl = place.start;
                   end.pl = place.end;
-               }
-               else
-               {
-                  nextNode.Parent = currentNode;
-                  currentNode = nextNode;
-                  if (currentNode != null)
-                  {
-                     if (currentNode.Parent != null)
-                        closed.Add(MakeKey(currentNode.Parent.x, currentNode.Parent.y), currentNode.Parent);
-                  }
                }
             }
          }
