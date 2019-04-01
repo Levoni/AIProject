@@ -39,10 +39,12 @@ namespace Maze
                      else //Not at end node
                      {
                         node.Parent = nextNode;
-                        node.g += nextNode.g;
-                        if (!openNodes.ContainsKey(node))
-                           openNodes.Add(node, (node.g + node.h));
-                        node.visited = true;
+								if (!openNodes.ContainsKey(node))
+								{
+									node.g += nextNode.g;
+									openNodes.Add(node, (node.g + node.h));
+								}
+								node.visited = true;
                         nodesSearched.Add(node);
                      }
                   }
@@ -60,10 +62,15 @@ namespace Maze
          st.Restart();
          while (openNodes.Count != 0)
          {
-            closed[MakeKey(openNodes.ElementAt(0).Key.x, openNodes.ElementAt(0).Key.y)] = openNodes.ElementAt(0).Key;
-            AINode nextNode = openNodes.ElementAt(0).Key;
+				int lowestValue = openNodes.ElementAt(0).Value;
+				AINode nextNode = openNodes.ElementAt(0).Key;
+				foreach (KeyValuePair<AINode, int> pair in openNodes)
+				{
+					if (pair.Value < lowestValue)
+						nextNode = pair.Key;
+				}
             foreach (AINode node in nextNode.AINodes)
-               if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y))) //Checking for legal node
+               if (node != null && !node.visited) //Checking for legal node
                {
                   if (node.x == xEnd && node.y == yEnd) //if at the end node
                   {
@@ -76,15 +83,15 @@ namespace Maze
                   else //Not at end node
                   {
                      node.Parent = nextNode;
-                     node.g += nextNode.g;
-                     if (!openNodes.ContainsKey(node))
-                        openNodes.Add(node, (node.g + node.h));
+							if (!openNodes.ContainsKey(node))
+							{
+								node.g += nextNode.g;
+								openNodes.Add(node, (node.g + node.h));
+							}
                      node.visited = true;
                   }
                }
             openNodes.Remove(nextNode); //Removing parent node and ordering by least cost
-            if (openNodes.Count > 0)
-               openNodes = openNodes.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
          }
          st.Stop();
          return (float)st.ElapsedMilliseconds;
