@@ -22,9 +22,14 @@ namespace Maze
          {
             for (int i = 0; i < times; i++)
             {
-               closed[MakeKey(openNodes.ElementAt(0).Key.x, openNodes.ElementAt(0).Key.y)] = openNodes.ElementAt(0).Key;
-               AINode nextNode = openNodes.ElementAt(0).Key;
-               foreach (AINode node in nextNode.AINodes)
+					int lowestValue = openNodes.ElementAt(0).Value;
+					AINode nextNode = openNodes.ElementAt(0).Key;
+					foreach (KeyValuePair<AINode, int> pair in openNodes)
+					{
+						if (pair.Value < lowestValue)
+							nextNode = pair.Key;
+					}
+					foreach (AINode node in nextNode.AINodes)
                   if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y))) //Checking for legal node
                   {
                      if (node.x == xEnd && node.y == yEnd) //If at the end node
@@ -49,8 +54,6 @@ namespace Maze
                      }
                   }
                openNodes.Remove(nextNode); //Removing parent node and ordering by least cost
-               if (openNodes.Count > 0)
-                  openNodes = openNodes.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
             }
             return false;
          }
