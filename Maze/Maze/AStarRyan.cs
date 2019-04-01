@@ -10,12 +10,21 @@ namespace Maze
    {
       protected Dictionary<AINode, int> openNodes;
 
+		/// <summary>
+		/// Constructor for A*
+		/// </summary>
       public AStarRyan() : base()
       {
          openNodes = new Dictionary<AINode, int>();
       }
 
-      public override bool RunRealTimeTick(int times, out List<AINode> nodesSearched)
+		/// <summary>
+		/// This will run the algorithm in real time on the map
+		/// </summary>
+		/// <param name="times"> the interval between each node being processed </param>
+		/// <param name="nodesSearched"> the list of nodes that have been searched up to that point </param>
+		/// <returns> Returns true once it finds the end node </returns>
+		public override bool RunRealTimeTick(int times, out List<AINode> nodesSearched)
       {
          nodesSearched = new List<AINode>();
          if (openNodes.Count != 0)
@@ -60,6 +69,10 @@ namespace Maze
          return true;
       }
 
+		/// <summary>
+		/// Runs the algorithm and displays the results onto the map
+		/// </summary>
+		/// <returns> Amount of time it took to process and find the end node </returns>
       public override float RunSearch()
       {
          st.Restart();
@@ -100,7 +113,15 @@ namespace Maze
          return (float)st.ElapsedMilliseconds;
       }
 
-      public override void SetupSearch(AINode[,] nodeMap, int StartX, int StartY, int EndX, int EndY)
+		/// <summary>
+		/// Setup code with setting start and end values and generating heuristical values
+		/// </summary>
+		/// <param name="nodeMap"> the generated map </param>
+		/// <param name="StartX"> starting node x coordinate </param>
+		/// <param name="StartY"> starting node y coordinate </param>
+		/// <param name="EndX"> ending node x coordinate </param> 
+		/// <param name="EndY"> ending node y coordinate </param> 
+		public override void SetupSearch(AINode[,] nodeMap, int StartX, int StartY, int EndX, int EndY)
       {
          openNodes.Clear();
          closed.Clear();
@@ -122,13 +143,16 @@ namespace Maze
             }
       }
 
-      private void generateHeuristicsAndValues(AINode[,] map) //diagonal distance
+		/// <summary>
+		/// Generates heuristical values based off diagonal distance to the end node
+		/// </summary>
+		/// <param name="map"> the generated map </param> 
+		private void generateHeuristicsAndValues(AINode[,] map) //diagonal distance
       {
          foreach (AINode n in map)
          {
             int distX = Math.Abs(xEnd - n.x);
-            int distY = Math.Abs(yEnd - n.y);
-				//n.h = distX + distY;
+				int distY = Math.Abs(yEnd - n.y);
 				n.h = (int)Math.Sqrt((distX * distX) + (distY * distY));
             n.g = 1;
          }
