@@ -36,7 +36,10 @@ namespace Maze
 					foreach (KeyValuePair<AINode, int> pair in openNodes)
 					{
 						if (pair.Value < lowestValue)
+						{
 							nextNode = pair.Key;
+							lowestValue = pair.Value;
+						}
 					}
 					foreach (AINode node in nextNode.AINodes)
                   if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y))) //Checking for legal node
@@ -83,7 +86,10 @@ namespace Maze
 				foreach (KeyValuePair<AINode, int> pair in openNodes)
 				{
 					if (pair.Value < lowestValue)
+					{
 						nextNode = pair.Key;
+						//lowestValue = pair.Value;
+					}
 				}
             foreach (AINode node in nextNode.AINodes)
                if (node != null && !node.visited) //Checking for legal node
