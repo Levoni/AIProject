@@ -55,7 +55,6 @@ namespace Maze
          st.Restart();
          while (open.Count != 0)
          {
-            closed[MakeKey(open.Peek().x, open.Peek().y)] = open.Peek();
             AINode n = open.Dequeue();
             n.visited = true;
 
@@ -70,14 +69,11 @@ namespace Maze
                // Adds all children nodes of current node
                foreach (AINode node in n.AINodes)
                {
-                  if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
+                  if (node != null && !storedChildren[node.x,node.y])
                   {
-                     if (!storedChildren[node.x, node.y])
-                     {
                         open.Enqueue(node);
                         storedChildren[node.x, node.y] = true;
-                     }
-                     node.Parent = n;
+                        node.Parent = n;
                   }
                }
             }
@@ -93,7 +89,6 @@ namespace Maze
          {
             for (int i = 0; i < times; i++)
             {
-               closed[MakeKey(open.Peek().x, open.Peek().y)] = open.Peek();
                AINode n = open.Dequeue();
                n.visited = true;
                nodesSearched.Add(n);
@@ -108,13 +103,10 @@ namespace Maze
                   // Adds all children nodes of current node
                   foreach (AINode node in n.AINodes)
                   {
-                     if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
+                     if (node != null && !storedChildren[node.x, node.y])
                      {
-                        if (!storedChildren[node.x, node.y])
-                        {
-                           open.Enqueue(node);
-                           storedChildren[node.x, node.y] = true;
-                        }
+                        open.Enqueue(node);
+                        storedChildren[node.x, node.y] = true;
                         node.Parent = n;
                      }
                   }

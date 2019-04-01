@@ -13,6 +13,7 @@ namespace Maze
    {
       // Search specific variables
       Stack<AINode> open;
+      protected bool[,] storedChildren;
 
       public DepthFirstLevon():base()
       {
@@ -23,6 +24,16 @@ namespace Maze
       {
          closed.Clear();
          open.Clear();
+
+         storedChildren = new bool[nodeMap.GetLength(0), nodeMap.GetLength(1)];
+         for (int i = 0; i < storedChildren.GetLength(0); i++)
+         {
+            for (int j = 0; j < storedChildren.GetLength(1); j++)
+            {
+               storedChildren[i, j] = false;
+            }
+         }
+         storedChildren[StartX, StartY] = true;
 
          // puts start node in stack
          open.Push(nodeMap[StartX, StartY]);
@@ -46,7 +57,6 @@ namespace Maze
          // Check for goal until found or all nodes are checked
          while (open.Count != 0)
          {
-            closed[MakeKey(open.Peek().x, open.Peek().y)] = open.Peek();
             AINode n = open.Pop();
             n.visited = true;
 
@@ -61,10 +71,11 @@ namespace Maze
                // Adds all children nodes of current node
                foreach (AINode node in n.AINodes)
                {
-                  if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
+                  if (node != null && !storedChildren[node.x,node.y])
                   {
                      open.Push(node);
                      node.Parent = n;
+                     storedChildren[node.x, node.y] = true;
                   }
                }
             }
@@ -80,7 +91,6 @@ namespace Maze
          {
             for (int i = 0; i < times; i++)
             {
-               closed[MakeKey(open.Peek().x, open.Peek().y)] = open.Peek();
                open.Peek().visited = true;
                AINode n = open.Pop();
                nodesSearched.Add(n);
@@ -94,10 +104,11 @@ namespace Maze
                {
                   foreach (AINode node in n.AINodes)
                   {
-                     if (node != null && !closed.ContainsKey(MakeKey(node.x, node.y)))
+                     if (node != null && storedChildren[node.x, node.y])
                      {
                         open.Push(node);
                         node.Parent = n;
+                        storedChildren[node.x, node.y] = true;
                      }
                   }
                }
