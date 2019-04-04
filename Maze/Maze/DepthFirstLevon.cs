@@ -104,7 +104,7 @@ namespace Maze
                {
                   foreach (AINode node in n.AINodes)
                   {
-                     if (node != null && storedChildren[node.x, node.y])
+                     if (node != null && !storedChildren[node.x, node.y])
                      {
                         open.Push(node);
                         node.Parent = n;
